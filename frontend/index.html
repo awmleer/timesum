@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--icon-->
+    <link rel="shortcut icon" href="img/favico.ico" type="image/x-icon" />
+
+    <!--bootstrap & jquery & material design & fontawesome-->
+    <link href="static/bootstrap/ui.css" rel="stylesheet">
+    <script src="static/jquery.min.js"></script>
+    <script src="static/bootstrap/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="static/material/bootstrap-material-design.min.css">
+    <script src="static/material/material.min.js"></script>
+    <link rel="stylesheet" href="static/material/ripples.min.css">
+    <script src="static/material/ripples.min.js"></script>
+    <link rel="stylesheet" href="static/bootstrap/font-awesome.min.css">
+
+    <!--angular-->
+    <script src="static/angular/angular.min.js"></script>
+    <script src="static/angular/angular-ui-router.min.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/controllers.js"></script>
+
+    <!--datetimepicker-->
+    <link rel="stylesheet" href="static/datetimepicker/default.css">
+    <link rel="stylesheet" href="static/datetimepicker/bootstrap-material-datetimepicker.css">
+    <script src="static/datetimepicker/moment-with-locales.min.js"></script>
+    <script src="static/datetimepicker/bootstrap-material-datetimepicker.js"></script>
+
+    <!--array-->
+    <script src="static/array.js"></script>
+    
+    <!--chart-->
+    <script src="static/chart/Chart.min.js"></script>
+    <link rel="stylesheet" href="static/chart/angular-chart.min.css">
+    <script src="static/chart/angular-chart.min.js"></script>
+
+    <title>TIMESUM</title>
+
+    <style>
+        .container{
+            width:94%;
+            margin:2rem 3%;
+        }
+
+        @media screen and (max-device-width:600px){
+            .container{
+                margin:0;
+                width:100%;
+            }
+        }
+    </style>
+</head>
+<body ng-app="myApp">
+<div ng-controller="ctrl_header" ng-include="'partials/header.html'" style="width: 100%;"></div>
+<div class="container">
+    <!--主视图区-->
+    <div ui-view=""></div>
+</div>
+
+<!--初始化-->
+<script>
+    $(document).ready(function () {
+        $.material.init();
+    });
+</script>
+
+
+
+</body>
+</html>
