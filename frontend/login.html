@@ -11,19 +11,52 @@
     <script src="static/bootstrap/bootstrap.min.js"></script>
     <link rel="stylesheet" href="static/bootstrap/font-awesome.min.css">
 
+    <!--buttons-->
+    <link rel="stylesheet" href="static/bootstrap/buttons.css">
+
 </head>
 <body>
 <div class="container">
     <div class="row">
-        <div class="col-xs-8 col-xs-offset-2">
-            <img src="img/logo_lg.jpg" style="width: 100%;">
+        <div id="logo_group" class="col-xs-8 col-xs-offset-2">
+            <img src="img/logo_circle.svg" style="width: 100%;margin: 2em 0">
+            <img src="img/timesum.svg" style="width: 90%;margin-left: 5%">
+            <p style="width: 100%;text-align: center;color: gray;font-size: 1.5em;margin-top: 0.3em">活动时间协调利器</p>
         </div>
     </div>
 
-    <div class="row">
+    <form>
+        <div class="row">
+            <div class="col-xs-10 col-xs-offset-1" style="margin-bottom: 1.5em;">
+                <label class="input-label" for="phone">电话</label>
+                <input style="padding-left:4em;" id="phone" class="form-control input-text" type="text">
+            </div>
+            <div class="col-xs-10 col-xs-offset-1" style="margin-bottom: 1.5em;">
+                <label class="input-label" for="password">密码</label>
+                <input style="padding-left:4em;" id="password" class="form-control input-text" type="password">
+            </div>
+        </div>
 
-    </div>
+        <div class="row">
+            <div class="col-xs-3 col-xs-offset-1">
+                <a href="#" class="button button-pill button-main button-border" style="width: 100%;padding-left: 16px;padding-right: 16px;text-align: center">注册</a>
+            </div>
+            <div class="col-xs-7">
+                <button type="submit" class="button button-pill button-main" style="width: 100%;">登录</button>
+            </div>
+            <div class="col-xs-7 col-xs-offset-4">
+                <p style="text-align: right;width: 100%;margin-top: 0.3em"><a class="small" style="color: gray;">忘记密码</a></p>
+            </div>
+        </div>
+
+    </form>
+
 
 </div>
 </body>
+<script>
+    $(document).ready(function () {
+        $("#logo_group").css("margin-top",0.1*document.body.clientHeight).css("margin-bottom",0.08*document.body.clientHeight);
+    });
+</script>
 </html>
