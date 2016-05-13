@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>TIMESUM·登录</title>
+    <title>TIMESUM·注册</title>
 
     <!--bootstrap & jquery & fontawesome-->
     <link href="static/bootstrap/ui.css" rel="stylesheet">
@@ -14,6 +14,11 @@
     <!--buttons-->
     <link rel="stylesheet" href="static/bootstrap/buttons.css">
 
+    <style>
+        .time_counting{
+            font-size: 1em !important;
+        }
+    </style>
 </head>
 <body>
 <div class="container" style="margin-bottom: 2em">
@@ -44,7 +49,7 @@
                 <input style="padding-left:5em;" id="code" class="form-control input-text" type="text">
             </div>
             <div class="col-xs-4">
-                <button type="button" class="button button-border button-main button-pill" style="font-size: 0.5em;padding-left: 0.3em;padding-right: 0.3em;width: 100%;">发送验证码</button>
+                <button onclick="get_code()" id="button_code" type="button" class="button button-border button-main button-pill" style="font-size: 0.5em;padding-left: 0.3em;padding-right: 0.3em;width: 100%;text-align: center">发送验证码</button>
             </div>
 
         </div>
@@ -65,5 +70,47 @@
         $("#logo_group").css("margin-top",0.05*document.body.clientHeight).css("margin-bottom",0.05*document.body.clientHeight);
     });
 
+    function count_down() {
+        if (time_count==1) {
+            $("#button_code").text('发送验证码').removeClass('time_counting').removeAttr('disabled');
+        }else {
+            time_count--;
+            $("#button_code").text(time_count+'…');
+            setTimeout('count_down()',1000);
+        }
+    }
+
+    function get_code() {
+        var phone=$("#phone").val();
+//        先保证手机号已经输入
+        if (phone == "") {
+            alert("请先输入您的手机号");
+            $("#phone").focus();
+            return;
+        }
+        $.ajax({
+            url: "api/short_message_code",
+            type: "get",
+            data: {
+                phone: phone
+            }
+        }).done(function (data) {
+            if (data == 'success') {
+                //开始倒计时
+                $("#button_code").addClass('time_counting').attr('disabled','');
+                time_count=60;
+                count_down();
+            }else {
+                alert(data);//直接弹出服务器传回的错误信息
+            }
+        }).fail(function () {
+            alert("请求失败");
+
+        });
+    }
+
+    function sign_up() {
+
+    }
 </script>
 </html>
