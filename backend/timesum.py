@@ -45,3 +45,11 @@ def login():
     else:
         resp = make_response('wrong password', 200)
     return resp
+
+@app.route('/timesum/api/logout')
+def logout():
+    resp = make_response('success', 200)
+    resp.set_cookie('All_Hell_Fqs', '')
+    return resp
+
+
