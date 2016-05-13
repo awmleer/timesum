@@ -1,38 +1,14 @@
-var app = angular.module('myApp', ['ui.router','chart.js']);
+var app = angular.module('timesum', ['ui.router','chart.js']);
 
 
 app.config(function($stateProvider, $urlRouterProvider){
     /*路由模块*/
-    $urlRouterProvider.otherwise("/tasks");
+    $urlRouterProvider.otherwise("/home");
     $stateProvider
-        .state('tasks', {
-            url: "/tasks",
-            templateUrl: "partials/tasks.html",
-            controller:'ctrl_task'
-        })
-        .state('mytask', {
-            url: "/mytask",
-            templateUrl: "partials/tasks.html",//和tasks界面共用一个网页template
-            controller:'ctrl_task'//和tasks界面共用一个controller
-        })
-        .state('newtask', {
-            url: "/newtask",
-            templateUrl: "partials/newtask.html",
-            controller:'ctrl_newtask'
-        })
-        .state('modifytask', {
-            url: "/modifytask",
-            templateUrl: "partials/modifytask.html",
-            controller:'ctrl_modifytask'
-        })
-        .state('message', {
-            url: "/message",
-            templateUrl: "partials/message.html"
-        })
-        .state('statistics', {
-            url: "/statistics",
-            templateUrl: "partials/statistics.html",
-            controller:'ctrl_statistic'
+        .state('home', {
+            url: "/home",
+            templateUrl: "partials/home.html",
+            controller:'ctrl_home'
         })
         .state('about', {
             url: "/about",
