@@ -26,30 +26,30 @@
         <div id="logo_group" class="col-xs-8 col-xs-offset-2">
             <img src="img/logo_circle.svg" style="width: 100%;margin: 2em 0">
             <p style="width: 100%;text-align: center;color: #16a085;font-size: 3em;margin: 0;">注册</p>
-            <p style="width: 100%;text-align: center;color: gray;font-size: 1.5em;margin: 0;">Sign-up</p>
+            <p style="width: 100%;text-align: center;color: gray;font-size: 1.2em;margin: 0;">Sign-up</p>
         </div>
     </div>
 
     <form>
         <div class="row">
-            <div class="col-xs-10 col-xs-offset-1" style="margin-bottom: 1.5em;">
+            <div class="col-xs-10 col-xs-offset-1" style="margin-bottom: 1em;">
                 <label class="input-label" for="phone">电话</label>
                 <input style="padding-left:4em;" id="phone" class="form-control input-text" type="text">
             </div>
-            <div class="col-xs-10 col-xs-offset-1" style="margin-bottom: 1.5em;">
+            <div class="col-xs-10 col-xs-offset-1" style="margin-bottom: 1em;">
                 <label class="input-label" for="name">名字</label>
                 <input style="padding-left:4em;" id="name" class="form-control input-text" type="text">
             </div>
-            <div class="col-xs-10 col-xs-offset-1" style="margin-bottom: 1.5em;">
+            <div class="col-xs-10 col-xs-offset-1" style="margin-bottom: 1em;">
                 <label class="input-label" for="password">密码</label>
                 <input style="padding-left:4em;" id="password" class="form-control input-text" type="password">
             </div>
-            <div class="col-xs-6 col-xs-offset-1" style="margin-bottom: 1.5em;">
+            <div class="col-xs-6 col-xs-offset-1" style="margin-bottom: 2em;">
                 <label class="input-label" for="code">验证码</label>
                 <input style="padding-left:5em;" id="code" class="form-control input-text" type="text">
             </div>
             <div class="col-xs-4">
-                <button onclick="get_code()" id="button_code" type="button" class="button button-border button-main button-pill" style="font-size: 0.5em;padding-left: 0.3em;padding-right: 0.3em;width: 100%;text-align: center">发送验证码</button>
+                <button onclick="get_code()" id="button_code" type="button" class="button button-border button-main button-pill" style="font-size: 0.8em;padding-left: 0.3em;padding-right: 0.3em;width: 100%;text-align: center">发送验证码</button>
             </div>
 
         </div>
@@ -88,6 +88,11 @@
             $("#phone").focus();
             return;
         }
+//        手机号码的验证
+        if (!(/^1[0-9]\d{9}$/.test(phone))) {
+            alert("您输入的手机号码格式错误");
+            return;
+        }
         $.ajax({
             url: "api/short_message_code",
             type: "get",
@@ -105,11 +110,16 @@
             }
         }).fail(function () {
             alert("请求失败");
-
         });
     }
 
+
+
     function sign_up() {
+        var phone =$('phone').val();
+        var name = $('name').val();
+        var password = $('password').val();
+        var code = $('code').val();
 
     }
 </script>
