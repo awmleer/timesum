@@ -20,8 +20,8 @@
     <div class="row">
         <div id="logo_group" class="col-xs-8 col-xs-offset-2">
             <img src="img/logo_circle.svg" style="width: 100%;margin: 2em 0">
-            <img src="img/timesum.svg" style="width: 90%;margin-left: 5%">
-            <p style="width: 100%;text-align: center;color: gray;font-size: 1.5em;margin-top: 0.3em">活动时间协调利器</p>
+            <p style="width: 100%;text-align: center;color: #16a085;font-size: 3em;margin: 0;">注册</p>
+            <p style="width: 100%;text-align: center;color: gray;font-size: 1.5em;margin: 0;">Sign-up</p>
         </div>
     </div>
 
@@ -32,18 +32,26 @@
                 <input style="padding-left:4em;" id="phone" class="form-control input-text" type="text">
             </div>
             <div class="col-xs-10 col-xs-offset-1" style="margin-bottom: 1.5em;">
+                <label class="input-label" for="name">名字</label>
+                <input style="padding-left:4em;" id="name" class="form-control input-text" type="text">
+            </div>
+            <div class="col-xs-10 col-xs-offset-1" style="margin-bottom: 1.5em;">
                 <label class="input-label" for="password">密码</label>
                 <input style="padding-left:4em;" id="password" class="form-control input-text" type="password">
             </div>
+            <div class="col-xs-6 col-xs-offset-1" style="margin-bottom: 1.5em;">
+                <label class="input-label" for="code">验证码</label>
+                <input style="padding-left:5em;" id="code" class="form-control input-text" type="text">
+            </div>
+            <div class="col-xs-4">
+                <button type="button" class="button button-border button-main button-pill" style="font-size: 0.5em;padding-left: 0.3em;padding-right: 0.3em;width: 100%;">发送验证码</button>
+            </div>
+
         </div>
 
         <div class="row">
             <div class="col-xs-10 col-xs-offset-1" id="submit_div">
-                <a href="signup.html" class="button button-pill button-main button-border" style="padding-left: 16px;padding-right: 16px;text-align: center;">注册</a>
-                <button id="submit_button" type="submit" class="button button-pill button-main" style="display: inline-block;float: right;">登录</button>
-            </div>
-            <div class="col-xs-7 col-xs-offset-4">
-                <p style="text-align: right;width: 100%;margin-top: 0.3em"><a class="small" style="color: gray;">忘记密码</a></p>
+                <button type="submit" class="button button-pill button-main button-block-level">注册</button>
             </div>
         </div>
 
@@ -54,8 +62,8 @@
 </body>
 <script>
     $(document).ready(function () {
-        $("#logo_group").css("margin-top",0.1*document.body.clientHeight).css("margin-bottom",0.08*document.body.clientHeight);
-        $("#submit_button").css("width",$("#password").width()-$("#submit_div a").width());
+        $("#logo_group").css("margin-top",0.05*document.body.clientHeight).css("margin-bottom",0.05*document.body.clientHeight);
     });
+
 </script>
 </html>

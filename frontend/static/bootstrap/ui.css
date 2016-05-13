@@ -1755,6 +1755,8 @@ output {
   padding: 6px 18px;
   position: absolute;
   z-index: 100;
+  color: #16a085;
+  font-weight: normal;
 }
 .input-text{
   position: relative;
@@ -1766,7 +1768,7 @@ output {
   padding: 6px 12px;
   font-size: 14px;
   line-height: 1.42857143;
-  color: #555;
+  color: #999999;
   background-color: #f5f5f5;
   background-image: none;
   border: 1px solid #ccc;
@@ -1780,7 +1782,7 @@ output {
 }
 .form-control:focus {
   border: 2px solid #16a085;
-  color: #16a085;
+  color: #333333;
   outline: 0;
   /*background-color: #fff;*/
   /*-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);*/
