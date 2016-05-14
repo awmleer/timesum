@@ -2,6 +2,7 @@
 
 from flask import Flask, request, make_response
 import time
+import random
 import urllib
 import urllib2
 import hashlib
@@ -52,4 +53,44 @@ def logout():
     resp.set_cookie('All_Hell_Fqs', '')
     return resp
 
+# @app.route('/timesum/api/signin', methonds=['POST'])
+# def signin():
+    # flag = False
+    # uid = request.cookies.get('All_Hell_Fqs')
+    # if (uid == None) or (uid == ''):
+    #     resp = make_response('no login', 401)
+    #     return resp
+    # usernam = base64.b64decode(uid)
+    # usernam = usernam[18:]
+    # for user in client['timesum']['users'].find():
+    #     if (str(user['uid']) == usernam):
+    #         flag = True
+    #         break
+    # if (not flag):
+    #     resp = make_response('wrong cookies', 401)
+    #     return resp
 
+    # return None
+
+@app.route('/timesum/api/short_message_code')
+def short_message_code():
+    phone = request.args.get('phone')
+    db = client['timesum']
+    coll_verification = db['verification']
+    info = coll_verification.find_one({'phone': phone})
+    code = random.randint(1000,9999)
+    if (info == None):
+        info = {'phone': phone, 'last_verify': int(time.time() * 1000), 'verify_code': code}
+        coll_verification.insert(info)
+    if (int(time.time() * 1000)-info['last_verify'] < 60000):
+        resp = make_response('一分钟之内只能发送一次验证码！', 200)
+        return resp
+    #发送短信
+    coll_verification.update({'phone': phone}, {'$set': {'last_verify': int(time.time() * 1000), 'verify_code': code}})
+    resp = make_response('success', 200)
+    return resp
+
+
+if __name__ == '__main__':
+    # app.debug = True
+    app.run(host='0.0.0.0', port= 5001)
