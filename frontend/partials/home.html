@@ -3,28 +3,44 @@
         background-image: url(img/main/Normal-Green.svg);
         background-color: #FFFFFF;
         background-repeat: no-repeat;
-        height: 9em;
+        height: 12rem;
         width:100%;
         border:solid 1px #e1e1e1;
     }
     .activity_published .right{
-
+        float: right;
+        text-align: right;
     }
     .activity_published .left{
-
+        float: left;
+        width: 10rem;
     }
     .activity_published .left i{
-        font-size: 3em;
+        font-size: 5rem;
         color: #FFFFFF;
-        margin-left: 1.6rem;
-        margin-top: 1.6rem;
+        margin-left: 3rem;
+        margin-top: 2.3rem;
         display: block;
     }
     .activity_published .left label{
         font-weight: normal;
         color: #FFFFFF;
-        margin-left: 1rem;
-        font-size: 0.5rem;
+        margin-left: 2.2rem;
+        margin-top: 0.4rem;
+        font-size: 0.6rem;
+    }
+
+
+
+    .text-green{
+        color: #1ab99b;
+    }
+    .text-gray{
+        color: #666666;
+    }
+
+    .no-padding{
+        padding: 0;
     }
 </style>
 
@@ -34,7 +50,21 @@
         <i class="fa fa-check-circle"></i>
         <label>时间已确定</label>
     </div>
-    <div class="right">
-
+    <div class="right" style="margin-right: 1rem">
+        <table class="no-padding" style="height:8rem;">
+            <tr>
+                <td style="vertical-align: bottom;">
+                    <span style="font-size: 8rem;display: block;height: 6rem;margin-bottom: 2rem;" class="font-number">05</span>
+                </td>
+                <td style="vertical-align: bottom;height: 8rem;">
+                    <span class="text-green" style="height:1.2rem;font-size: 1.2rem;display: block;margin-top: 1.5rem;margin-bottom: 0.3rem">参与人数</span>
+                    <span class="font-number" style="font-size: 4rem;height: 4rem;margin-bottom:0.7rem;margin-top:0.3rem;display: block;">/08</span>
+                </td>
+            </tr>
+        </table>
+        <p class="text-gray" style="margin-top: -0.5rem;margin-bottom: 0.5rem">sparker开发团队会议</p>
+        <i class="fa fa-share-alt text-green" style="margin-right: 1.4em;font-size: 2rem"></i><i
+            class="fa fa-pencil text-green" style="margin-right: 0.5em;font-size: 2rem"></i>
+    </div>
     </div>
 </div>
