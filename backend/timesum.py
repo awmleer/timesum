@@ -90,6 +90,10 @@ def signup():
         return resp
     db = client['timesum']
     coll_verification = db['verification']
+    coll_users = db['users']
+    if (coll_users.find_one({'phone': int(text['phone'])}) != None):
+        resp = make_response('该手机号已经注册', 200)
+        return resp
     info = coll_verification.find_one({'phone': int(text['phone'])})
     if (info == None):
         resp = make_response('未发送验证码', 200)
@@ -106,10 +110,11 @@ def signup():
     sum = sum + 1
     coll_meta.update({'meta': 'auto_increase'}, {'$set': {'uid': sum}})
     text['password'] =hashlib.md5(str(text['password']) + salt).hexdigest()
+    text['phone'] = int(text['phone'])
     text.update({'uid': sum, 'last_login': int(time.time() * 1000), 'login_count': 1})
-    coll_users = db['users']
     coll_users.insert(text)
     resp = make_response('success', 200)
+    resp.set_cookie('All_Hell_Fqs', base64.b64encode(salt + str(sum)))
     return resp
 
 @app.route('/api/short_message_code')
@@ -119,10 +124,12 @@ def short_message_code():
     coll_verification = db['verification']
     info = coll_verification.find_one({'phone': phone})
     code = random.randint(1000,9999)
+    flag = True
     if (info == None):
         info = {'phone': phone, 'last_verify': int(time.time() * 1000), 'verify_code': code}
         coll_verification.insert(info)
-    if (int(time.time() * 1000) - info['last_verify'] < 60000):
+        flag = False
+    if (int(time.time() * 1000) - info['last_verify'] < 60000 and flag):
         resp = make_response('一分钟之内只能发送一次验证码！', 200)
         return resp
     print sendsms1(str(code), 'fuck', 'shit', phone)
