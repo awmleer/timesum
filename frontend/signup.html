@@ -120,7 +120,25 @@
         var name = $('name').val();
         var password = $('password').val();
         var code = $('code').val();
-
+        $.ajax({
+            url: "api/signup",
+            type: "post",
+            headers: {'Content-Type': 'application/json'},
+            data: {
+                phone:phone,
+                name:name,
+                password:password,
+                code:code
+            }
+        }).done(function (data) {
+            if (data == "success") {
+                location.href='main.html';//注册成功，跳转到主页面
+            } else {
+                alert(data);
+            }
+        }).fail(function () {
+            alert("请求失败");
+        });
     }
 </script>
 </html>
