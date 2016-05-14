@@ -92,6 +92,8 @@
                 alert("您输入的密码错误");
             }else if (data == 'wrong phone') {
                 alert("您输入的手机号尚未注册");
+            }else {
+                alert(data);
             }
         }).fail(function () {
             alert("请求失败");

@@ -10,6 +10,7 @@
     .activity_published .right{
         float: right;
         text-align: right;
+        margin-right: 1rem
     }
     .activity_published .left{
         float: left;
@@ -29,15 +30,42 @@
         margin-top: 0.4rem;
         font-size: 0.6rem;
     }
+
+    .activity_participated{
+        background: url(img/main/Slim-Green.svg) no-repeat right;
+        background-color: #FFFFFF;
+        height: 9rem;
+        width:100%;
+        border:solid 1px #e1e1e1;
+    }
+    .activity_participated .left{
+        margin-left: 1rem;
+        display: inline-block;
+    }
+    .activity_participated .right{
+        float: right;
+        width: 7rem;
+        text-align: right;
+    }
+    .activity_participated .right i{
+        font-size: 5rem;
+        color: #FFFFFF;
+        margin-right: 2rem;
+        margin-top: 2.3rem;
+        display: block;
+    }
 </style>
 
-
+<div>
+    <div style="width: 0.2rem;height: 1.2rem;background-color: #16a085;display: inline-block;margin-bottom: -0.2rem"></div>
+    <span style="display: inline-block;margin-bottom: 0.5rem">我组织的</span>
+</div>
 <div class="activity_published">
     <div class="left">
         <i class="fa fa-check-circle"></i>
         <label>时间已确定</label>
     </div>
-    <div class="right" style="margin-right: 1rem">
+    <div class="right">
         <table class="no-padding" style="height:8rem;">
             <tr>
                 <td style="vertical-align: bottom;">
@@ -50,7 +78,32 @@
             </tr>
         </table>
         <p class="text-gray" style="margin-top: -0.5rem;margin-bottom: 0.5rem">sparker开发团队会议</p>
-        <i class="fa fa-share-alt text-green hover-pointer" style="margin-right: 1.4em;font-size: 2rem"></i><i
-            class="fa fa-pencil text-green hover-pointer" style="margin-right: 0.5em;font-size: 2rem"></i>
+        <i class="fa fa-share-alt text-green hover-pointer" style="margin-right: 1.4em;font-size: 2rem"></i><i class="fa fa-pencil text-green hover-pointer" style="margin-right: 0.5em;font-size: 2rem"></i>
+    </div>
+</div>
+
+
+<div style="margin-top: 1rem">
+    <div style="width: 0.2rem;height: 1.2rem;background-color: #16a085;display: inline-block;margin-bottom: -0.2rem"></div>
+    <span style="display: inline-block;margin-bottom: 0.5rem">我参与的</span>
+</div>
+<div class="activity_participated">
+    <div class="left">
+        <span style="display: block;" class="text-green">活动时间</span>
+        <table>
+            <tr>
+                <td><span style="display: block;font-size: 4rem" class="font-number">05.28</span></td>
+                <td>
+                    <div style="background-color: #16a085;height: 3rem;width: 2px;margin: 0 3px;"></div>
+                </td>
+                <td>
+                    <span
+                </td>
+            </tr>
+        </table>
+
+    </div>
+    <div class="right">
+        <i class="fa fa-check-circle"></i>
     </div>
 </div>
