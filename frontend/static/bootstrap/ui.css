@@ -3,11 +3,13 @@
   src: url(../font/number.otf);
 }
 
-
 .font-number{
   font-family: number,'Microsoft Yahei','微软雅黑',sans-serif;
 }
 
+.hover-pointer:hover{
+  cursor: pointer;
+}
 
 
 
@@ -795,8 +797,8 @@ pre code {
   overflow-y: scroll;
 }
 .container {
-  padding-right: 15px;
-  padding-left: 15px;
+  padding-right: 0.7rem;
+  padding-left: 0.7rem;
   margin-right: auto;
   margin-left: auto;
 }
