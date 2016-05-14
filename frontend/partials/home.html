@@ -54,11 +54,37 @@
         margin-top: 2.3rem;
         display: block;
     }
+
+
+    .div_toggle_history{
+        width:100%;
+        background: #FFFFFF;
+        height:2.3rem;
+        text-align: right;
+        padding-right: 1rem;
+        padding-top: 0.4rem;
+        font-size: 0.8rem;
+    }
+    .div_toggle_history span{
+        display: inline-block;
+    }
+
+    .activity_history_group{
+        border:solid 1px #e1e1e1;
+        border-top: 0;
+        background: #FFFFFF;
+    }
+    .activity_history{
+        border-bottom: solid 1px #e1e1e1;
+        padding: 0.3rem 0;
+        padding-left: 1rem;
+    }
+
 </style>
 
 <div>
     <div style="width: 0.2rem;height: 1.2rem;background-color: #16a085;display: inline-block;margin-bottom: -0.2rem"></div>
-    <span style="display: inline-block;margin-bottom: 0.5rem;font-size: 1.5rem">我组织的</span>
+    <span style="display: inline-block;margin-bottom: 0.5rem;font-size: 1.5rem" class="text-gray">我组织的</span>
 </div>
 <div class="activity_published">
     <div class="left">
@@ -82,11 +108,18 @@
     </div>
 </div>
 
+<div class="div_toggle_history text-gray" style="border:solid 1px #e1e1e1;border-top: 0;">
+    <i class="fa fa-chevron-down"></i> <span>历史活动</span>
+</div>
+
+
+
 
 <div style="margin-top: 1rem">
     <div style="width: 0.2rem;height: 1.2rem;background-color: #16a085;display: inline-block;margin-bottom: -0.2rem"></div>
-    <span style="display: inline-block;margin-bottom: 0.5rem;font-size: 1.5rem">我参与的</span>
+    <span style="display: inline-block;margin-bottom: 0.5rem;font-size: 1.5rem" class="text-gray">我参与的</span>
 </div>
+
 <div class="activity_participated">
     <div class="left">
 
@@ -114,3 +147,28 @@
         <i class="fa fa-check-circle"></i>
     </div>
 </div>
+
+<div class="activity_history_group">
+    <span class="text-gray" style="display: inline-block;font-size: 1rem;margin: 0.5rem 1rem 0.4rem">历史活动</span>
+
+    <div class="activity_history">
+        <i class="fa fa-check-circle" style="font-size: 5rem;color: #16a085;display: inline-block;margin-right: 0.8rem"></i>
+        <div style="display: inline-block;padding-bottom: 0.5rem">
+            <span style="display: block;font-size: 1.8rem">大英小组讨论</span>
+            <span style="display: block;font-size: 1rem" class="text-gray">4月15日 2016</span>
+        </div>
+    </div>
+
+    <div class="activity_history">
+        <i class="fa fa-times-circle" style="font-size: 5rem;color: #919191;display: inline-block;margin-right: 0.8rem"></i>
+        <div style="display: inline-block;padding-bottom: 0.5rem">
+            <span style="display: block;font-size: 1.8rem">大英小组讨论</span>
+            <span style="display: block;font-size: 1rem" class="text-gray">4月15日 2016</span>
+        </div>
+    </div>
+
+    <div class="div_toggle_history text-gray">
+        <i class="fa fa-chevron-up"></i> <span>收起</span>
+    </div>
+</div>
+
