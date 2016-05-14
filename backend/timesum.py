@@ -27,10 +27,25 @@ client = MongoClient(uri)
 
 salt = '5aWZak2n35Wk fqsws'
 
-@app.route('/timesum/api/login')
+def sendsms1(publisher, title, person, mobile):
+    d = {'#publisher#': publisher, '#title#': title}
+    tpl_value = urllib.urlencode(d)
+    finalstr = ''
+    getdata = urllib.urlencode({'mobile':mobile,'tpl_id':13216,'tpl_value':tpl_value,'key': 'b32c625ffb38e4ad07f86bb1101548e1'})
+    url = 'http://v.juhe.cn/sms/send?%s'%getdata
+    req = urllib.urlopen(url)
+    result = json.loads(req.read())
+    finalstr += '发送给%s的短信的发送结果：%s\n' %(person, result['reason'].encode('utf-8'))
+    return finalstr
+
+@app.route('/api/login')
 def login():
-    phone = request.args.get('phone')
+    phone1 = request.args.get('phone')
     password = request.args.get('password')
+    if (phone1 == '' or password == ''):
+        resp = make_response('信息不完整', 200)
+        return resp
+    phone = int(phone1)
 
     db = client['timesum']
     coll_users = db['users']
@@ -47,14 +62,14 @@ def login():
         resp = make_response('wrong password', 200)
     return resp
 
-@app.route('/timesum/api/logout')
+@app.route('/api/logout')
 def logout():
     resp = make_response('success', 200)
     resp.set_cookie('All_Hell_Fqs', '')
     return resp
 
-# @app.route('/timesum/api/signin', methonds=['POST'])
-# def signin():
+@app.route('/api/signup', methods=['POST'])
+def signup():
     # flag = False
     # uid = request.cookies.get('All_Hell_Fqs')
     # if (uid == None) or (uid == ''):
@@ -69,12 +84,37 @@ def logout():
     # if (not flag):
     #     resp = make_response('wrong cookies', 401)
     #     return resp
+    text = request.json
+    if (text['phone'] == '' or text['name'] == '' or text['password'] == '' or text['code'] == ''):
+        resp = make_response('信息不完整', 200)
+        return resp
+    db = client['timesum']
+    coll_verification = db['verification']
+    info = coll_verification.find_one({'phone': int(text['phone'])})
+    if (info == None):
+        resp = make_response('未发送验证码', 200)
+        return resp
+    if (int(text['code']) != info['verify_code']):
+        resp = make_response('验证码错误', 200)
+        return resp
+    if (int(time.time() * 1000) - info['last_verify'] > 1200000):
+        resp = make_response('验证码已过期', 200)
+        return resp
+    del text['code']
+    coll_meta = db['meta']
+    sum = coll_meta.find_one({'meta': 'auto_increase'})['uid']
+    sum = sum + 1
+    coll_meta.update({'meta': 'auto_increase'}, {'$set': {'uid': sum}})
+    text['password'] =hashlib.md5(str(text['password']) + salt).hexdigest()
+    text.update({'uid': sum, 'last_login': int(time.time() * 1000), 'login_count': 1})
+    coll_users = db['users']
+    coll_users.insert(text)
+    resp = make_response('success', 200)
+    return resp
 
-    # return None
-
-@app.route('/timesum/api/short_message_code')
+@app.route('/api/short_message_code')
 def short_message_code():
-    phone = request.args.get('phone')
+    phone = int(request.args.get('phone'))
     db = client['timesum']
     coll_verification = db['verification']
     info = coll_verification.find_one({'phone': phone})
@@ -82,10 +122,10 @@ def short_message_code():
     if (info == None):
         info = {'phone': phone, 'last_verify': int(time.time() * 1000), 'verify_code': code}
         coll_verification.insert(info)
-    if (int(time.time() * 1000)-info['last_verify'] < 60000):
+    if (int(time.time() * 1000) - info['last_verify'] < 60000):
         resp = make_response('一分钟之内只能发送一次验证码！', 200)
         return resp
-    #发送短信
+    print sendsms1(str(code), 'fuck', 'shit', phone)
     coll_verification.update({'phone': phone}, {'$set': {'last_verify': int(time.time() * 1000), 'verify_code': code}})
     resp = make_response('success', 200)
     return resp
