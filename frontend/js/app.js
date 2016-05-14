@@ -1,4 +1,4 @@
-var app = angular.module('timesum', ['ui.router','chart.js']);
+var app = angular.module('timesum', ['ui.router']);
 
 
 app.config(function($stateProvider, $urlRouterProvider){

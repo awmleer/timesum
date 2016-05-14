@@ -34,3 +34,8 @@ app.controller("ctrl_header",function($scope,$rootScope,$location,$http) {
 
 });
 
+
+app.controller("ctrl_home",function($scope,$rootScope,$location,$http) {
+    
+});
+
