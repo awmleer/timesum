@@ -26,25 +26,28 @@
     <title>TIMESUM</title>
 
     <style>
-        .container{
-            width:94%;
-            margin:2rem 3%;
+        .div_main{
+            max-width:720px !important;
+            margin:0 auto;
         }
-
-        @media screen and (max-device-width:600px){
-            .container{
-                margin:0;
-                width:100%;
+        @media (min-width: 768px) {
+            .div_main {
+                font-family: 'Microsoft Yahei','微软雅黑', sans-serif;
             }
         }
     </style>
 </head>
+
+
 <body ng-app="timesum">
-<div ng-controller="ctrl_header" ng-include="'partials/header.html'" style="width: 100%;"></div>
-<div class="container">
-    <!--主视图区-->
-    <div ui-view=""></div>
+<div class="div_main">
+    <div ng-controller="ctrl_header" ng-include="'partials/header.html'" style="width: 100%;"></div>
+    <div class="container">
+        <!--主视图区-->
+        <div ui-view=""></div>
+    </div>
 </div>
+
 
 
 </body>
