@@ -166,7 +166,7 @@
     </div>
 
 
-    <div class="ac_history_group">
+    <div class="ac_history_group" ng-if="ac_published_history_showing">
         <span class="text-gray" style="display: inline-block;font-size: 1rem;margin: 0.5rem 1rem 0.4rem">历史活动</span>
 
         <div class="ac_history" ng-repeat="ac in ac_published_history">
@@ -180,9 +180,15 @@
     </div>
 
 
-    <div class="div_toggle_history text-gray">
-        <i class="fa fa-chevron-down"></i> <span>历史活动</span>
+    <div class="div_toggle_history text-gray" ng-click="ac_published_history_toggle()">
+        <div ng-if="ac_published_history_showing==false">
+            <i class="fa fa-chevron-down"></i> <span>历史活动</span>
+        </div>
+        <div ng-if="ac_published_history_showing==true">
+            <i class="fa fa-chevron-up"></i> <span>收起</span>
+        </div>
     </div>
+
 </div>
 
 
@@ -231,7 +237,7 @@
     </div>
 
 
-    <div class="ac_history_group">
+    <div class="ac_history_group" ng-if="ac_participated_history_showing">
         <span class="text-gray" style="display: inline-block;font-size: 1rem;margin: 0.5rem 1rem 0.4rem">历史活动</span>
 
         <div class="ac_history" ng-repeat="ac in ac_participated_history">
@@ -245,8 +251,13 @@
     </div>
 
 
-    <div class="div_toggle_history text-gray">
-        <i class="fa fa-chevron-up"></i> <span>收起</span>
+    <div class="div_toggle_history text-gray" ng-click="ac_participated_history_toggle()">
+        <div ng-if="ac_participated_history_showing==false">
+            <i class="fa fa-chevron-down"></i> <span>历史活动</span>
+        </div>
+        <div ng-if="ac_participated_history_showing==true">
+            <i class="fa fa-chevron-up"></i> <span>收起</span>
+        </div>
     </div>
 
 </div>

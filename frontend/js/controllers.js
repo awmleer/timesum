@@ -36,6 +36,17 @@ app.controller("ctrl_header",function($scope,$rootScope,$location,$http) {
 
 
 app.controller("ctrl_home",function($scope,$rootScope,$location,$http) {
+    $scope.ac_published_history_showing=false;
+    $scope.ac_participated_history_showing=false;
+    
+    $scope.ac_published_history_toggle= function () {
+        $scope.ac_published_history_showing=!$scope.ac_published_history_showing;
+    };
+
+    $scope.ac_participated_history_toggle= function () {
+        $scope.ac_participated_history_showing=!$scope.ac_participated_history_showing;
+    };
+    
     $scope.ac_published=[
         {
             aid:21513,
