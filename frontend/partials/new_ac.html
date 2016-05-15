@@ -1,3 +1,25 @@
+<style>
+    .acinput input{
+        border-top:0;border-left:0;border-right:0;
+        border-radius: 0;
+    }
+    .acinput input:focus{
+        border-top:0;border-left:0;border-right:0;
+        border-radius: 0;
+    }
+    .acinput textarea{
+        border-top:0;border-left:0;border-right:0;
+        border-radius: 0;
+    }
+    .acinput textarea:focus{
+        border-top:0;border-left:0;border-right:0;
+        border-radius: 0;
+    }
+    .acinput {
+        margin-bottom:1.5rem;
+    }
+</style>
+
 <div class="container">
     <div class="text-green">
         <table  class="table" >
@@ -15,6 +37,35 @@
                 </td>
             </tr>
         </table>
+
+        <div class="acinput">
+            <div class="form-group label-floating">
+                <label class="control-label" for="zhuti">主题</label>
+                <input class="form-control" id="zhuti" type="text">
+            </div>
+            <div class="row">
+                <div class="col-xs-6 col-sm-6 col-lg-6">
+                    <div class="form-group label-floating">
+                        <label class="control-label" for="zhubanfang">主办方</label>
+                        <input class="form-control" id="zhubanfang" type="text">
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-lg-6">
+                    <div class="form-group label-floating">
+                        <label class="control-label" for="number">参与人数</label>
+                        <input class="form-control" id="number" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-xs-12">
+                    <label class="control-label" for="textArea">简介</label>
+                    <textarea class="form-control" rows="3" id="textArea"></textarea>
+                </div>
+            </div>
+
+        </div>
+
       <div class="row"style="margin-bottom:1rem;">
           <div class="col-md-3 col-sm-3 col-xs-3" style="margin-right: 0">
               <div align="center" style="border:0.2rem dashed #16a085;border-radius: 0.8rem; width:6rem;height:6rem">
