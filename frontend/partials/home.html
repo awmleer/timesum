@@ -8,6 +8,7 @@
         height: 12rem;
         width:100%;
         border-bottom:solid 1px #e1e1e1;
+        position:relative;
     }
     .ac_published.green{
         background-image: url(img/main/Normal-Green.svg);
@@ -28,9 +29,11 @@
         color: #666666;
     }
     .ac_published .right{
-        float: right;
+        position: absolute;
+        right:1rem;
+        top:-1rem;
+        /*float: right;*/
         text-align: right;
-        margin-right: 1rem
     }
     .ac_published .left{
         float: left;
@@ -48,7 +51,7 @@
         color: #FFFFFF;
         margin-left: 2.2rem;
         margin-top: 0.4rem;
-        font-size: 0.6rem;
+        font-size: 1rem;
     }
 
 
@@ -151,8 +154,8 @@
         <div class="right">
             <table class="no-padding" style="height:8rem;display: inline-block;">
                 <tr>
-                    <td style="vertical-align: bottom;">
-                        <span style="font-size: 8rem;display: block;height: 6rem;margin-bottom: 2rem;" class="font-number">{{ ac.participators.length }}</span>
+                    <td style="vertical-align: bottom;position: relative;">
+                        <span style="font-size: 8rem;display: block;position: absolute;top: -0.5rem;right: 0;" class="font-number">{{ ac.participators.length }}</span>
                     </td>
                     <td style="vertical-align: bottom;height: 8rem;">
                         <span class="text-colorful" style="height:1.2rem;font-size: 1.2rem;display: block;margin-top: 1.5rem;margin-bottom: 0.3rem">参与人数</span>
@@ -180,7 +183,7 @@
     </div>
 
 
-    <div class="div_toggle_history text-gray" ng-click="ac_published_history_toggle()">
+    <div class="div_toggle_history text-gray hover-pointer" ng-click="ac_published_history_toggle()">
         <div ng-if="ac_published_history_showing==false">
             <i class="fa fa-chevron-down"></i> <span>历史活动</span>
         </div>
@@ -251,7 +254,7 @@
     </div>
 
 
-    <div class="div_toggle_history text-gray" ng-click="ac_participated_history_toggle()">
+    <div class="div_toggle_history text-gray hover-pointer" ng-click="ac_participated_history_toggle()">
         <div ng-if="ac_participated_history_showing==false">
             <i class="fa fa-chevron-down"></i> <span>历史活动</span>
         </div>
