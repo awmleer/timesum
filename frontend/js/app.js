@@ -15,6 +15,11 @@ app.config(function($stateProvider, $urlRouterProvider){
             templateUrl: "partials/new_ac.html",
             controller:'ctrl_new_ac'
         })
+        .state('share', {
+            url: "/share",
+            templateUrl: "partials/share.html",
+            controller:'ctrl_share'
+        })
         .state('about', {
             url: "/about",
             templateUrl: "partials/about.html"

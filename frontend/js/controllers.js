@@ -148,3 +148,9 @@ app.controller("ctrl_home",function($scope,$rootScope,$location,$http) {
 app.controller("ctrl_new_ac",function($scope,$rootScope,$location,$http) {
     
 });
+
+
+
+app.controller("ctrl_share",function($scope,$rootScope,$location,$http) {
+
+});
