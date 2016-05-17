@@ -28,7 +28,7 @@
                     <img src="img/logo/logo_circle.svg"width="100%">
                 </td>
                 <td style="padding-bottom:0; border:0">
-                    <h2 style="margin-bottom: 0;margin-top: 1.5rem">活动信息</h2>
+                    <h2 style="margin-bottom: 0;margin-top: 1.5rem;font-weight: bold">活动信息</h2>
                 </td>
             </tr >
             <tr >
@@ -40,27 +40,27 @@
 
         <div class="acinput">
             <div class="form-group label-floating">
-                <label class="control-label" for="zhuti">主题</label>
-                <input class="form-control" id="zhuti" type="text">
+                <label class="control-label" for="title">主题</label>
+                <input ng-model="title" class="form-control" id="title" type="text">
             </div>
             <div class="row">
                 <div class="col-xs-6 col-sm-6 col-lg-6">
                     <div class="form-group label-floating">
-                        <label class="control-label" for="zhubanfang">主办方</label>
-                        <input class="form-control" id="zhubanfang" type="text">
+                        <label class="control-label" for="organizer">主办方</label>
+                        <input ng-model="organizer" class="form-control" id="organizer" type="text">
                     </div>
                 </div>
                 <div class="col-xs-6 col-sm-6 col-lg-6">
                     <div class="form-group label-floating">
-                        <label class="control-label" for="number">参与人数</label>
-                        <input class="form-control" id="number" type="text">
+                        <label class="control-label" for="expected_number">预计人数</label>
+                        <input ng-model="expected_number" class="form-control" id="expected_number" type="text">
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12 col-xs-12">
-                    <label class="control-label" for="textArea">简介</label>
-                    <textarea class="form-control" rows="3" id="textArea"></textarea>
+                    <label class="control-label" for="description">简介</label>
+                    <textarea ng-model="description" class="form-control" rows="3" id="description"></textarea>
                 </div>
             </div>
 
@@ -90,7 +90,7 @@
 
         <div class="row">
             <div class="col-xs-10 col-xs-offset-1">
-                <button type="button" class="button button-pill button-main button-block-level">提交</button>
+                <button ng-click="submit_ac()" type="button" class="button button-pill button-main button-block-level">提交</button>
             </div>
         </div>
     </div>
