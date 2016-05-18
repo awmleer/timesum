@@ -149,9 +149,16 @@ app.controller("ctrl_new_ac",function($scope,$rootScope,$location,$http) {
     $scope.submit_ac= function () {
         console.log($scope.description);
     }
+    $scope.setDateTime= function () {
+        console.log("ok");
+    }
 });
 
 
 app.controller("ctrl_time_input",function($scope,$rootScope,$location,$http) {
+    $scope.times=[];
+    for (var i = 0; i < 240; i++) {
+        $scope.times.push(i);
+    }
     
 });
