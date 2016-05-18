@@ -150,3 +150,8 @@ app.controller("ctrl_new_ac",function($scope,$rootScope,$location,$http) {
         console.log($scope.description);
     }
 });
+
+
+app.controller("ctrl_time_input",function($scope,$rootScope,$location,$http) {
+    
+});

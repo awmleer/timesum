@@ -224,12 +224,12 @@
                         <div style="background-color: #16a085;height: 3rem;width: 2px;margin: 0 3px;"></div>
                     </td>
                     <td>
-                        <span style="display: block;font-size: 1.3rem" class="text-gray">周五</span>
-                        <span style="display: block;font-size: 1.3rem" class="text-gray">12:00-14:00</span>
+                        <span style="display: block;font-size: 1.3rem" class="text-gray">{{ ac.time_determined[0] | date: 'EEE' }}</span>
+                        <span style="display: block;font-size: 1.3rem" class="text-gray">{{ ac.time_determined[0] | date:'H:mm' }}-{{ ac.time_determined[1] | date:'H:mm' }}</span>
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="3"><span class="text-gray" style="font-size: 1.3rem;margin-top: -0.6rem;display: block;">sparker开发团队会议</span></td>
+                    <td colspan="3"><span class="text-gray" style="font-size: 1.3rem;margin-top: -0.6rem;display: block;">{{ ac.title }}</span></td>
                 </tr>
             </table>
         </div>

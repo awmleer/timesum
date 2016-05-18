@@ -15,6 +15,11 @@ app.config(function($stateProvider, $urlRouterProvider){
             templateUrl: "partials/new_ac.html",
             controller:'ctrl_new_ac'
         })
+        .state('time_input', {
+            url: "/time_input",
+            templateUrl: "partials/time_input.html",
+            controller:'ctrl_time_input'
+        })
         .state('about', {
             url: "/about",
             templateUrl: "partials/about.html"
