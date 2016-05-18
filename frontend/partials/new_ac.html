@@ -1,37 +1,53 @@
 <style>
-    .acinput input{
-        border-top:0;border-left:0;border-right:0;
+    .acinput input {
+        border-top: 0;
+        border-left: 0;
+        border-right: 0;
         border-radius: 0;
     }
-    .acinput input:focus{
-        border-top:0;border-left:0;border-right:0;
+
+    .acinput input:focus {
+        border-top: 0;
+        border-left: 0;
+        border-right: 0;
         border-radius: 0;
     }
-    .acinput textarea{
-        border-top:0;border-left:0;border-right:0;
+
+    .acinput textarea {
+        border-top: 0;
+        border-left: 0;
+        border-right: 0;
         border-radius: 0;
     }
-    .acinput textarea:focus{
-        border-top:0;border-left:0;border-right:0;
+
+    .acinput textarea:focus {
+        border-top: 0;
+        border-left: 0;
+        border-right: 0;
         border-radius: 0;
     }
+
     .acinput {
-        margin-bottom:1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .addtime {
+        display: inline-block;
     }
 </style>
 
 <div class="container">
     <div class="text-green">
-        <table  class="table" >
+        <table class="table">
             <tr>
-                <td  rowspan="2" style="width:7rem; vertical-align:middle;">
-                    <img src="img/logo/logo_circle.svg"width="100%">
+                <td rowspan="2" style="width:7rem; vertical-align:middle; border:0">
+                    <img src="img/logo/logo_circle.svg" width="100%">
                 </td>
                 <td style="padding-bottom:0; border:0">
                     <h2 style="margin-bottom: 0;margin-top: 1.5rem;font-weight: bold">活动信息</h2>
                 </td>
-            </tr >
-            <tr >
+            </tr>
+            <tr>
                 <td class="text-gray" style="padding-top:0; font-size:1.7rem; border:0">
                     Info
                 </td>
@@ -43,54 +59,55 @@
                 <label class="control-label" for="title">主题</label>
                 <input ng-model="title" class="form-control" id="title" type="text">
             </div>
-            <div class="row">
-                <div class="col-xs-6 col-sm-6 col-lg-6">
+            <div >
+                <div style="width:48% ;display:inline-block;margin-right:0.8rem">
                     <div class="form-group label-floating">
                         <label class="control-label" for="organizer">主办方</label>
                         <input ng-model="organizer" class="form-control" id="organizer" type="text">
                     </div>
                 </div>
-                <div class="col-xs-6 col-sm-6 col-lg-6">
+                <div style="width: 48%;display:inline-block">
                     <div class="form-group label-floating">
                         <label class="control-label" for="expected_number">预计人数</label>
-                        <input ng-model="expected_number" class="form-control" id="expected_number" type="text">
+                        <input ng-model="expected_number" class="form-control" id="expected_number" type="number">
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-12 col-xs-12">
+            <div>
                     <label class="control-label" for="description">简介</label>
                     <textarea ng-model="description" class="form-control" rows="3" id="description"></textarea>
+            </div>
+        </div>
+
+        <div style="margin-bottom:1rem;">
+
+            <div class="addtime" style="margin-right:1.6rem">
+                <div class="text-gray">
+                    <div align="left"
+                         style="border:2px solid #16a085;border-radius:0.8rem; width: 6rem; height: 6rem; background:url(img/new_ac/Timestamp-Corner.svg) right center no-repeat;line-height:1.6rem;">
+                        <div style="margin-top:1rem">
+                            <p class="font-number"
+                               style=" margin-bottom: 0;padding-right:0; text-align: left;font-size: 2.6rem;margin-left: 0.4rem;">05<span style="font-size: 1.1rem">月</span></p>
+
+                            <p class="font-number"
+                               style="text-align: left;font-size: 1.7rem;margin-left: 0.4rem">29<span style="font-size: 1.1rem">日</span></p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
+            <div class="addtime" style="margin-right: 1.6rem;">
+                <div align="center" style="border:2px dashed #16a085;border-radius: 0.8rem; width:6rem;height:6rem">
+                    <i class="fa fa-plus text-green" style="margin-top:28%;font-size: 3rem"></i>
+                </div>
+            </div>
         </div>
-
-      <div class="row"style="margin-bottom:1rem;">
-          <div class="col-md-3 col-sm-3 col-xs-3" style="margin-right: 0">
-              <div align="center" style="border:0.2rem dashed #16a085;border-radius: 0.8rem; width:6rem;height:6rem">
-                  <i class="fa fa-plus text-green"  style="margin-top:30%;font-size: 3rem"></i>
-              </div>
-          </div>
-          <div class="col-xs-3 col-md-3 col-lg-3">
-              <div class="text-gray">
-                  <div align="left" style="border:0.2rem solid #16a085;border-radius:0.8rem; width: 6rem; height: 6rem; background:url(img/new_ac/Timestamp-Corner.svg) right center no-repeat;line-height:1.6rem;">
-                      <div style="margin-top:1rem">
-                          <p style="display:inline; margin-bottom: 0;text-align: left;font-size: 3rem;margin-left: 0.4rem;">05</p>
-                          <p style="display:inline;margin-bottom: 0;text-align: left;font-size: 1.5rem">月</p>
-
-                          <p style="display:inline;text-align: left;font-size: 1.7rem;margin-left: 0.4rem">29</p>
-                          <p style="display:inline;text-align: left;font-size: 1.3rem">日</p>
-                      </div>
-
-                  </div>
-              </div>
-          </div>
-      </div>
 
         <div class="row">
             <div class="col-xs-10 col-xs-offset-1">
-                <button ng-click="submit_ac()" type="button" class="button button-pill button-main button-block-level">提交</button>
+                <button ng-click="submit_ac()" type="button" class="button button-pill button-main button-block-level">
+                    提交
+                </button>
             </div>
         </div>
     </div>
