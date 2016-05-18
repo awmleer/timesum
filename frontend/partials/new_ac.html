@@ -31,7 +31,7 @@
         margin-bottom: 1.5rem;
     }
 
-    .addtime {
+    .div_date {
         /*display: inline-block;*/
         width: 6rem;
         height: 6rem;
@@ -86,15 +86,15 @@
 
         <div style="margin-bottom:1rem;">
 
-            <div class="addtime text-gray" align="left" style="border:2px solid #16a085;border-radius:0.8rem;background:url(img/new_ac/Timestamp-Corner.svg) right center no-repeat;padding-top: 1rem">
+            <div ng-repeat="date in dates" class="div_date text-gray" align="left" style="border:2px solid #16a085;border-radius:0.8rem;background:url(img/new_ac/Timestamp-Corner.svg) right center no-repeat;padding-top: 1rem">
                 <div style="line-height:1.6rem;position: relative">
-                    <p class="font-number" style=" margin-bottom: 0;padding-right:0; text-align: left;font-size: 2.6rem;margin-left: 0.4rem;">05<span style="font-size: 1.1rem">月</span></p>
-                    <p class="font-number" style="text-align: left;font-size: 1.7rem;margin-left: 0.4rem;margin-right: 0">29<span style="font-size: 1.1rem">日</span></p>
-                    <i onclick="alert(1)" style="position:absolute;bottom:-1rem;right:0;  color:white;padding-right:0.3rem;padding-top:1rem;padding-left:1rem;padding-bottom: 0.5rem;" class="fa fa-minus"></i>
+                    <p class="font-number" style=" margin-bottom: 0;padding-right:0; text-align: left;font-size: 2.6rem;margin-left: 0.4rem;">{{ date.month }}<span style="font-size: 1.1rem">月</span></p>
+                    <p class="font-number" style="text-align: left;font-size: 1.7rem;margin-left: 0.4rem;margin-right: 0">{{ date.day }}<span style="font-size: 1.1rem">日</span></p>
+                    <i ng-click="delete_date()" style="position:absolute;bottom:-1rem;right:0;  color:white;padding-right:0.3rem;padding-top:1rem;padding-left:1rem;padding-bottom: 0.5rem;" class="fa fa-minus"></i>
                 </div>
             </div>
 
-            <div class="addtime" align="center" style="border:2px dashed #16a085;border-radius: 0.8rem;">
+            <div id="add_date" class="div_date" align="center" style="border:2px dashed #16a085;border-radius: 0.8rem;">
                 <i class="fa fa-plus text-green" style="margin-top:28%;font-size: 3rem;display: block;"></i>
             </div>
 
@@ -103,9 +103,7 @@
 
         <div class="row">
             <div class="col-xs-10 col-xs-offset-1">
-                <button ng-click="submit_ac()" type="button" class="button button-pill button-main button-block-level">
-                    提交
-                </button>
+                <button ng-click="submit_ac()" type="button" class="button button-pill button-main button-block-level">提交</button>
             </div>
         </div>
     </div>

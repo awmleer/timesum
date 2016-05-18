@@ -728,12 +728,14 @@
 			// this.$element.trigger('change', this.currentDate);
 
 			//结果呈现
-			console.log(moment(this.currentDate).format("MMM Do YY"));
+			// console.log(moment(this.currentDate).format("MMM Do YY"));
 
 
 			var scope=angular.element(this.element).scope();
 			//调用$scope中的方法
-			scope.setDateTime();
+			scope.setDateTime(this.currentDate);
+			scope.$apply();
+
 
 		},
 		toggleButtons: function(date)

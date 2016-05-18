@@ -145,14 +145,52 @@ app.controller("ctrl_home",function($scope,$rootScope,$location,$http) {
 });
 
 
+
 app.controller("ctrl_new_ac",function($scope,$rootScope,$location,$http) {
+    $scope.dates=[];
+
     $scope.submit_ac= function () {
+        var obj={
+            title:$scope.title,
+            description:$scope.description,
+            organizer:$scope.organizer,
+            expected_number:$scope.expected_number,
+            date_range:$scope.dates
+        };
+        $http({
+            url: 'api/new_ac',
+            method: 'post',
+            headers: {'Content-Type': 'application/json'},
+            data: JSON.stringify(obj)
+        }).success(function (data) {
+            if (data.result == 'success') {
+                alert("添加成功");
+            }else{
+                alert(data.message);
+            }
+        }).error(function () {
+            alert("获取信息失败，请稍后再试");
+        });
         console.log($scope.description);
-    }
-    $scope.setDateTime= function () {
-        console.log("ok");
+
+    };
+
+    $scope.setDateTime= function (current_date) {
+        //TODO 判断日期是否已经存在了
+
+        var obj_date={
+            year:moment(current_date).format("YYYY"),
+            month:moment(current_date).format("M"),
+            day:moment(current_date).format("D")
+        };
+        $scope.dates.push(obj_date);
+    };
+
+    $scope.delete_date= function () {
+        $scope.dates.remove(this.date);
     }
 });
+
 
 
 app.controller("ctrl_time_input",function($scope,$rootScope,$location,$http) {
