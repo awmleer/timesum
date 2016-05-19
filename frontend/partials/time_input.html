@@ -7,18 +7,47 @@
     #header{
         display: none;
     }
+    .time_occupied{
+        background: #EEEEEE;
+    }
+    .time_maybe{
+        background: #f39c11;
+    }
+    .time_available{
+        background: #1ab99b;
+    }
+
+
+    .td_bordered_bottom{
+        border-bottom: solid 1px black
+    }
 </style>
 
 
-<div style="width: 65%;position: fixed;">
-    123
+<div id="left" style="width: 65%;position: fixed;">
+    <input type="text" ng-model="time_scale">
+    <input type="text" ng-model="input_status">
 </div>
 
-<div style="width: 35%;float: right;">
+<div style="width: 35%;float: right;position: relative;">
+    <div style="position: absolute;top: 0;left: -2rem;">
+        <table style="width: 2rem;">
+            <colgroup>
+                <col width="50%">
+                <col width="50%">
+            </colgroup>
+            <tbody>
+            <tr ng-repeat="timeblock in timeblocks" style="height: 1.5rem;" >
+                <td style="position: relative;"><span style="display: block;position: absolute;right: 0;bottom: -0.8rem;">{{ timeblock.time%6==0?timeblock.time/6+':00':'' }}</span></td>
+                <td ng-class="{'td_bordered_bottom':timeblock.time%time_scale==0}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
     <table style="width: 100%;">
         <tbody>
-        <tr ng-repeat="timeblock in times" style="height: 1.5rem;border: solid 1px #CCCCCC; background: #EEEEEE;">
-            <td></td>
+        <tr ng-repeat="timeblock in timeblocks" style="height: 1.5rem; " ng-class="{'time_available':timeblock.status==2,'time_maybe':timeblock.status==1,'time_occupied':timeblock.status==0}">
+            <td ng-click="select_time()" style="font-size: 0.2rem">&nbsp;</td>
         </tr>
         </tbody>
     </table>

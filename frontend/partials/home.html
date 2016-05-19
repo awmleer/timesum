@@ -10,6 +10,9 @@
         border-bottom:solid 1px #e1e1e1;
         position:relative;
     }
+    .ac_published:active{
+        background-color: #e1e1e1;
+    }
     .ac_published.green{
         background-image: url(img/main/Normal-Green.svg);
     }
@@ -30,7 +33,7 @@
     }
     .ac_published .right{
         position: absolute;
-        right:1rem;
+        right:1.5rem;
         top:-1rem;
         /*float: right;*/
         text-align: right;
@@ -49,9 +52,9 @@
     .ac_published .left label{
         font-weight: normal;
         color: #FFFFFF;
-        margin-left: 2.7rem;
+        margin-left: 2.3rem;
         margin-top: 0.4rem;
-        font-size: 1rem;
+        font-size: 1.2rem;
     }
 
 
@@ -103,7 +106,7 @@
         background: #FFFFFF;
         height:2.5rem;
         text-align: right;
-        padding-right: 1rem;
+        padding-right: 1.5rem;
         padding-top: 0.6rem;
         font-size: 1rem;
     }
@@ -138,7 +141,7 @@
 
 
 <div class="ac_group">
-    <div class="ac_published" ng-class="{'green':ac.time_determined!=0,'orange':ac.time_determined==0 && ac.opening==true,'gray':ac.time_determined==0 && ac.opening==false}" ng-repeat="ac in ac_published">
+    <div class="ac_published" ng-class="{'green':ac.time_determined!=0,'orange':ac.time_determined==0 && ac.opening==true,'gray':ac.time_determined==0 && ac.opening==false}" ng-repeat="ac in ac_published" ng-click="ac_open()">
         <div class="left" ng-if="ac.time_determined!=0">
             <i class="fa fa-check-circle"></i>
             <label>时间已确定</label>
@@ -155,11 +158,11 @@
             <table class="no-padding" style="height:8rem;display: inline-block;">
                 <tr>
                     <td style="vertical-align: bottom;position: relative;">
-                        <span style="font-size: 8rem;display: block;position: absolute;top: -0.7rem;right: 0;" class="font-number">{{ ac.participators.length }}</span>
+                        <span style="font-size: 7rem;display: block;position: absolute;top: 0;right: 0;height: 8rem;" class="font-number">{{ ac.participators.length>9?ac.participators.length:'0'+ac.participators.length }}</span>
                     </td>
                     <td style="vertical-align: bottom;height: 8rem;">
                         <span class="text-colorful" style="height:1.2rem;font-size: 1.2rem;display: block;margin-top: 1.7rem;margin-bottom: 0.1rem">参与人数</span>
-                        <span class="font-number" style="font-size: 4rem;height: 4rem;margin-bottom:0.7rem;margin-top:0.3rem;display: block;">/{{ ac.expected_number }}</span>
+                        <span class="font-number" style="font-size: 4rem;height: 4rem;margin-bottom:0.7rem;margin-top:0.3rem;display: block;">/{{ ac.expected_number>9?ac.expected_number:'0'+ac.expected_number }}</span>
                     </td>
                 </tr>
             </table>
@@ -170,7 +173,7 @@
 
 
     <div class="ac_history_group" ng-if="ac_published_history_showing">
-        <span class="text-gray" style="display: inline-block;font-size: 1rem;margin: 0.5rem 1rem 0.4rem">历史活动</span>
+        <span class="text-gray" style="display: inline-block;font-size: 1.2rem;margin: 0.5rem 1rem 0.4rem">历史活动</span>
 
         <div class="ac_history" ng-repeat="ac in ac_published_history">
             <i class="fa" ng-class="{'fa-check-circle':ac.time_determined!=0,'fa-times-circle':ac.time_determined==0}"></i>

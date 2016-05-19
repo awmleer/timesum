@@ -1,4 +1,4 @@
-app.controller("ctrl_header",function($scope,$rootScope,$location,$http) {
+app.controller("ctrl_header",function($scope,$rootScope,$http) {
     // /*获取用户基本信息*/
     // $http({
     //     url: 'api/userinfo',
@@ -35,17 +35,22 @@ app.controller("ctrl_header",function($scope,$rootScope,$location,$http) {
 });
 
 
-app.controller("ctrl_home",function($scope,$rootScope,$location,$http) {
+app.controller("ctrl_home",function($scope,$rootScope,$http,$state) {
+    //历史活动相关
     $scope.ac_published_history_showing=false;
     $scope.ac_participated_history_showing=false;
-    
     $scope.ac_published_history_toggle= function () {
         $scope.ac_published_history_showing=!$scope.ac_published_history_showing;
     };
-
     $scope.ac_participated_history_toggle= function () {
         $scope.ac_participated_history_showing=!$scope.ac_participated_history_showing;
     };
+
+    //进入活动详情页面
+    $scope.ac_open= function () {
+        $state.go('ac_detail',{ac_id:this.ac.aid});
+    };
+    
     
     $scope.ac_published=[
         {
@@ -146,7 +151,7 @@ app.controller("ctrl_home",function($scope,$rootScope,$location,$http) {
 
 
 
-app.controller("ctrl_new_ac",function($scope,$rootScope,$location,$http) {
+app.controller("ctrl_new_ac",function($scope,$rootScope,$http) {
     $scope.dates=[];
 
     $scope.submit_ac= function () {
@@ -193,17 +198,52 @@ app.controller("ctrl_new_ac",function($scope,$rootScope,$location,$http) {
 
 
 
-app.controller("ctrl_time_input",function($scope,$rootScope,$location,$http) {
-    $scope.times=[];
-    for (var i = 0; i < 240; i++) {
-        $scope.times.push(i);
+app.controller("ctrl_time_input",function($scope,$rootScope,$http) {
+    $scope.timeblocks=[];
+    for (var i = 1; i <=144; i++) {
+        $scope.timeblocks.push({time:i,status:0});
     }
+
+    $scope.time_scale=1;
+    $scope.input_status=1;
+
+    $scope.select_time= function () {
+        if ($scope.time_scale==1) {
+            if (this.timeblock.status == $scope.input_status) {
+                this.timeblock.status=0;
+            }else {
+                this.timeblock.status=$scope.input_status;
+            }
+        }else{
+            var j=0;
+            var flag=1;
+            while ($scope.timeblocks[j].time!=this.timeblock.time){
+                j++;
+            }
+            while(j%$scope.time_scale!=0){
+                j--;
+            }
+            var ii;
+            for (ii = 0; ii < $scope.time_scale; ii++) {
+                if ($scope.timeblocks[j + ii].status != $scope.input_status) {
+                    $scope.timeblocks[j+ii].status=$scope.input_status;
+                    flag=0;
+                }
+            }
+            if (flag) {
+                for (ii = 0; ii < $scope.time_scale; ii++) {
+                    $scope.timeblocks[j+ii].status=0;
+                }
+            }
+        }
+    }
+    
     
 });
 
 
 
-app.controller("ctrl_ac_detail",function($scope,$rootScope,$location,$http,$stateParams) {
+app.controller("ctrl_ac_detail",function($scope,$rootScope,$http,$stateParams) {
     // alert($stateParams.ac_id);
     // $scope.test_id=111;
 

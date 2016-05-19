@@ -18,7 +18,7 @@ app.config(function($stateProvider, $urlRouterProvider){
             templateUrl: "partials/new_ac.html",
             controller:'ctrl_new_ac'
         })
-        .state('ac', {
+        .state('ac_detail', {
             url: "/ac/:ac_id/detail",
             templateUrl: "partials/ac_detail.html",
             controller:'ctrl_ac_detail'
