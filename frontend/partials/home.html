@@ -65,6 +65,9 @@
         width:100%;
         border-bottom:solid 1px #e1e1e1;
     }
+    .ac_participated:active{
+        background-color: #e1e1e1;
+    }
     .ac_participated.green{
         background-image: url(img/main/Slim-Green.svg);
     }
@@ -110,6 +113,9 @@
         padding-top: 0.6rem;
         font-size: 1rem;
     }
+    .div_toggle_history:active{
+        background-color: #e1e1e1;
+    }
     .div_toggle_history span{
         display: inline-block;
     }
@@ -123,6 +129,9 @@
         border-bottom: solid 1px #e1e1e1;
         padding: 0.3rem 0;
         padding-left: 1rem;
+    }
+    .ac_history:active{
+        background-color: #e1e1e1;
     }
     .ac_history i{
         color:#919191;
@@ -175,7 +184,7 @@
     <div class="ac_history_group" ng-if="ac_published_history_showing">
         <span class="text-gray" style="display: inline-block;font-size: 1.2rem;margin: 0.5rem 1rem 0.4rem">历史活动</span>
 
-        <div class="ac_history" ng-repeat="ac in ac_published_history">
+        <div class="ac_history" ng-repeat="ac in ac_published_history" ng-click="ac_open()">
             <i class="fa" ng-class="{'fa-check-circle':ac.time_determined!=0,'fa-times-circle':ac.time_determined==0}"></i>
             <div style="display: inline-block;padding-bottom: 0.5rem">
                 <span style="display: block;font-size: 1.8rem">{{ ac.title }}</span>
@@ -212,7 +221,7 @@
 
 <div class="ac_group">
 
-    <div class="ac_participated" ng-repeat="ac in ac_participated" ng-class="{'green':ac.time_determined!=0,'orange':ac.time_determined==0 && ac.opening==true,'gray':ac.time_determined==0 && ac.opening==false}">
+    <div class="ac_participated" ng-repeat="ac in ac_participated" ng-class="{'green':ac.time_determined!=0,'orange':ac.time_determined==0 && ac.opening==true,'gray':ac.time_determined==0 && ac.opening==false}" ng-click="ac_open()">
         <div class="left">
             <table style="margin-top: 0.6rem">
                 <tr>
@@ -246,7 +255,7 @@
     <div class="ac_history_group" ng-if="ac_participated_history_showing">
         <span class="text-gray" style="display: inline-block;font-size: 1rem;margin: 0.5rem 1rem 0.4rem">历史活动</span>
 
-        <div class="ac_history" ng-repeat="ac in ac_participated_history">
+        <div class="ac_history" ng-repeat="ac in ac_participated_history" ng-click="ac_open()">
             <i class="fa" ng-class="{'fa-check-circle':ac.time_determined!=0,'fa-times-circle':ac.time_determined==0}"></i>
             <div style="display: inline-block;padding-bottom: 0.5rem">
                 <span style="display: block;font-size: 1.8rem">{{ ac.title }}</span>

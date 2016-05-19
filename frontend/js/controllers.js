@@ -1,4 +1,4 @@
-app.controller("ctrl_header",function($scope,$rootScope,$http) {
+app.controller("ctrl_header",function($scope,$rootScope,$http,$state) {
     // /*获取用户基本信息*/
     // $http({
     //     url: 'api/userinfo',
@@ -51,7 +51,9 @@ app.controller("ctrl_home",function($scope,$rootScope,$http,$state) {
         $state.go('ac_detail',{ac_id:this.ac.aid});
     };
     
-    
+
+
+    //临时模拟的数据
     $scope.ac_published=[
         {
             aid:21513,
