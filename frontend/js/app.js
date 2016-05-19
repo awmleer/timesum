@@ -3,7 +3,10 @@ var app = angular.module('timesum', ['ui.router']);
 
 app.config(function($stateProvider, $urlRouterProvider){
     /*路由模块*/
-    $urlRouterProvider.otherwise("/home");
+    $urlRouterProvider
+        .otherwise("/404")
+        .when('', '/home')
+        .when('/ac/:ac_id', '/ac/:ac_id/detail');
     $stateProvider
         .state('home', {
             url: "/home",
@@ -15,6 +18,11 @@ app.config(function($stateProvider, $urlRouterProvider){
             templateUrl: "partials/new_ac.html",
             controller:'ctrl_new_ac'
         })
+        .state('ac', {
+            url: "/ac/:ac_id/detail",
+            templateUrl: "partials/ac_detail.html",
+            controller:'ctrl_ac_detail'
+        })
         .state('time_input', {
             url: "/time_input",
             templateUrl: "partials/time_input.html",
@@ -23,6 +31,10 @@ app.config(function($stateProvider, $urlRouterProvider){
         .state('about', {
             url: "/about",
             templateUrl: "partials/about.html"
+        })
+        .state('404', {
+            url: "/404",
+            templateUrl: "partials/404.html"
         })
         .state('userinfo', {
             url: "/userinfo",

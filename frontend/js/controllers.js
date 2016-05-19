@@ -200,3 +200,11 @@ app.controller("ctrl_time_input",function($scope,$rootScope,$location,$http) {
     }
     
 });
+
+
+
+app.controller("ctrl_ac_detail",function($scope,$rootScope,$location,$http,$stateParams) {
+    // alert($stateParams.ac_id);
+    // $scope.test_id=111;
+
+});
