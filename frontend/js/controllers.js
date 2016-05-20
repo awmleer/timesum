@@ -260,6 +260,10 @@ app.controller("ctrl_ac_detail",function($scope,$rootScope,$http,$stateParams) {
         place:'月牙楼元空间',
         description:'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut beatae consectetur nisi nulla quidem saepe tempora. Ea eligendi ipsam laborum praesentium ullam? Itaque iure laborum, laudantium porro quisquam vel voluptatibus?',
         expected_duration:3,
+        date_range:[
+            {year:2016,month:5,day:19},
+            {year:2016,month:5,day:20}
+        ],
         opening:false,
         participators:[1256884,1846848,1865493],
         expected_number:5,

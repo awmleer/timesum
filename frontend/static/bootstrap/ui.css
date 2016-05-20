@@ -28,6 +28,24 @@
 
 
 
+.tag{
+  display: inline-block;
+  border-radius: 5rem;
+  color: #FFFFFF;
+  padding-left: 0.7rem;
+  padding-right: 0.7rem;
+}
+.tag-gray{
+  background-color: #999999;
+}
+.tag-green{
+  background-color: #1ab99b;
+}
+.tag-orange{
+  background-color: #f39c11;
+}
+
+
 
 
 html {

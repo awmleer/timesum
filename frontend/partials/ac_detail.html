@@ -6,6 +6,10 @@
         margin-top: 1rem;
     }
 
+    .white_block .block_title{
+        font-size: 1.8rem;
+    }
+
     .function_group{
         width: 100%;background-color: #16a085;font-size: 2rem;color: #FFFFFF;
     }
@@ -14,6 +18,19 @@
         margin: 0.6rem 0;
         width:100%;
         text-align: center;
+    }
+    .function_group tbody tr td:active{
+        background: #1abc9c;
+    }
+
+
+    .div_date {
+        /*display: inline-block;*/
+        width: 6rem;
+        height: 6rem;
+        margin-right:1.6rem;
+        float: left;
+        margin-bottom: 1rem;
     }
 </style>
 
@@ -50,3 +67,54 @@
         </tbody>
     </table>
 </div>
+
+
+<table style="width: 100%;">
+    <colgroup>
+        <col width="50%">
+        <col width="50%">
+    </colgroup>
+    <tr style="vertical-align: top;">
+        <td align="left">
+            <div class="white_block" style="width: 98%;display: inline-block;height: 100%;">
+                <p class="block_title">
+                    <i class="fa fa-clock-o fa-fw text-green"></i>时间安排
+                </p>
+                <p>
+                    <span style="font-size: 1.4rem">活动耗时</span><br>
+                    <span class="font-number text-green" style="font-size: 3rem">2:00</span>
+                    <span style="font-size: 1.2rem">小时</span>
+                </p>
+                <p>可选时间</p>
+                <div ng-repeat="date in ac.date_range" class="div_date text-gray" align="left" style="border:2px solid #16a085;border-radius:0.8rem;background:url(img/new_ac/Timestamp-Corner.svg) right center no-repeat;padding-top: 1rem">
+                    <div style="line-height:1.6rem;position: relative">
+                        <p class="font-number" style=" margin-bottom: 0;padding-right:0; text-align: left;font-size: 2.6rem;margin-left: 0.4rem;">{{ date.month }}<span style="font-size: 1.1rem">月</span></p>
+                        <p class="font-number" style="text-align: left;font-size: 1.7rem;margin-left: 0.4rem;margin-right: 0">{{ date.day }}<span style="font-size: 1.1rem">日</span></p>
+                    </div>
+                </div>
+            </div>
+        </td>
+        <td align="right">
+            <div class="white_block" style="width: 98%;display: inline-block;height: 100%;" align="left">
+                <p class="block_title">
+                    <i class="fa fa-users fa-fw text-green"></i>参与人员
+                </p>
+                <p>
+                    <span style="font-size: 1.4rem">参与人数</span><br>
+                    <span class="font-number text-green" style="font-size: 3rem">{{ ac.participators.length }}/{{ ac.expected_number }}</span>
+                </p>
+                <p>
+                    <span style="font-size: 1.4rem">参与人员</span><br>
+                    <span class="tag tag-gray">123</span>
+                    <span class="tag tag-gray">123</span>
+                    <span class="tag tag-gray">123</span>
+                    <span class="tag tag-gray">123</span>
+                </p>
+
+            </div>
+        </td>
+    </tr>
+</table>
+
+
+
