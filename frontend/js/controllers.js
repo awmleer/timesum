@@ -1,41 +1,41 @@
 app.controller("ctrl_header",function($scope,$rootScope,$http,$state) {
-    /*获取用户基本信息*/
-    $http({
-        url: 'api/userinfo',
-        method: 'get',
-        params: {}
-    }).success(function (data) {
-        $rootScope.userinfo=data;
-    }).error(function (data,status) {
-        if (status == 401) {//如果是unauthorized
-            //webstorge获取暂存的用户名和密码，并且尝试自动登录
-            var phone=store.get('phone');
-            var password=store.get('password');
-            if (phone&&password) {
-                $.ajax({
-                    url: "api/login",
-                    type: "get",
-                    data: {
-                        phone: phone,
-                        password:password
-                    }
-                }).done(function (data) {
-                    if (data == 'success') {
-                        location.reload();
-                    }else{
-                        location.href='login.html';
-                    }
-                }).fail(function () {
-                    location.href='login.html';
-                });
-            }else {
-                alert("您还没有登录");
-                location.href="login.html";//就跳转到登录页面
-            }
-        }else{
-            alert("获取用户个人信息失败，请稍后再试");
-        }
-    });
+    // /*获取用户基本信息*/
+    // $http({
+    //     url: 'api/userinfo',
+    //     method: 'get',
+    //     params: {}
+    // }).success(function (data) {
+    //     $rootScope.userinfo=data;
+    // }).error(function (data,status) {
+    //     if (status == 401) {//如果是unauthorized
+    //         //webstorge获取暂存的用户名和密码，并且尝试自动登录
+    //         var phone=store.get('phone');
+    //         var password=store.get('password');
+    //         if (phone&&password) {
+    //             $.ajax({
+    //                 url: "api/login",
+    //                 type: "get",
+    //                 data: {
+    //                     phone: phone,
+    //                     password:password
+    //                 }
+    //             }).done(function (data) {
+    //                 if (data == 'success') {
+    //                     location.reload();
+    //                 }else{
+    //                     location.href='login.html';
+    //                 }
+    //             }).fail(function () {
+    //                 location.href='login.html';
+    //             });
+    //         }else {
+    //             alert("您还没有登录");
+    //             location.href="login.html";//就跳转到登录页面
+    //         }
+    //     }else{
+    //         alert("获取用户个人信息失败，请稍后再试");
+    //     }
+    // });
 
 
     /*退出登录*/
@@ -223,9 +223,31 @@ app.controller("ctrl_new_ac",function($scope,$rootScope,$http) {
 
 
 app.controller("ctrl_time_input",function($scope,$rootScope,$http) {
-    $scope.timeblocks=[];
+    $scope.time_data=[
+        {
+            date : {
+                year : 2016,
+                month : 5,
+                day : 19
+            },
+            timeblocks:[]
+        },
+        {
+            date : {
+                year : 2016,
+                month : 5,
+                day : 20
+            },
+            timeblocks:[]
+        }
+    ];
+
+    //使用day_editing来控制编辑哪一天
+    $scope.day_editing=0;
+
     for (var i = 1; i <=144; i++) {
-        $scope.timeblocks.push({time:i,status:0});
+        $scope.time_data[0].timeblocks.push({time:i,status:0});
+        $scope.time_data[1].timeblocks.push({time:i,status:0});
     }
 
     $scope.time_scale=1;
@@ -241,7 +263,7 @@ app.controller("ctrl_time_input",function($scope,$rootScope,$http) {
         }else{
             var j=0;
             var flag=1;
-            while ($scope.timeblocks[j].time!=this.timeblock.time){
+            while ($scope.time_data[$scope.day_editing].timeblocks[j].time!=this.timeblock.time){
                 j++;
             }
             while(j%$scope.time_scale!=0){
@@ -249,17 +271,22 @@ app.controller("ctrl_time_input",function($scope,$rootScope,$http) {
             }
             var ii;
             for (ii = 0; ii < $scope.time_scale; ii++) {
-                if ($scope.timeblocks[j + ii].status != $scope.input_status) {
-                    $scope.timeblocks[j+ii].status=$scope.input_status;
+                if ($scope.time_data[$scope.day_editing].timeblocks[j + ii].status != $scope.input_status) {
+                    $scope.time_data[$scope.day_editing].timeblocks[j+ii].status=$scope.input_status;
                     flag=0;
                 }
             }
             if (flag) {
                 for (ii = 0; ii < $scope.time_scale; ii++) {
-                    $scope.timeblocks[j+ii].status=0;
+                    $scope.time_data[$scope.day_editing].timeblocks[j+ii].status=0;
                 }
             }
         }
+    };
+
+
+    $scope.logdata= function () {
+        console.log(JSON.stringify($scope.time_data));
     }
     
     
