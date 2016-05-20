@@ -61,12 +61,11 @@ app.config(function($stateProvider, $urlRouterProvider){
 });
 
 
-app.run(['$rootScope', '$window', '$location', '$log', function ($rootScope, $window, $location, $log,$http) {
+app.run(['$rootScope', '$window', '$location', '$log', function ($rootScope, $window, $log,$http) {
     //监听location的变化，实时更新path变量
-    var locationChangeSuccessOff = $rootScope.$on('$locationChangeSuccess', locationChangeSuccess);
-    function locationChangeSuccess(event) {
-        $rootScope.path=$location.path();
-    }
-    
+    // var locationChangeSuccessOff = $rootScope.$on('$locationChangeSuccess', locationChangeSuccess);
+    // function locationChangeSuccess(event) {
+    //     $rootScope.path=$location.path();
+    // }
     
 }]);

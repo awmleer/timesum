@@ -1,19 +1,41 @@
 app.controller("ctrl_header",function($scope,$rootScope,$http,$state) {
-    // /*获取用户基本信息*/
-    // $http({
-    //     url: 'api/userinfo',
-    //     method: 'get',
-    //     params: {}
-    // }).success(function (data) {
-    //     $rootScope.userinfo=data;
-    // }).error(function (data,status) {
-    //     if (status == 401) {//如果是unauthorized
-    //         alert("您还没有登录");
-    //         location.href="login.html";//就跳转到登录页面
-    //     }else{
-    //         alert("获取用户个人信息失败，请稍后再试");
-    //     }
-    // });
+    /*获取用户基本信息*/
+    $http({
+        url: 'api/userinfo',
+        method: 'get',
+        params: {}
+    }).success(function (data) {
+        $rootScope.userinfo=data;
+    }).error(function (data,status) {
+        if (status == 401) {//如果是unauthorized
+            //webstorge获取暂存的用户名和密码，并且尝试自动登录
+            var phone=store.get('phone');
+            var password=store.get('password');
+            if (phone&&password) {
+                $.ajax({
+                    url: "api/login",
+                    type: "get",
+                    data: {
+                        phone: phone,
+                        password:password
+                    }
+                }).done(function (data) {
+                    if (data == 'success') {
+                        location.reload();
+                    }else{
+                        location.href='login.html';
+                    }
+                }).fail(function () {
+                    location.href='login.html';
+                });
+            }else {
+                alert("您还没有登录");
+                location.href="login.html";//就跳转到登录页面
+            }
+        }else{
+            alert("获取用户个人信息失败，请稍后再试");
+        }
+    });
 
 
     /*退出登录*/
@@ -287,8 +309,8 @@ app.controller("ctrl_ac_detail",function($scope,$rootScope,$http,$stateParams) {
         published_time:1463295585807,
         time_determined:13584846,
         comments:[
-            {"uid":165156,"time":1683516516,"text":"lorem afaefqgjqpog"},
-            {"uid":165861,"time":1635168486,"text":"lorem qeee"}
+            {"uid":165156,"name":'小明',"time":1463295585807,"text":"lorem afaefqgjqpog"},
+            {"uid":165861,"name":'小华',"time":1463295585807,"text":"lorem qeee"}
         ]
     }
 });

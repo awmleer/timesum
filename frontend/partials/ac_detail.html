@@ -3,7 +3,7 @@
         border:solid 1px #e1e1e1;
         background-color: #FFFFFF;
         padding:1rem;
-        margin-top: 1rem;
+        margin-bottom: 1rem;
     }
 
     .white_block .block_title{
@@ -36,6 +36,8 @@
         margin-bottom: 1rem;
     }
 </style>
+
+
 
 <div class="white_block" style="padding-bottom: 0;padding-left: 0;padding-right: 0;">
     <p style="font-weight: bold;font-size: 2.3rem;margin:auto 1rem" class="text-green">{{ ac.title }}</p>
@@ -81,7 +83,17 @@
 </div>
 
 
-<table style="width: 100%;">
+
+<div class="white_block" ng-if="ac.description!=''">
+    <p class="block_title">
+        <i class="fa fa-clock-o fa-fw text-green"></i>简介
+    </p>
+    <p>{{ ac.description }}</p>
+</div>
+
+
+
+<table style="width: 100%;margin-bottom: -1rem">
     <colgroup>
         <col width="50%">
         <col width="50%">
@@ -128,5 +140,21 @@
     </tr>
 </table>
 
+
+
+<div class="white_block" style="padding-left: 0;padding-right: 0;padding-bottom: 0;">
+    <p class="block_title" style="margin-left: 1rem">
+        <i class="fa fa-commenting fa-fw text-green"></i>留言
+    </p>
+    <div ng-repeat="comment in ac.comments" style="border-bottom: solid 1px #e1e1e1;padding: 1rem;">
+        <p style="font-size: 1.5rem">{{ comment.name }}</p>
+        <p style="font-size: 1rem;">{{ comment.time | date:'yyyy.M.d H:mm' }}</p>
+        <p style="font-size: 1.2rem">{{ comment.text }}</p>
+    </div>
+    <div>
+        <input type="text" style="border: 0;font-size: 1.5rem;width: 88%;height: 2.4rem;">
+        <button style="width:10%;border: 0;float: right;height: 2.4rem;"><i class="fa fa-paper-plane"></i></button>
+    </div>
+</div>
 
 
