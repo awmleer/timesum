@@ -285,6 +285,7 @@ app.controller("ctrl_time_input",function($scope,$rootScope,$http) {
     };
 
 
+    //todo 提交时把timeblock格式化掉
     $scope.logdata= function () {
         console.log(JSON.stringify($scope.time_data));
     }
@@ -340,4 +341,12 @@ app.controller("ctrl_ac_detail",function($scope,$rootScope,$http,$stateParams) {
             {"uid":165861,"name":'小华',"time":1463295585807,"text":"lorem qeee"}
         ]
     }
+});
+
+
+
+
+
+app.controller("ctrl_time_input_done",function($scope,$rootScope,$http,$stateParams) {
+    
 });
