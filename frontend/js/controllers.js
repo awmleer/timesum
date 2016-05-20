@@ -47,7 +47,7 @@ app.controller("ctrl_home",function($scope,$rootScope,$http,$state) {
     };
 
     //进入活动详情页面
-    $scope.ac_open= function () {
+    $scope.ac_detail= function () {
         $state.go('ac_detail',{ac_id:this.ac.aid});
     };
     
@@ -249,4 +249,21 @@ app.controller("ctrl_ac_detail",function($scope,$rootScope,$http,$stateParams) {
     // alert($stateParams.ac_id);
     // $scope.test_id=111;
 
+    $scope.ac={
+        aid:21513,
+        title:'sparker开发团队会议',
+        publisher:{
+            uid:1658165,
+            name:'小明'
+        },
+        organizer:'sparker团队',
+        place:'月牙楼元空间',
+        description:'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut beatae consectetur nisi nulla quidem saepe tempora. Ea eligendi ipsam laborum praesentium ullam? Itaque iure laborum, laudantium porro quisquam vel voluptatibus?',
+        expected_duration:3,
+        opening:false,
+        participators:[1256884,1846848,1865493],
+        expected_number:5,
+        published_time:1463295585807,
+        time_determined:0
+    }
 });

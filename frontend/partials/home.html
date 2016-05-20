@@ -38,6 +38,17 @@
         /*float: right;*/
         text-align: right;
     }
+    .ac_published .right .icon-share{
+        margin-right: 1.4em;
+        font-size: 2rem;
+    }
+    .ac_published .right .icon-share:active{
+        background: #a94442;
+    }
+    .ac_published .right .icon-edit{
+        margin-right: 0.5em;
+        font-size: 2rem;
+    }
     .ac_published .left{
         float: left;
         width: 10rem;
@@ -150,7 +161,7 @@
 
 
 <div class="ac_group">
-    <div class="ac_published" ng-class="{'green':ac.time_determined!=0,'orange':ac.time_determined==0 && ac.opening==true,'gray':ac.time_determined==0 && ac.opening==false}" ng-repeat="ac in ac_published" ng-click="ac_open()">
+    <div class="ac_published" ng-class="{'green':ac.time_determined!=0,'orange':ac.time_determined==0 && ac.opening==true,'gray':ac.time_determined==0 && ac.opening==false}" ng-repeat="ac in ac_published" ng-click="ac_detail()">
         <div class="left" ng-if="ac.time_determined!=0">
             <i class="fa fa-check-circle"></i>
             <label>时间已确定</label>
@@ -176,7 +187,8 @@
                 </tr>
             </table>
             <p class="text-gray" style="margin-top: -0.5rem;margin-bottom: 0.5rem">{{ ac.title }}</p>
-            <i class="fa fa-share-alt text-colorful hover-pointer" style="margin-right: 1.4em;font-size: 2rem"></i><i class="fa fa-pencil text-colorful hover-pointer" style="margin-right: 0.5em;font-size: 2rem"></i>
+            <i class="fa fa-share-alt text-colorful hover-pointer icon-share" onmouseout ="document.getElementById('overlay').style='background:transparent'"></i>
+            <i class="fa fa-pencil text-colorful hover-pointer icon-edit"></i>
         </div>
     </div>
 
@@ -184,7 +196,7 @@
     <div class="ac_history_group" ng-if="ac_published_history_showing">
         <span class="text-gray" style="display: inline-block;font-size: 1.2rem;margin: 0.5rem 1rem 0.4rem">历史活动</span>
 
-        <div class="ac_history" ng-repeat="ac in ac_published_history" ng-click="ac_open()">
+        <div class="ac_history" ng-repeat="ac in ac_published_history" ng-click="ac_detail()">
             <i class="fa" ng-class="{'fa-check-circle':ac.time_determined!=0,'fa-times-circle':ac.time_determined==0}"></i>
             <div style="display: inline-block;padding-bottom: 0.5rem">
                 <span style="display: block;font-size: 1.8rem">{{ ac.title }}</span>
@@ -221,7 +233,7 @@
 
 <div class="ac_group">
 
-    <div class="ac_participated" ng-repeat="ac in ac_participated" ng-class="{'green':ac.time_determined!=0,'orange':ac.time_determined==0 && ac.opening==true,'gray':ac.time_determined==0 && ac.opening==false}" ng-click="ac_open()">
+    <div class="ac_participated" ng-repeat="ac in ac_participated" ng-class="{'green':ac.time_determined!=0,'orange':ac.time_determined==0 && ac.opening==true,'gray':ac.time_determined==0 && ac.opening==false}" ng-click="ac_detail()">
         <div class="left">
             <table style="margin-top: 0.6rem">
                 <tr>
@@ -255,7 +267,7 @@
     <div class="ac_history_group" ng-if="ac_participated_history_showing">
         <span class="text-gray" style="display: inline-block;font-size: 1rem;margin: 0.5rem 1rem 0.4rem">历史活动</span>
 
-        <div class="ac_history" ng-repeat="ac in ac_participated_history" ng-click="ac_open()">
+        <div class="ac_history" ng-repeat="ac in ac_participated_history" ng-click="ac_detail()">
             <i class="fa" ng-class="{'fa-check-circle':ac.time_determined!=0,'fa-times-circle':ac.time_determined==0}"></i>
             <div style="display: inline-block;padding-bottom: 0.5rem">
                 <span style="display: block;font-size: 1.8rem">{{ ac.title }}</span>

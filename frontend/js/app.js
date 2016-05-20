@@ -23,6 +23,16 @@ app.config(function($stateProvider, $urlRouterProvider){
             templateUrl: "partials/ac_detail.html",
             controller:'ctrl_ac_detail'
         })
+        .state('ac_edit', {
+            url: "/ac/:ac_id/edit",
+            templateUrl: "partials/ac_edit.html",
+            controller:'ctrl_ac_edit'
+        })
+        .state('ac_share', {
+            url: "/ac/:ac_id/share",
+            templateUrl: "partials/ac_share.html",
+            controller:'ctrl_ac_share'
+        })
         .state('time_input', {
             url: "/time_input",
             templateUrl: "partials/time_input.html",

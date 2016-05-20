@@ -1,0 +1,52 @@
+<style>
+    .white_block{
+        border:solid 1px #e1e1e1;
+        background-color: #FFFFFF;
+        padding:1rem;
+        margin-top: 1rem;
+    }
+
+    .function_group{
+        width: 100%;background-color: #16a085;font-size: 2rem;color: #FFFFFF;
+    }
+    .function_group tbody tr td .fa{
+        display: block;
+        margin: 0.6rem 0;
+        width:100%;
+        text-align: center;
+    }
+</style>
+
+<div class="white_block" style="padding-bottom: 0;padding-left: 0;padding-right: 0;">
+    <p style="font-weight: bold;font-size: 2.3rem;margin:auto 1rem" class="text-green">{{ ac.title }}</p>
+    <div style="font-size: 1.2rem;margin: auto 1rem;">
+        <p style="float: right;">
+            <span><i class="fa fa-hourglass-half fa-fw text-green"></i>数据收集中</span><br>
+            <span><i class="fa fa-check fa-fw text-green"></i>时间已录入</span>
+        </p>
+        <p>
+            <span><i class="fa fa-user text-green fa-fw"></i>{{ ac.publisher.name }}<span ng-if="ac.organizer!=''">&nbsp;@{{ ac.organizer }}</span></span><br>
+            <span><i class="fa fa-map-marker text-green fa-fw"></i>{{ ac.place }}</span>
+        </p>
+    </div>
+    <table class="function_group">
+        <colgroup>
+            <col width="33%">
+            <col width="34%">
+            <col width="33%">
+        </colgroup>
+        <tbody>
+        <tr>
+            <td>
+                <i class="fa fa-clock-o"></i>
+            </td>
+            <td>
+                <i class="fa fa-pencil" style="border-left: solid 1px #FFFFFF;border-right: solid 1px #FFFFFF"></i>
+            </td>
+            <td>
+                <i class="fa fa-share-alt"></i>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

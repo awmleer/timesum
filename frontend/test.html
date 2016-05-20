@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>test</title>
+    <style>
+        .ac_published{
+            border:1px solid red; width:500px;
+        }
+        .icon-share, .icon-edit{
+            background:blue; padding:10px; display:inline-block; margin:20px;
+        }
+        .ac_published:active{
+            background-color:#e1e1e1;
+        }
+        .ac_published .right .icon-share:active{
+            background:#a94442;
+        }
+    </style>
+</head>
+<body>
+
+<!--overlay用来遮盖ac_published，不让点到，鼠标移上设置白色，鼠标移出设置透明-->
+
+<div class="ac_published">
+    <div id="overlay">
+        <div class="right">
+            <i class="fa fa-share-alt text-colorful hover-pointer icon-share"
+               onmouseover="document.getElementById('overlay').style='background:white'"
+               onmouseout ="document.getElementById('overlay').style='background:transparent'"
+            >文字1</i>
+            <i class="fa fa-pencil text-colorful hover-pointer icon-edit">文字2</i>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
