@@ -23,6 +23,9 @@
         background: #1abc9c;
     }
 
+    .function_group_participated:active{
+        background: #1abc9c;
+    }
 
     .div_date {
         /*display: inline-block;*/
@@ -38,15 +41,20 @@
     <p style="font-weight: bold;font-size: 2.3rem;margin:auto 1rem" class="text-green">{{ ac.title }}</p>
     <div style="font-size: 1.2rem;margin: auto 1rem;">
         <p style="float: right;">
-            <span><i class="fa fa-hourglass-half fa-fw text-green"></i>数据收集中</span><br>
-            <span><i class="fa fa-check fa-fw text-green"></i>时间已录入</span>
+            <span ng-if="ac.time_determined!=0"><i class="fa fa-check-circle fa-fw text-green"></i>时间已确定</span>
+            <span ng-if="ac.time_determined==0 && ac.opening==true"><i class="fa fa-hourglass-half fa-fw text-green"></i>数据收集中</span>
+            <span ng-if="ac.time_determined==0 && ac.opening==false"><i class="fa fa-lock fa-fw text-green"></i>已关闭收集</span>
+            <br>
+            <span ng-if="!ac.me.time_inputed"><i class="fa fa-close fa-fw text-green"></i>时间未录入</span>
+            <span ng-if="ac.me.time_inputed"><i class="fa fa-check fa-fw text-green"></i>时间已录入</span>
         </p>
         <p>
             <span><i class="fa fa-user text-green fa-fw"></i>{{ ac.publisher.name }}<span ng-if="ac.organizer!=''">&nbsp;@{{ ac.organizer }}</span></span><br>
             <span><i class="fa fa-map-marker text-green fa-fw"></i>{{ ac.place }}</span>
         </p>
     </div>
-    <table class="function_group">
+
+    <table class="function_group" ng-if="ac.relation=='published'">
         <colgroup>
             <col width="33%">
             <col width="34%">
@@ -66,6 +74,10 @@
         </tr>
         </tbody>
     </table>
+
+    <div class="function_group function_group_participated" ng-if="ac.me.relation=='participated'" align="center">
+        <i class="fa fa-clock-o fa-fw"></i><span style="font-size: 1.5rem">{{ ac.me.time_inputed?'修改':'录入' }}个人时间情况</span>
+    </div>
 </div>
 
 
@@ -105,10 +117,10 @@
                 </p>
                 <p>
                     <span style="font-size: 1.4rem">参与人员</span><br>
-                    <span class="tag tag-gray">123</span>
-                    <span class="tag tag-gray">123</span>
-                    <span class="tag tag-gray">123</span>
-                    <span class="tag tag-gray">123</span>
+                    <span ng-repeat="participator in ac.participators">
+                        <span class="tag" ng-class="{'tag-gray':!ac.time_determined || (ac.time_determined&&participator.attendable==0),'tag-green':ac.time_determined&&participator.attendable==2,'tag-orange':ac.time_determined&&participator.attendable==1}" style="margin-bottom: 0.4rem">{{ participator.name }}</span>
+                        <span class="text-gray" ng-if="participator.time_inputed==false">&nbsp;尚未录入时间</span><br>
+                    </span>
                 </p>
 
             </div>

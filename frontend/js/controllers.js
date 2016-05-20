@@ -250,6 +250,10 @@ app.controller("ctrl_ac_detail",function($scope,$rootScope,$http,$stateParams) {
     // $scope.test_id=111;
 
     $scope.ac={
+        me:{
+            relation:'participated',
+            time_inputed:false
+        },
         aid:21513,
         title:'sparker开发团队会议',
         publisher:{
@@ -265,9 +269,26 @@ app.controller("ctrl_ac_detail",function($scope,$rootScope,$http,$stateParams) {
             {year:2016,month:5,day:20}
         ],
         opening:false,
-        participators:[1256884,1846848,1865493],
+        participators:[
+            {
+                uid:186115,
+                name:'aaa',
+                time_inputed:true,
+                attendable:2
+            },
+            {
+                uid:164866,
+                name:'bbb',
+                time_inputed:false,
+                attendable:0
+            }
+        ],
         expected_number:5,
         published_time:1463295585807,
-        time_determined:0
+        time_determined:13584846,
+        comments:[
+            {"uid":165156,"time":1683516516,"text":"lorem afaefqgjqpog"},
+            {"uid":165861,"time":1635168486,"text":"lorem qeee"}
+        ]
     }
 });
