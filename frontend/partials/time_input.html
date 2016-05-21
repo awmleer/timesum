@@ -94,7 +94,7 @@
         <span><i class="fa fa-user text-green fa-fw"></i>{{ ac.publisher.name }}<span ng-if="ac.organizer!=''" class="text-gray">&nbsp;@{{ ac.organizer }}</span></span><br>
         <span><i class="fa fa-map-marker text-green fa-fw"></i>{{ ac.place }}</span>
 
-        <div style="margin-top: 3rem;margin-bottom: 2rem">
+        <div style="margin-top: 1.5rem;margin-bottom: 1.5rem">
             <div ng-repeat="date in ac.date_range">
                 <div class="date_box hover-pointer" ng-click="change_date_active()" ng-class="{'date_box_clean':date.clean,'date_box_dirty':!date.clean,'date_box_active':date_active==$index}">
                     <span style="font-size: 2rem;" class="font-number">{{ date.month }}.{{ date.day }}</span>
@@ -131,7 +131,7 @@
             </div>
         </div>
 
-        <button class="button button-pill button-main" style="margin-top: 3rem;width: 90%;">提交</button>
+        <button class="button button-pill button-main" style="margin-top: 1.5rem;width: 90%;">提交</button>
 
     </div>
 </div>
@@ -152,7 +152,7 @@
 
 
 
-<div style="width: 30%;float: right;position: relative;" ng-repeat="day in time_data" ng-show="date_active == $index">
+<div style="width: 30%;float: right;position: relative;z-index: 0;" ng-repeat="day in time_data" ng-show="date_active == $index">
     <div style="position: absolute;top: 0;left: -2rem;">
         <table style="width: 2rem;">
             <colgroup>
@@ -170,8 +170,18 @@
     <table style="width: 100%;">
         <tbody>
         <tr ng-repeat="timeblock in day.timeblocks" style="height: 1.5rem; " ng-class="{'time_available':timeblock.status==2,'time_maybe':timeblock.status==1,'time_occupied':timeblock.status==0}">
-            <td ng-click="select_time()" style="font-size: 0.2rem">&nbsp;</td>
+            <td ng-click="select_time()" style="font-size: 0.2rem" class="hover-pointer">&nbsp;</td>
         </tr>
         </tbody>
     </table>
 </div>
+
+
+
+<script>
+    $(document).ready(function () {
+        if (document.body.clientWidth>=500){
+            $("#left").css('width',document.getElementById('container').offsetWidth*0.7);
+        }
+    });
+</script>

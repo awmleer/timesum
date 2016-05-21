@@ -237,6 +237,8 @@ app.controller("ctrl_time_input",function($scope,$rootScope,$http) {
         date_range:[
             {year:2016,month:5,day:19,day_in_week:'周四'},
             {year:2016,month:5,day:20,day_in_week:'周五'},
+            {year:2016,month:5,day:20,day_in_week:'周五'},
+            {year:2016,month:5,day:20,day_in_week:'周五'},
             {year:2016,month:5,day:22,day_in_week:'周日'}
         ],
         opening:true
