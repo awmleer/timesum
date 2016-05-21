@@ -223,35 +223,82 @@ app.controller("ctrl_new_ac",function($scope,$rootScope,$http) {
 
 
 app.controller("ctrl_time_input",function($scope,$rootScope,$http) {
-    $scope.time_data=[
-        {
-            date : {
-                year : 2016,
-                month : 5,
-                day : 19
-            },
-            timeblocks:[]
+
+    $scope.ac={
+        aid:21513,
+        title:'sparker开发团队会议',
+        publisher:{
+            uid:1658165,
+            name:'小明'
         },
-        {
-            date : {
-                year : 2016,
-                month : 5,
-                day : 20
-            },
-            timeblocks:[]
+        organizer:'sparker团队',
+        place:'月牙楼元空间',
+        expected_duration:3,
+        date_range:[
+            {year:2016,month:5,day:19,day_in_week:'周四'},
+            {year:2016,month:5,day:20,day_in_week:'周五'},
+            {year:2016,month:5,day:22,day_in_week:'周日'}
+        ],
+        opening:true
+    };
+
+
+
+    //关于编辑的日期
+    var i=0;
+    $scope.time_data=$scope.ac.date_range;
+    for (i = 0; i < $scope.time_data.length; i++) {
+        $scope.time_data[i].timeblocks=[];
+        $scope.time_data[i].clean=true;
+    }
+    //使用date_active来控制编辑哪一天
+    $scope.date_active=0;
+    $scope.time_data[0].clean=false;
+    for (var j = 0; j <$scope.time_data.length ; j++) {
+        for (i = 1; i <=144; i++) {
+            $scope.time_data[j].timeblocks.push({time:i,status:0});
         }
-    ];
-
-    //使用day_editing来控制编辑哪一天
-    $scope.day_editing=0;
-
-    for (var i = 1; i <=144; i++) {
-        $scope.time_data[0].timeblocks.push({time:i,status:0});
-        $scope.time_data[1].timeblocks.push({time:i,status:0});
     }
 
-    $scope.time_scale=1;
-    $scope.input_status=1;
+
+    $scope.change_date_active= function () {
+        $scope.date_active=this.$index;
+        this.date.clean=false;
+    };
+
+
+    
+    //关于时间刻度
+    $scope.time_scale=2;
+    $scope.scale_plus= function () {
+        if ($scope.time_scale==1) {
+            $scope.time_scale=2;
+        }else if ($scope.time_scale==2) {
+            $scope.time_scale=3;
+        }else if ($scope.time_scale==3) {
+            $scope.time_scale=6;
+        }
+    };
+    $scope.scale_minus= function () {
+        if ($scope.time_scale==6) {
+            $scope.time_scale=3;
+        }else if ($scope.time_scale==3) {
+            $scope.time_scale=2;
+        }else if ($scope.time_scale==2) {
+            $scope.time_scale=1;
+        }
+    };
+
+
+    
+    //关于输入的时间状态
+    $scope.input_status=2;
+    $scope.change_input_status= function (status) {
+        $scope.input_status=status;
+    };
+    
+    
+    
 
     $scope.select_time= function () {
         if ($scope.time_scale==1) {
@@ -263,7 +310,7 @@ app.controller("ctrl_time_input",function($scope,$rootScope,$http) {
         }else{
             var j=0;
             var flag=1;
-            while ($scope.time_data[$scope.day_editing].timeblocks[j].time!=this.timeblock.time){
+            while ($scope.time_data[$scope.date_active].timeblocks[j].time!=this.timeblock.time){
                 j++;
             }
             while(j%$scope.time_scale!=0){
@@ -271,14 +318,14 @@ app.controller("ctrl_time_input",function($scope,$rootScope,$http) {
             }
             var ii;
             for (ii = 0; ii < $scope.time_scale; ii++) {
-                if ($scope.time_data[$scope.day_editing].timeblocks[j + ii].status != $scope.input_status) {
-                    $scope.time_data[$scope.day_editing].timeblocks[j+ii].status=$scope.input_status;
+                if ($scope.time_data[$scope.date_active].timeblocks[j + ii].status != $scope.input_status) {
+                    $scope.time_data[$scope.date_active].timeblocks[j+ii].status=$scope.input_status;
                     flag=0;
                 }
             }
             if (flag) {
                 for (ii = 0; ii < $scope.time_scale; ii++) {
-                    $scope.time_data[$scope.day_editing].timeblocks[j+ii].status=0;
+                    $scope.time_data[$scope.date_active].timeblocks[j+ii].status=0;
                 }
             }
         }

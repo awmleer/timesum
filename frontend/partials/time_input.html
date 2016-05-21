@@ -8,7 +8,7 @@
         display: none;
     }
     .time_occupied{
-        background: #EEEEEE;
+        background: #c1c1c1;
     }
     .time_maybe{
         background: #f39c11;
@@ -18,20 +18,141 @@
     }
 
 
+    .div_fixed_icon{
+        position: fixed;
+        right: 1rem;
+        z-index: 20;
+        font-size: 2rem;
+        color: #000000;
+
+    }
+    .div_fixed_icon i{
+        background: #FFFFFF;
+        padding:0.8rem 1rem;
+        border-radius: 8rem;
+        height: 3.5rem;
+        width: 3.5rem;
+        margin-top: 1rem;
+        text-align: center;
+        box-shadow: 0.3rem 0.3rem 0.5rem gray;
+    }
+
+
     .td_bordered_bottom{
         border-bottom: solid 1px black
+    }
+
+    .date_box{
+        border-radius: 0.5rem;
+        width:8.3rem;
+        padding: 0.5rem 0.8rem;
+        margin-top: 1rem;
+        color: #FFFFFF;
+        display: inline-block;
+        margin-right: 1rem;
+    }
+    .date_box_dirty{
+        background-color: #1abc9c;
+    }
+    .date_box_clean{
+        background-color: #999999;
+    }
+    .date_box_active{
+        background-color: #16a085!important;
+    }
+
+
+    .div_status_select{
+        width:30%;
+        text-align: center;
+        display: inline-block;
+        vertical-align: top;
+    }
+    .div_status_select div{
+        width:4rem;
+        height:4rem;
+        padding-top: 0.8rem;
+        border-radius: 0.5rem;
+        text-align: center;
+        display: inline-block;
+    }
+    .div_status_select div i{
+        color: #FFFFFF;
+        font-size: 2.3rem;
+    }
+    .div_status_select span{
+        display: inline-block;
     }
 </style>
 
 
-<div id="left" style="width: 65%;position: fixed;">
-    <input type="text" ng-model="time_scale">
-    <input type="text" ng-model="input_status">
-    <input type="text" ng-model="day_editing">
-    <button ng-click="logdata()">logdata</button>
+
+<div id="left" style="width: 70%;position: fixed;height: 100%;box-shadow: 0.5rem 0 0.7rem gray;z-index: 10;">
+    <div style="background-color: #16a085;height: 7rem;width: 1rem;float: left;margin-top: 2rem"></div>
+    <div style="margin: 2rem 1.7rem 0 1.7rem">
+        <p style="font-size: 2rem;font-weight: bold" class="text-green">{{ ac.title }}</p>
+        <span><i class="fa fa-user text-green fa-fw"></i>{{ ac.publisher.name }}<span ng-if="ac.organizer!=''" class="text-gray">&nbsp;@{{ ac.organizer }}</span></span><br>
+        <span><i class="fa fa-map-marker text-green fa-fw"></i>{{ ac.place }}</span>
+
+        <div style="margin-top: 3rem;margin-bottom: 2rem">
+            <div ng-repeat="date in ac.date_range">
+                <div class="date_box hover-pointer" ng-click="change_date_active()" ng-class="{'date_box_clean':date.clean,'date_box_dirty':!date.clean,'date_box_active':date_active==$index}">
+                    <span style="font-size: 2rem;" class="font-number">{{ date.month }}.{{ date.day }}</span>
+                    <span>{{ date.day_in_week}}</span>
+                </div>
+                <span>{{ date_active==$index?'正在录入':date.clean?'未填写':'已填写' }}</span>
+            </div>
+
+        </div>
+
+        <hr style="border: 1px solid #dadada;">
+
+        <div style="width: 100%;">
+            <div class="div_status_select">
+                <div style="background-color: #999999;" class="hover-pointer" ng-click="change_input_status(0)">
+                    <i class="fa fa-paint-brush" ng-show="input_status==0"></i>
+                </div>
+                <br>
+                <span>没有空</span>
+            </div>
+            <div class="div_status_select">
+                <div style="background-color: #f39c11;" class="hover-pointer" ng-click="change_input_status(1)">
+                    <i class="fa fa-paint-brush" ng-show="input_status==1"></i>
+                </div>
+                <br>
+                <span>可能有空</span>
+            </div>
+            <div class="div_status_select">
+                <div style="background-color: #1ab99b;" class="hover-pointer" ng-click="change_input_status(2)">
+                    <i class="fa fa-paint-brush" ng-show="input_status==2"></i>
+                </div>
+                <br>
+                <span>有空</span>
+            </div>
+        </div>
+
+        <button class="button button-pill button-main" style="margin-top: 3rem;width: 90%;">提交</button>
+
+    </div>
 </div>
 
-<div style="width: 35%;float: right;position: relative;" ng-repeat="day in time_data" ng-show="day_editing == $index">
+
+
+<!--右上角的帮助按钮-->
+<div class="div_fixed_icon" style="top: 1rem;">
+    <i class="fa fa-question"></i>
+</div>
+
+<!--右下角的放大缩小按钮-->
+<div class="div_fixed_icon" style="bottom: 1.5rem;">
+    <i class="fa fa-plus" ng-click="scale_minus()"></i>
+    <br>
+    <i class="fa fa-minus" ng-click="scale_plus()"></i>
+</div>
+
+
+
+<div style="width: 30%;float: right;position: relative;" ng-repeat="day in time_data" ng-show="date_active == $index">
     <div style="position: absolute;top: 0;left: -2rem;">
         <table style="width: 2rem;">
             <colgroup>
