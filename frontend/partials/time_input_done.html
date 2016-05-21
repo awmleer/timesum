@@ -1,38 +1,21 @@
 <style>
-    body {
+    .container {
         background-color: #16a085 !important;
+        height:100%;
+    }
 
+    #header{
+        display: none;
     }
 
     .panel-done {
         border-radius: 13px;
         text-align: center;
         width:80%;
-        margin: 10%;
+        margin: 30% 10% 0;
         padding:10%;
     }
 
-    .btn1 {
-        display:inline-block;
-        width:90%;
-        padding: 10px;
-        margin: 30px 0 5px 0;
-        border-radius: 30px;
-        background-color: #16a085;
-        font-size: 1.5rem;
-        color: #FFFFFF;
-    }
-    .btn1:hover {
-        background: #1abc9c;
-        color: #FFFFFF;
-    }
-    .btn1:active {
-        background: #1abc9c;
-        color: #FFFFFF;
-    }
-    .btn1,p{
-        font-family: 'Microsoft Yahei','微软雅黑';
-    }
     p{
         margin:0
     }
@@ -41,10 +24,12 @@
 <div class="panel panel-default panel-done">
     <div class="panel-body">
         <i class="fa fa-check-circle" aria-hidden="true" style="font-size: 10rem;color:#16a085"></i>
-        <p style="color:#666666;font-size: 4rem;font-family: 'Microsoft Yahei','微软雅黑';">录入成功</p>
+        <p style="color:#666666;font-size: 4rem;">录入成功</p>
         <p style="color:#999999">您的空闲时间已成功录入</p>
         <p style="color:#999999">请等待组织者确定活动时间</p>
-        <a class="btn1" href="#">进入活动页面</a>
+
+        <a href="#" class="button button-pill button-main" style="margin: 30px 0 5px 0;">进入活动页面</a>
+
         <p style="color:#666666;font-size: 0.5rem">查看更多信息或发布留言</p>
     </div>
 </div>
