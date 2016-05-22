@@ -399,3 +399,9 @@ app.controller("ctrl_ac_detail",function($scope,$rootScope,$http,$stateParams) {
 app.controller("ctrl_time_input_done",function($scope,$rootScope,$http,$stateParams) {
     
 });
+
+
+
+app.controller("ctrl_share",function($scope,$rootScope,$location,$http) {
+
+});
