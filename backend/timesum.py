@@ -47,7 +47,7 @@ class time_collection_in(EmbeddedDocument):
 
 class comments_in(EmbeddedDocument):
     uid = IntField(required=True)
-    time = IntField(required=True)
+    time = IntField(required=True, default=int(time.time() * 1000))
     text = StringField(required=True)
 
 class activity(Document):
@@ -258,6 +258,30 @@ def ac_join():
             resp = make_response('(´・ω・`)您已经加入该活动了哦', 200)
             return resp
     ac_info['participators'].append(participators_in(uid=uid))
+    ac_info.save()
+    resp = make_response('success', 200)
+    return resp
+# --------------------我是分界线--------------------
+@app.route('/api/submit_comment')
+def submit_comment():
+    flag = islogin()
+    if (not flag[0]):
+        resp = make_response('', 200)
+        return resp
+    uid = flag[1]
+
+    aid = int(request.args.get('aid'))
+    comment = request.args.get('comment')
+    ac_info = activity.objects(aid=aid).first()
+    flag = False
+    for person in ac_info['participators']:
+        if (uid == person['uid']):
+            flag = True
+            break
+    if (not flag):
+        resp = make_response('（¯﹃¯）您还未加入该活动呢', 200)
+        return resp
+    ac_info['comments'].append(comments_in(uid=uid, text=comment))
     ac_info.save()
     resp = make_response('success', 200)
     return resp
