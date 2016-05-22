@@ -364,8 +364,8 @@ app.controller("ctrl_ac_detail",function($scope,$rootScope,$http,$stateParams) {
         description:'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut beatae consectetur nisi nulla quidem saepe tempora. Ea eligendi ipsam laborum praesentium ullam? Itaque iure laborum, laudantium porro quisquam vel voluptatibus?',
         expected_duration:3,
         date_range:[
-            {year:2016,month:5,day:19},
-            {year:2016,month:5,day:20}
+            {year:2016,month:5,day:19,day_in_week:'周四'},
+            {year:2016,month:5,day:20,day_in_week:'周四'}
         ],
         opening:false,
         participators:[
@@ -389,7 +389,31 @@ app.controller("ctrl_ac_detail",function($scope,$rootScope,$http,$stateParams) {
             {"uid":165156,"name":'小明',"time":1463295585807,"text":"lorem afaefqgjqpog"},
             {"uid":165861,"name":'小华',"time":1463295585807,"text":"lorem qeee"}
         ]
+    };
+
+
+    $scope.submit_comment= function () {
+        if ($scope.my_comment=='' || $scope.my_comment==undefined) {
+            alert("留言内容不能为空");
+            return;
+        }
+        $http({
+            url: 'submit_comment',
+            method: 'get',
+            params: {aid:$scope.ac.aid,comment:$scope.my_comment}
+        }).success(function (data) {
+            if (data == 'success') {
+                location.reload();
+            }else {
+                alert(data);
+            }
+        }).error(function () {
+            alert("操作失败");
+        });
+
     }
+
+
 });
 
 

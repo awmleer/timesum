@@ -27,13 +27,16 @@
         background: #1abc9c;
     }
 
-    .div_date {
-        /*display: inline-block;*/
-        width: 6rem;
-        height: 6rem;
-        margin-right:1.6rem;
-        float: left;
-        margin-bottom: 1rem;
+    #comment_submit {
+        width: 10%;
+        border: 0;
+        float: right;
+        height: 2.4rem;
+        outline: none;
+        background-color: #DDDDDD;
+    }
+    #comment_submit:active{
+        background-color: #aaaaaa;
     }
 </style>
 
@@ -78,7 +81,7 @@
     </table>
 
     <div class="function_group function_group_participated hover-pointer" ng-if="ac.me.relation=='participated'" align="center">
-        <i class="fa fa-clock-o fa-fw"></i><span style="font-size: 1.5rem">{{ ac.me.time_inputed?'修改':'录入' }}个人时间情况</span>
+        <i class="fa fa-clock-o fa-fw" style="margin-bottom: -2rem"></i><span style="font-size: 1.4rem;margin-bottom: 0.5rem;display: inline-block;">{{ ac.me.time_inputed?'修改':'录入' }}个人时间情况</span>
     </div>
 </div>
 
@@ -109,12 +112,10 @@
                     <span class="font-number text-green" style="font-size: 3rem">2:00</span>
                     <span style="font-size: 1.2rem">小时</span>
                 </p>
-                <p>可选时间</p>
-                <div ng-repeat="date in ac.date_range" class="div_date text-gray" align="left" style="border:2px solid #16a085;border-radius:0.8rem;background:url(img/new_ac/Timestamp-Corner.svg) right center no-repeat;padding-top: 1rem">
-                    <div style="line-height:1.6rem;position: relative">
-                        <p class="font-number" style=" margin-bottom: 0;padding-right:0; text-align: left;font-size: 2.6rem;margin-left: 0.4rem;">{{ date.month }}<span style="font-size: 1.1rem">月</span></p>
-                        <p class="font-number" style="text-align: left;font-size: 1.7rem;margin-left: 0.4rem;margin-right: 0">{{ date.day }}<span style="font-size: 1.1rem">日</span></p>
-                    </div>
+                <p style="margin-bottom: 0.5rem">可选时间</p>
+                <div  ng-repeat="date in ac.date_range" class="date_box hover-pointer" ng-click="change_date_active()" ng-class="{'date_box_clean':date.clean,'date_box_dirty':!date.clean,'date_box_active':date_active==$index}" style="background: #1abc9c;margin-top: 0;margin-bottom: 1rem">
+                    <span style="font-size: 2rem;" class="font-number">{{ date.month }}.{{ date.day }}</span>
+                    <span>{{ date.day_in_week}}</span>
                 </div>
             </div>
         </td>
@@ -147,13 +148,13 @@
         <i class="fa fa-commenting fa-fw text-green"></i>留言
     </p>
     <div ng-repeat="comment in ac.comments" style="border-bottom: solid 1px #e1e1e1;padding: 1rem;">
-        <p style="font-size: 1.5rem">{{ comment.name }}</p>
-        <p style="font-size: 1rem;">{{ comment.time | date:'yyyy.M.d H:mm' }}</p>
+        <p style="font-size: 1.5rem;margin-bottom: 0">{{ comment.name }}</p>
+        <p style="font-size: 1rem;margin-bottom: 0">{{ comment.time | date:'yyyy.M.d H:mm' }}</p>
         <p style="font-size: 1.2rem">{{ comment.text }}</p>
     </div>
     <div>
-        <input type="text" style="border: 0;font-size: 1.5rem;width: 88%;height: 2.4rem;">
-        <button style="width:10%;border: 0;float: right;height: 2.4rem;"><i class="fa fa-paper-plane"></i></button>
+        <input ng-model="my_comment" type="text" style="border: 0;font-size: 1.3rem;width: 88%;height: 2.4rem;outline: none;">
+        <button id="comment_submit" ng-click="submit_comment()"><i class="fa fa-paper-plane"></i></button>
     </div>
 </div>
 
