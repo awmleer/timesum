@@ -57,16 +57,16 @@ class activity(Document):
     description = StringField(required=True)
     place = StringField(required=True)
     organizer = StringField(required=True)
-    opening = BooleanField(required=True)
-    history = BooleanField(required=True)
-    participators = ListField(EmbeddedDocumentField(participators_in), required=True)
-    time_collection = ListField(EmbeddedDocumentField(time_collection_in), required=True)
+    opening = BooleanField(required=True, default=True)
+    history = BooleanField(required=True, default=False)
+    participators = ListField(EmbeddedDocumentField(participators_in), required=True, default=[])
+    time_collection = ListField(EmbeddedDocumentField(time_collection_in), required=True, default=[])
     expected_number = IntField(required=True)
     expected_duration = IntField(required=True)
-    published_time = IntField(required=True)
-    time_determined = IntField(required=True)
+    published_time = IntField(required=True, default=int(time.time() * 1000))
+    time_determined = IntField(required=True, default=123)
     date_range = ListField(EmbeddedDocumentField(date_in), required=True)
-    comments = ListField(EmbeddedDocumentField(comments_in), required=True)
+    comments = ListField(EmbeddedDocumentField(comments_in), required=True, default=[])
 # --------------------我是分界线--------------------
 class users(Document):
     uid = IntField(required=True)
@@ -142,10 +142,10 @@ def logout():
 @app.route('/api/signup', methods=['POST'])
 def signup():
     text = request.json
-    text['phone'] = str(text['phone'])
-    text['password'] = str(text['password'])
-    text['code'] = str(text['code'])
-    text['name'] = str(text['name'])
+    # text['phone'] = str(text['phone'])
+    # text['password'] = str(text['password'])
+    # text['code'] = str(text['code'])
+    # text['name'] = str(text['name'])
     if (text['phone'] == '' or text['name'] == '' or text['password'] == '' or text['code'] == ''):
         resp = make_response('信息不完整', 200)
         return resp
@@ -229,6 +229,64 @@ def changepwd():
     user_info.save()
     resp = make_response('success', 200)
     return resp
+# --------------------我是分界线--------------------
+# @app.route('/api/activities')
+# def activities():
+#     flag = islogin()
+#     if (not flag[0]):
+#         resp = make_response('cookies error', 401)
+#         return resp
+#     uid = flag[1]
+# @app.route('/api/time_input', methods=['POST'])
+# def time_input():
+#     flag = islogin()
+#     if (not flag[0]):
+#         resp = make_response('cookies error', 401)
+#         return resp
+#     uid = flag[1]
+#
+#     text = request.json
+#     text['aid'] = int(text['aid'])
+#     ac_info = activity.objects(aid=text['aid']).first()
+#
+#     for user_time in ac_info['time_collection']:
+#         if (user_time['uid'] == uid):
+#             user_time['data'] = text['data']
+
+# --------------------我是分界线--------------------
+@app.route('/api/new_ac', methods=['POST'])
+def new_ac():
+    flag = islogin()
+    if (not flag[0]):
+        resp = make_response('', 200)
+        return resp
+    uid = flag[1]
+
+    text = request.json
+    resp_json = json.dumps({'result': 'fail', 'message': '信息不完整'})
+    if (text['title'] == '' or text['description'] == '' or text['place'] == '' or text['organizer'] == ''):
+        resp = make_response(resp_json, 200)
+        return resp
+    if (text['expected_number'] == '' or text['duration'] == '' or text['date_range'] == []):
+        resp = make_response(resp_json, 200)
+        return resp
+
+    sum = me_ta.objects(me_ta='auto_increase').first()['aid']
+    sum = sum + 1
+    me_ta.objects(me_ta='auto_increase').update_one(set__aid=sum)
+    text_save = activity(aid=sum, publisher=uid)
+    text_save['title'] = str(text['title'])
+    text_save['description'] = str(text['description'])
+    text_save['place'] = str(text['place'])
+    text_save['organizer'] = str(text['organizer'])
+    text_save['expected_number'] = int(text['expected_number'])
+    text_save['duration'] = int(text['duration'])
+    text_save['date_range'] = text['date_range']
+    text_save.save()
+    resp_json = json.dumps({'result': 'success', 'aid': sum})
+    resp = make_response(resp_json, 200)
+    return resp
+
 # --------------------我是分界线--------------------
 if __name__ == '__main__':
     # app.debug = True
