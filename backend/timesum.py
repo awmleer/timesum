@@ -62,7 +62,7 @@ class activity(Document):
     participators = ListField(EmbeddedDocumentField(participators_in), required=True, default=[])
     time_collection = ListField(EmbeddedDocumentField(time_collection_in), required=True, default=[])
     expected_number = IntField(required=True)
-    expected_duration = IntField(required=True)
+    duration = IntField(required=True)
     published_time = IntField(required=True, default=int(time.time() * 1000))
     time_determined = IntField(required=True, default=123)
     date_range = ListField(EmbeddedDocumentField(date_in), required=True)
@@ -89,6 +89,11 @@ salt = '5aWZak2n35Wk fqsws'
 # bbbb = dumps(aaa)
 # cc = verification.from_json(bbbb)
 # cc.save()
+
+# ccc = activity.objects(aid=1).first()
+# ccc['comments'].append(comments_in(uid=164,time=64546546,text='65464'))
+# ccc.save()
+
 
 def islogin():
     uid_code = request.cookies.get('All_Hail_Fqs')
@@ -237,22 +242,41 @@ def changepwd():
 #         resp = make_response('cookies error', 401)
 #         return resp
 #     uid = flag[1]
-# @app.route('/api/time_input', methods=['POST'])
-# def time_input():
-#     flag = islogin()
-#     if (not flag[0]):
-#         resp = make_response('cookies error', 401)
-#         return resp
-#     uid = flag[1]
-#
-#     text = request.json
-#     text['aid'] = int(text['aid'])
-#     ac_info = activity.objects(aid=text['aid']).first()
-#
-#     for user_time in ac_info['time_collection']:
-#         if (user_time['uid'] == uid):
-#             user_time['data'] = text['data']
+# --------------------我是分界线--------------------
+@app.route('/api/time_input', methods=['POST'])
+def time_input():
+    flag = islogin()
+    if (not flag[0]):
+        resp = make_response('', 200)
+        return resp
+    uid = flag[1]
 
+    text = request.json
+    text['aid'] = int(text['aid'])
+    ac_info = activity.objects(aid=text['aid']).first()
+    flag = False
+    for person in ac_info['participators']:
+        if (uid == person['uid']):
+            flag = True
+            break
+    if (not flag):
+        resp = make_response('您还未加入该活动', 200)
+        return resp
+    if (ac_info['time_collection'] == []):
+        ac_info['time_collection'].append(time_collection_in(uid=uid, data=text['data']))
+        ac_info.save()
+        resp = make_response('success', 200)
+        return resp
+    for user_time in ac_info['time_collection']:
+        if (user_time['uid'] == uid):
+            user_time['data'] = text['data']
+            ac_info.save()
+            resp = make_response('success', 200)
+            return resp
+    ac_info['time_collection'].append(time_collection_in(uid=uid, data=text['data']))
+    ac_info.save()
+    resp = make_response('success', 200)
+    return resp
 # --------------------我是分界线--------------------
 @app.route('/api/new_ac', methods=['POST'])
 def new_ac():
@@ -286,7 +310,6 @@ def new_ac():
     resp_json = json.dumps({'result': 'success', 'aid': sum})
     resp = make_response(resp_json, 200)
     return resp
-
 # --------------------我是分界线--------------------
 if __name__ == '__main__':
     # app.debug = True
