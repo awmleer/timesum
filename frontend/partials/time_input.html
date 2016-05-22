@@ -86,6 +86,7 @@
 </style>
 
 
+<!--TODO date_range过多时的左侧滚动效果实现-->
 
 <div id="left" style="width: 70%;position: fixed;height: 100%;box-shadow: 0.5rem 0 0.7rem gray;z-index: 10;">
     <div style="background-color: #16a085;height: 7rem;width: 1rem;float: left;margin-top: 2rem"></div>
@@ -105,7 +106,7 @@
 
         </div>
 
-        <hr style="border: 1px solid #dadada;">
+        <hr style="border: 1px solid #dadada;width: 90%;">
 
         <div style="width: 100%;">
             <div class="div_status_select">
@@ -140,14 +141,14 @@
 
 <!--右上角的帮助按钮-->
 <div class="div_fixed_icon" style="top: 1rem;">
-    <i class="fa fa-question"></i>
+    <i class="fa fa-question hover-pointer"></i>
 </div>
 
 <!--右下角的放大缩小按钮-->
 <div class="div_fixed_icon" style="bottom: 1.5rem;">
-    <i class="fa fa-plus" ng-click="scale_minus()"></i>
+    <i class="fa fa-plus hover-pointer" ng-click="scale_minus()"></i>
     <br>
-    <i class="fa fa-minus" ng-click="scale_plus()"></i>
+    <i class="fa fa-minus hover-pointer" ng-click="scale_plus()"></i>
 </div>
 
 
