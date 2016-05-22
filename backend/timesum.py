@@ -11,22 +11,78 @@ import pymongo
 import json
 import datetime
 from pymongo import MongoClient
+from mongoengine import *
+from datetime import datetime
 import bson
 from bson import Binary, Code
 from bson.json_util import dumps, loads
 from flask.ext.cors import CORS      #跨域访问
-
+# --------------------我是分界线--------------------
 app = Flask(__name__)
 CORS(app)   #跨域访问
+# --------------------我是分界线--------------------
+connect('timesum', host='121.42.209.162', username='fqs1', password='123456')    #登录及用户认证
+# --------------------我是分界线--------------------
+class me_ta(Document):
+    me_ta = StringField(required=True)
+    activity = IntField(required=True)
+    uid = IntField(required=True)
+# --------------------我是分界线--------------------
+class participators_in(EmbeddedDocument):
+    uid=IntField(required=True)
+    time_inputed=BooleanField(required=True)
 
-#登录及用户认证
-client = MongoClient('121.42.209.162', 27017)
-client.admin.authenticate('fqs', '123456', mechanism='MONGODB-CR')
-uri = "mongodb://fqs:123456@121.42.209.162/admin?authMechanism=MONGODB-CR"
-client = MongoClient(uri)
+class date_in(EmbeddedDocument):
+    year = StringField(required=True)
+    month = StringField(required=True)
+    day = StringField(required=True)
 
+class data_in(EmbeddedDocument):
+    date = EmbeddedDocumentField(date_in, required=True)
+    timeblocks = StringField(required=True)
+
+class time_collection_in(EmbeddedDocument):
+    uid = IntField(required=True)
+    data = ListField(EmbeddedDocumentField(data_in), required=True)
+
+class comments_in(EmbeddedDocument):
+    uid = IntField(required=True)
+    time = IntField(required=True)
+    text = StringField(required=True)
+
+class activity(Document):
+    aid = IntField(requird=True)
+    publisher = IntField(requird=True)
+    title = StringField(required=True)
+    description = StringField(required=True)
+    place = StringField(required=True)
+    organizer = StringField(required=True)
+    opening = BooleanField(required=True)
+    history = BooleanField(required=True)
+    participators = ListField(EmbeddedDocumentField(participators_in), required=True)
+    time_collection = ListField(EmbeddedDocumentField(time_collection_in), required=True)
+    expected_number = IntField(required=True)
+    expected_duration = IntField(required=True)
+    published_time = IntField(required=True)
+    time_determined = IntField(required=True)
+    date_range = ListField(EmbeddedDocumentField(date_in), required=True)
+    comments = ListField(EmbeddedDocumentField(comments_in), required=True)
+# --------------------我是分界线--------------------
+class users(Document):
+    uid = IntField(required=True)
+    name = StringField(required=True)
+    phone = StringField(required=True)
+    password = StringField(required=True)
+    last_login = IntField(required=True)
+    login_count = IntField(required=True)
+# --------------------我是分界线--------------------
+class verification(Document):
+    phone = StringField(required=True)
+    last_verify = IntField(required=True)
+    verify_code = StringField(required=True)
+# --------------------我是分界线--------------------
 salt = '5aWZak2n35Wk fqsws'
-
+# --------------------我是分界线--------------------
 def sendsms1(publisher, title, person, mobile):
     d = {'#publisher#': publisher, '#title#': title}
     tpl_value = urllib.urlencode(d)
@@ -37,41 +93,38 @@ def sendsms1(publisher, title, person, mobile):
     result = json.loads(req.read())
     finalstr += '发送给%s的短信的发送结果：%s\n' %(person, result['reason'].encode('utf-8'))
     return finalstr
-
+# --------------------我是分界线--------------------
 @app.route('/api/login')
 def login():
-    phone1 = request.args.get('phone')
+    phone = request.args.get('phone')
     password = request.args.get('password')
-    if (phone1 == '' or password == ''):
+    if (phone == '' or password == ''):
         resp = make_response('信息不完整', 200)
         return resp
-    phone = int(phone1)
 
-    db = client['timesum']
-    coll_users = db['users']
-    userinfo = coll_users.find_one({'phone': phone})
-    if (userinfo == None):
+    user_info = users.objects(phone=phone)
+    if (user_info == None):
         resp = make_response('wrong phone', 200)
         return resp
-    passwo = userinfo['password']
+    password_real = user_info['password']
     password_hash = hashlib.md5(password + salt).hexdigest()
-    if passwo == password_hash:
+    if password_real == password_hash:
         resp = make_response('success', 200)
-        resp.set_cookie('All_Hell_Fqs', base64.b64encode(salt + str(userinfo['uid'])))
+        resp.set_cookie('All_Hail_Fqs', base64.b64encode(salt + str(user_info['uid'])))
     else:
         resp = make_response('wrong password', 200)
     return resp
-
+# --------------------我是分界线--------------------
 @app.route('/api/logout')
 def logout():
     resp = make_response('success', 200)
-    resp.set_cookie('All_Hell_Fqs', '')
+    resp.set_cookie('All_Hail_Fqs', '')
     return resp
-
+# --------------------我是分界线--------------------
 @app.route('/api/signup', methods=['POST'])
 def signup():
     # flag = False
-    # uid = request.cookies.get('All_Hell_Fqs')
+    # uid = request.cookies.get('All_Hail_Fqs')
     # if (uid == None) or (uid == ''):
     #     resp = make_response('no login', 401)
     #     return resp
@@ -88,56 +141,51 @@ def signup():
     if (text['phone'] == '' or text['name'] == '' or text['password'] == '' or text['code'] == ''):
         resp = make_response('信息不完整', 200)
         return resp
-    db = client['timesum']
-    coll_verification = db['verification']
-    coll_users = db['users']
-    if (coll_users.find_one({'phone': int(text['phone'])}) != None):
+
+    if (users.objects(phone=text['phone']) != None):
         resp = make_response('该手机号已经注册', 200)
         return resp
-    info = coll_verification.find_one({'phone': int(text['phone'])})
+    info = verification.objects(phone=text['phone'])
     if (info == None):
         resp = make_response('未发送验证码', 200)
         return resp
-    if (int(text['code']) != info['verify_code']):
+    if (text['code'] != info['verify_code']):
         resp = make_response('验证码错误', 200)
         return resp
     if (int(time.time() * 1000) - info['last_verify'] > 1200000):
         resp = make_response('验证码已过期', 200)
         return resp
-    del text['code']
-    coll_meta = db['meta']
-    sum = coll_meta.find_one({'meta': 'auto_increase'})['uid']
+    sum = me_ta.objects(me_ta='auto_increase')['uid']
     sum = sum + 1
-    coll_meta.update({'meta': 'auto_increase'}, {'$set': {'uid': sum}})
+    me_ta.objects(me_ta='auto_increase').update_one(set__uid=sum)
     text['password'] =hashlib.md5(str(text['password']) + salt).hexdigest()
-    text['phone'] = int(text['phone'])
-    text.update({'uid': sum, 'last_login': int(time.time() * 1000), 'login_count': 1})
-    coll_users.insert(text)
+    text_save = users(uid=sum, name=text['name'], phone=text['phone'], password=text['password'], last_login=int(time.time() * 1000), login_count=1)
+    text_save.save()
     resp = make_response('success', 200)
-    resp.set_cookie('All_Hell_Fqs', base64.b64encode(salt + str(sum)))
+    resp.set_cookie('All_Hail_Fqs', base64.b64encode(salt + str(sum)))
     return resp
-
+# --------------------我是分界线--------------------
 @app.route('/api/short_message_code')
 def short_message_code():
-    phone = int(request.args.get('phone'))
-    db = client['timesum']
-    coll_verification = db['verification']
-    info = coll_verification.find_one({'phone': phone})
-    code = random.randint(1000,9999)
+    phone = request.args.get('phone')
+    info = verification.objects(phone=phone)
+    code = str(random.randint(1000,9999))
     flag = True
     if (info == None):
-        info = {'phone': phone, 'last_verify': int(time.time() * 1000), 'verify_code': code}
-        coll_verification.insert(info)
+        info_save = verification(phone=phone, last_verify=int(time.time() * 1000), verify_code=code)
+        info_save.save()
         flag = False
-    if (int(time.time() * 1000) - info['last_verify'] < 60000 and flag):
+    if (flag and (int(time.time() * 1000) - info['last_verify'] < 60000)):
         resp = make_response('一分钟之内只能发送一次验证码！', 200)
         return resp
-    print sendsms1(str(code), 'fuck', 'shit', phone)
-    coll_verification.update({'phone': phone}, {'$set': {'last_verify': int(time.time() * 1000), 'verify_code': code}})
+    print sendsms1(code, 'fuck', 'shit', int(phone))
+    info['last_verify'] = int(time.time() * 1000)
+    info['verify_code'] = code
+    info.update()
     resp = make_response('success', 200)
     return resp
-
-
+# --------------------我是分界线--------------------
 if __name__ == '__main__':
     # app.debug = True
     app.run(host='0.0.0.0', port= 5001)
+# --------------------我是分界线--------------------
