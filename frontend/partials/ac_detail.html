@@ -109,7 +109,7 @@
                 </p>
                 <p>
                     <span style="font-size: 1.4rem">活动耗时</span><br>
-                    <span class="font-number text-green" style="font-size: 3rem">2:00</span>
+                    <span class="font-number text-green" style="font-size: 3rem">{{(ac.expected_duration-ac.expected_duration%6)/6 }}:{{ ac.expected_duration%6 * 10 }}</span>
                     <span style="font-size: 1.2rem">小时</span>
                 </p>
                 <p style="margin-bottom: 0.5rem">可选时间</p>

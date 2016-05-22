@@ -362,7 +362,7 @@ app.controller("ctrl_ac_detail",function($scope,$rootScope,$http,$stateParams) {
         organizer:'sparker团队',
         place:'月牙楼元空间',
         description:'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut beatae consectetur nisi nulla quidem saepe tempora. Ea eligendi ipsam laborum praesentium ullam? Itaque iure laborum, laudantium porro quisquam vel voluptatibus?',
-        expected_duration:3,
+        expected_duration:13,
         date_range:[
             {year:2016,month:5,day:19,day_in_week:'周四'},
             {year:2016,month:5,day:20,day_in_week:'周四'}
