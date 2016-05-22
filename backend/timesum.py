@@ -30,7 +30,7 @@ class me_ta(Document):
 # --------------------我是分界线--------------------
 class participators_in(EmbeddedDocument):
     uid=IntField(required=True)
-    time_inputed=BooleanField(required=True)
+    time_inputed=BooleanField(required=True, default=False)
 
 class date_in(EmbeddedDocument):
     year = StringField(required=True)
@@ -156,7 +156,7 @@ def signup():
         return resp
 
     if (users.objects(phone=text['phone']).first() != None):
-        resp = make_response('该手机号已经注册', 200)
+        resp = make_response('(´・ω・`)该手机号已经注册过啦', 200)
         return resp
     info = verification.objects(phone=text['phone']).first()
     if (info == None):
@@ -228,7 +228,7 @@ def changepwd():
     old_password_hash = hashlib.md5(text['pwd_old'] + salt).hexdigest()
     new_password_hash = hashlib.md5(text['new_old'] + salt).hexdigest()
     if (user_info['password'] != old_password_hash):
-        resp = make_response('旧密码错误', 200)
+        resp = make_response('(￢_￢)旧密码输错啦', 200)
         return resp
     user_info['password'] = new_password_hash
     user_info.save()
@@ -242,6 +242,25 @@ def changepwd():
 #         resp = make_response('cookies error', 401)
 #         return resp
 #     uid = flag[1]
+# --------------------我是分界线--------------------
+@app.route('/api/ac_join')
+def ac_join():
+    flag = islogin()
+    if (not flag[0]):
+        resp = make_response('', 200)
+        return resp
+    uid = flag[1]
+
+    aid = int(request.args.get('aid'))
+    ac_info = activity.objects(aid=aid).first()
+    for person in ac_info['participators']:
+        if (uid == person['uid']):
+            resp = make_response('(´・ω・`)您已经加入该活动了哦', 200)
+            return resp
+    ac_info['participators'].append(participators_in(uid=uid))
+    ac_info.save()
+    resp = make_response('success', 200)
+    return resp
 # --------------------我是分界线--------------------
 @app.route('/api/time_input', methods=['POST'])
 def time_input():
@@ -260,12 +279,7 @@ def time_input():
             flag = True
             break
     if (not flag):
-        resp = make_response('您还未加入该活动', 200)
-        return resp
-    if (ac_info['time_collection'] == []):
-        ac_info['time_collection'].append(time_collection_in(uid=uid, data=text['data']))
-        ac_info.save()
-        resp = make_response('success', 200)
+        resp = make_response('（¯﹃¯）您还未加入该活动呢', 200)
         return resp
     for user_time in ac_info['time_collection']:
         if (user_time['uid'] == uid):
