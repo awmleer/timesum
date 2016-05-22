@@ -6,7 +6,7 @@ app.config(function($stateProvider, $urlRouterProvider){
     $urlRouterProvider
         .otherwise("/404")
         .when('', '/home')
-        .when('/ac/:ac_id', '/ac/:ac_id/detail');
+        .when('/ac/:ac_id', '/ac/:ac_id/join');
     $stateProvider
         .state('home', {
             url: "/home",
@@ -28,10 +28,10 @@ app.config(function($stateProvider, $urlRouterProvider){
             templateUrl: "partials/ac_edit.html",
             controller:'ctrl_ac_edit'
         })
-        .state('ac_share', {
-            url: "/ac/:ac_id/share",
-            templateUrl: "partials/ac_share.html",
-            controller:'ctrl_ac_share'
+        .state('ac_invite', {
+            url: "/ac/:ac_id/invite",
+            templateUrl: "partials/ac_invite.html",
+            controller:'ctrl_ac_invite'
         })
         .state('time_input', {
             url: "/time_input",

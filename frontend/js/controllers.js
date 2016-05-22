@@ -402,6 +402,6 @@ app.controller("ctrl_time_input_done",function($scope,$rootScope,$http,$statePar
 
 
 
-app.controller("ctrl_share",function($scope,$rootScope,$location,$http) {
+app.controller("ctrl_ac_invite",function($scope,$rootScope,$location,$http) {
 
 });
