@@ -142,6 +142,10 @@ def logout():
 @app.route('/api/signup', methods=['POST'])
 def signup():
     text = request.json
+    text['phone'] = str(text['phone'])
+    text['password'] = str(text['password'])
+    text['code'] = str(text['code'])
+    text['name'] = str(text['name'])
     if (text['phone'] == '' or text['name'] == '' or text['password'] == '' or text['code'] == ''):
         resp = make_response('信息不完整', 200)
         return resp
@@ -162,7 +166,7 @@ def signup():
     sum = me_ta.objects(me_ta='auto_increase').first()['uid']
     sum = sum + 1
     me_ta.objects(me_ta='auto_increase').update_one(set__uid=sum)
-    text['password'] =hashlib.md5(str(text['password']) + salt).hexdigest()
+    text['password'] =hashlib.md5(text['password'] + salt).hexdigest()
     text_save = users(uid=sum, name=text['name'], phone=text['phone'], password=text['password'], last_login=int(time.time() * 1000), login_count=1)
     text_save.save()
     resp = make_response('success', 200)
@@ -202,6 +206,28 @@ def userinfo():
     del user_info['_id']
     user_info_json = dumps(user_info)
     resp = make_response(user_info_json, 200)
+    return resp
+# --------------------我是分界线--------------------
+@app.route('/api/changepwd', methods=['POST'])
+def changepwd():
+    flag = islogin()
+    if (not flag[0]):
+        resp = make_response('cookies error', 401)
+        return resp
+    uid = flag[1]
+
+    text = request.json
+    text['pwd_old'] = str(text['pwd_old'])
+    text['pwd_new'] = str(text['pwd_new'])
+    user_info = users.objects(uid=uid).first()
+    old_password_hash = hashlib.md5(text['pwd_old'] + salt).hexdigest()
+    new_password_hash = hashlib.md5(text['new_old'] + salt).hexdigest()
+    if (user_info['password'] != old_password_hash):
+        resp = make_response('旧密码错误', 200)
+        return resp
+    user_info['password'] = new_password_hash
+    user_info.save()
+    resp = make_response('success', 200)
     return resp
 # --------------------我是分界线--------------------
 if __name__ == '__main__':
