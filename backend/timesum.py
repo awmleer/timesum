@@ -82,7 +82,25 @@ class verification(Document):
     verify_code = StringField(required=True)
 # --------------------我是分界线--------------------
 salt = '5aWZak2n35Wk fqsws'
-# --------------------我是分界线--------------------
+
+# aaaa = dict(users.objects(uid=1).first().to_mongo())
+# print aaaa
+# aaa = {'phone':'65466','last_verify':312351,'verify_code': '6546'}
+# bbbb = dumps(aaa)
+# cc = verification.from_json(bbbb)
+# cc.save()
+
+def islogin():
+    uid_code = request.cookies.get('All_Hail_Fqs')
+    if (uid_code == None) or (uid_code == ''):
+        return [False, 'fqsws']
+    uid = base64.b64decode(uid_code)
+    uid = uid[18:]
+    for user in users.objects.all():
+        if (str(user['uid']) == uid):
+            return [True, int(uid)]
+    return [False, 'fqsws']
+
 def sendsms1(publisher, title, person, mobile):
     d = {'#publisher#': publisher, '#title#': title}
     tpl_value = urllib.urlencode(d)
@@ -102,7 +120,7 @@ def login():
         resp = make_response('信息不完整', 200)
         return resp
 
-    user_info = users.objects(phone=phone)
+    user_info = users.objects(phone=phone).first()
     if (user_info == None):
         resp = make_response('wrong phone', 200)
         return resp
@@ -110,7 +128,7 @@ def login():
     password_hash = hashlib.md5(password + salt).hexdigest()
     if password_real == password_hash:
         resp = make_response('success', 200)
-        resp.set_cookie('All_Hail_Fqs', base64.b64encode(salt + str(user_info['uid'])))
+        resp.set_cookie('All_Hail_Fqs', base64.b64encode(salt + str(user_info['uid'])), max_age=2592000)
     else:
         resp = make_response('wrong password', 200)
     return resp
@@ -123,29 +141,15 @@ def logout():
 # --------------------我是分界线--------------------
 @app.route('/api/signup', methods=['POST'])
 def signup():
-    # flag = False
-    # uid = request.cookies.get('All_Hail_Fqs')
-    # if (uid == None) or (uid == ''):
-    #     resp = make_response('no login', 401)
-    #     return resp
-    # usernam = base64.b64decode(uid)
-    # usernam = usernam[18:]
-    # for user in client['timesum']['users'].find():
-    #     if (str(user['uid']) == usernam):
-    #         flag = True
-    #         break
-    # if (not flag):
-    #     resp = make_response('wrong cookies', 401)
-    #     return resp
     text = request.json
     if (text['phone'] == '' or text['name'] == '' or text['password'] == '' or text['code'] == ''):
         resp = make_response('信息不完整', 200)
         return resp
 
-    if (users.objects(phone=text['phone']) != None):
+    if (users.objects(phone=text['phone']).first() != None):
         resp = make_response('该手机号已经注册', 200)
         return resp
-    info = verification.objects(phone=text['phone'])
+    info = verification.objects(phone=text['phone']).first()
     if (info == None):
         resp = make_response('未发送验证码', 200)
         return resp
@@ -155,20 +159,20 @@ def signup():
     if (int(time.time() * 1000) - info['last_verify'] > 1200000):
         resp = make_response('验证码已过期', 200)
         return resp
-    sum = me_ta.objects(me_ta='auto_increase')['uid']
+    sum = me_ta.objects(me_ta='auto_increase').first()['uid']
     sum = sum + 1
     me_ta.objects(me_ta='auto_increase').update_one(set__uid=sum)
     text['password'] =hashlib.md5(str(text['password']) + salt).hexdigest()
     text_save = users(uid=sum, name=text['name'], phone=text['phone'], password=text['password'], last_login=int(time.time() * 1000), login_count=1)
     text_save.save()
     resp = make_response('success', 200)
-    resp.set_cookie('All_Hail_Fqs', base64.b64encode(salt + str(sum)))
+    resp.set_cookie('All_Hail_Fqs', base64.b64encode(salt + str(sum)), max_age=2592000)
     return resp
 # --------------------我是分界线--------------------
 @app.route('/api/short_message_code')
 def short_message_code():
     phone = request.args.get('phone')
-    info = verification.objects(phone=phone)
+    info = verification.objects(phone=phone).first()
     code = str(random.randint(1000,9999))
     flag = True
     if (info == None):
@@ -183,6 +187,21 @@ def short_message_code():
     info['verify_code'] = code
     info.update()
     resp = make_response('success', 200)
+    return resp
+# --------------------我是分界线--------------------
+@app.route('/api/userinfo')
+def userinfo():
+    flag = islogin()
+    if (not flag[0]):
+        resp = make_response('cookies error', 401)
+        return resp
+    uid = flag[1]
+
+    user_info = dict(users.objects(uid=uid).first().to_mongo())
+    del user_info['password']
+    del user_info['_id']
+    user_info_json = dumps(user_info)
+    resp = make_response(user_info_json, 200)
     return resp
 # --------------------我是分界线--------------------
 if __name__ == '__main__':
