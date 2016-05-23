@@ -68,12 +68,6 @@ app.controller("ctrl_home",function($scope,$rootScope,$http,$state) {
         $scope.ac_participated_history_showing=!$scope.ac_participated_history_showing;
     };
 
-    //进入活动详情页面
-    $scope.ac_detail= function () {
-        $state.go('ac_detail',{ac_id:this.ac.aid});
-    };
-    
-
 
     //临时模拟的数据
     $scope.ac_published=[
@@ -87,7 +81,7 @@ app.controller("ctrl_home",function($scope,$rootScope,$http,$state) {
             time_determined:0
         },
         {
-            aid:21513,
+            aid:21514,
             title:'小组讨论',
             opening:true,
             participators:[1256884,1846848],
@@ -96,7 +90,7 @@ app.controller("ctrl_home",function($scope,$rootScope,$http,$state) {
             time_determined:1463395585807
         },
         {
-            aid:21513,
+            aid:555,
             title:'SQTP答辩',
             opening:true,
             participators:[1256884,1846848,1865493,4855556,84465],
@@ -108,7 +102,7 @@ app.controller("ctrl_home",function($scope,$rootScope,$http,$state) {
 
     $scope.ac_participated=[
         {
-            aid:21513,
+            aid:666,
             title:'sparker开发团队会议',
             opening:false,
             participators:[1256884,1846848,1865493],
@@ -117,7 +111,7 @@ app.controller("ctrl_home",function($scope,$rootScope,$http,$state) {
             time_determined:0
         },
         {
-            aid:21513,
+            aid:777,
             title:'小组讨论',
             opening:true,
             participators:[1256884,1846848],
@@ -126,7 +120,7 @@ app.controller("ctrl_home",function($scope,$rootScope,$http,$state) {
             time_determined:[1463396585807,1463497585807]
         },
         {
-            aid:21513,
+            aid:888,
             title:'SQTP答辩',
             opening:true,
             participators:[1256884,1846848,1865493,4855556,84465],
@@ -138,17 +132,17 @@ app.controller("ctrl_home",function($scope,$rootScope,$http,$state) {
 
     $scope.ac_published_history=[
         {
-            aid:21513,
+            aid:999,
             title:'sparker开发团队会议',
             time_determined:[1463297585807,1463497585807]
         },
         {
-            aid:21513,
+            aid:100,
             title:'小组讨论',
             time_determined:0
         },
         {
-            aid:21513,
+            aid:1999,
             title:'SQTP答辩',
             time_determined:[1463295685807,1463497585807]
         }
@@ -156,17 +150,17 @@ app.controller("ctrl_home",function($scope,$rootScope,$http,$state) {
 
     $scope.ac_participated_history=[
         {
-            aid:21513,
+            aid:786,
             title:'sparker开发团队会议',
             time_determined:0
         },
         {
-            aid:21513,
+            aid:7877,
             title:'UI设计讨论',
             time_determined:[1463396585807,1463497585807]
         },
         {
-            aid:21513,
+            aid:8888,
             title:'SQTP答辩',
             time_determined:[1463295685807,1463497585807]
         }
