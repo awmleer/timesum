@@ -1,4 +1,5 @@
 app.controller("ctrl_header",function($scope,$rootScope,$http,$state) {
+
     // /*获取用户基本信息*/
     // $http({
     //     url: 'api/userinfo',

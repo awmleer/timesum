@@ -38,8 +38,8 @@ app.config(function($stateProvider, $urlRouterProvider){
             templateUrl: "partials/ac_join.html",
             controller:'ctrl_ac_join'
         })
-        .state('time_input', {
-            url: "/time_input",
+        .state('ac_time_input', {
+            url: "/ac/:ac_id/time_input",
             templateUrl: "partials/time_input.html",
             controller:'ctrl_time_input'
         })
@@ -71,11 +71,39 @@ app.config(function($stateProvider, $urlRouterProvider){
 });
 
 
-app.run(['$rootScope', '$window', '$location', '$log', function ($rootScope, $window, $log,$http) {
+app.run(['$rootScope', '$window', '$location','$state', '$log', function ($rootScope, $window,$location,$state, $log,$http) {
+
+
     //监听location的变化，实时更新path变量
-    // var locationChangeSuccessOff = $rootScope.$on('$locationChangeSuccess', locationChangeSuccess);
-    // function locationChangeSuccess(event) {
-    //     $rootScope.path=$location.path();
-    // }
-    
+    var locationChangeSuccessOff = $rootScope.$on('$locationChangeSuccess', locationChangeSuccess);
+    function locationChangeSuccess(event) {
+        $rootScope.path=$location.path();
+        var path=$location.path();
+        if (path=='/home') {
+            $rootScope.header_text='活动列表';
+        }else if (path=='/new_ac') {
+            $rootScope.header_text='创建活动';
+        }else if (/\/ac\/\d+\/detail/.test(path)) {
+            $rootScope.header_text='活动详情';
+        }else if (/\/ac\/\d+\/edit/.test(path)) {
+            $rootScope.header_text='修改活动';
+        }else if (/\/ac\/\d+\/invite/.test(path)) {
+            $rootScope.header_text='邀请加入';
+        }else if (path=='/time_input_done') {
+            $rootScope.header_text='录入完成';
+        }else if (path=='/about') {
+            $rootScope.header_text='关于';
+        }else if (path=='/userinfo') {
+            $rootScope.header_text='个人信息';
+        }else if (path=='/changepwd') {
+            $rootScope.header_text='修改密码';
+        }else if (path=='/404') {
+            $rootScope.header_text='页面不存在';
+        }else{
+            $rootScope.header_text='　';
+        }
+    }
+
+
 }]);
+
