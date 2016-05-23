@@ -33,6 +33,11 @@ app.config(function($stateProvider, $urlRouterProvider){
             templateUrl: "partials/ac_invite.html",
             controller:'ctrl_ac_invite'
         })
+        .state('ac_join', {
+            url: "/ac/:ac_id/join",
+            templateUrl: "partials/ac_join.html",
+            controller:'ctrl_ac_join'
+        })
         .state('time_input', {
             url: "/time_input",
             templateUrl: "partials/time_input.html",
