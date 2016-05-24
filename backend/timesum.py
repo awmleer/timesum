@@ -106,11 +106,11 @@ def islogin():
             return [True, int(uid)]
     return [False, 'fqsws']
 
-def sendsms1(publisher, title, person, mobile):
-    d = {'#publisher#': publisher, '#title#': title}
+def sendsms4(operate, code, person, mobile):
+    d = {'#operate#': operate, '#code#': code}
     tpl_value = urllib.urlencode(d)
     finalstr = ''
-    getdata = urllib.urlencode({'mobile':mobile,'tpl_id':13216,'tpl_value':tpl_value,'key': 'b32c625ffb38e4ad07f86bb1101548e1'})
+    getdata = urllib.urlencode({'mobile':mobile,'tpl_id':14665,'tpl_value':tpl_value,'key': 'b32c625ffb38e4ad07f86bb1101548e1'})
     url = 'http://v.juhe.cn/sms/send?%s'%getdata
     req = urllib.urlopen(url)
     result = json.loads(req.read())
@@ -191,7 +191,9 @@ def short_message_code():
     if (flag and (int(time.time() * 1000) - info['last_verify'] < 60000)):
         resp = make_response('一分钟之内只能发送一次验证码！', 200)
         return resp
-    print sendsms1(code, 'fuck', 'shit', int(phone))
+    operate = '注册用户'
+    person = '用户'+ phone
+    print sendsms4(operate.encode('utf-8'), code, person.encode('utf-8'), int(phone))
     info['last_verify'] = int(time.time() * 1000)
     info['verify_code'] = code
     info.update()
