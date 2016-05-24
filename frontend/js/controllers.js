@@ -340,7 +340,7 @@ app.controller("ctrl_time_input",function($scope,$rootScope,$http) {
 
 
 app.controller("ctrl_ac_detail",function($scope,$rootScope,$http,$stateParams) {
-    // alert($stateParams.ac_id);
+    // alert($stateParams.aid);
     // $scope.test_id=111;
 
     $scope.ac={
@@ -422,11 +422,64 @@ app.controller("ctrl_time_input_done",function($scope,$rootScope,$http,$statePar
 
 
 app.controller("ctrl_ac_invite",function($scope,$rootScope,$location,$http,$stateParams) {
-    $scope.ac_id=$stateParams.ac_id;
-    console.log($scope.ac_id);
+    $scope.aid=$stateParams.aid;
+    console.log($scope.aid);
 });
 
 
-app.controller("ctrl_ac_join",function($scope,$rootScope,$location,$http) {
+app.controller("ctrl_ac_join",function($scope,$rootScope,$location,$http,$stateParams) {
+
+    $scope.is_signed=false;
+    $scope.phone_checked=true;
+
+
+    $http({
+        url: 'api/ac_preview',
+        method: 'get',
+        params: {aid:$stateParams.aid}
+    }).success(function (data) {
+        $scope.ac=data;
+    }).error(function () {
+        alert("获取信息失败，请稍后再试");
+    });
+
+    
+    $scope.phone_check= function () {
+        if (/^1[0-9]\d{9}$/.test($scope.phone)) {
+            $http({
+                url: 'api/is_signed',
+                method: 'get',
+                params: {phone:$scope.phone}
+            }).success(function (data) {
+                if (data==true || data==false) {
+                    $scope.is_signed=data;
+                    $scope.phone_checked=true;
+                }else{
+                    alert(data);
+                }
+            }).error(function () {
+                alert("抱歉，服务器出错了，请您过一会儿再来试试");
+            });
+        }
+    };
+
+    $scope.join= function () {
+        $http({
+            url: 'api/ac_join',
+            method: 'get',
+            params: {aid:$scope.ac.aid}
+        }).success(function (data) {
+            if (data == 'success') {
+                if (window.confirm('加入成功，是否现在录入时间？')) {
+
+                }else{
+                    $state.go('ac_detail',{aid:this.ac.aid});
+                }
+            }
+        }).error(function () {
+            alert("获取信息失败，请稍后再试");
+        });
+    }
+
 
 });

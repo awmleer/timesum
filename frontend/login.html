@@ -37,7 +37,7 @@
     <form>
         <div class="row">
             <div class="col-xs-10 col-xs-offset-1" style="margin-bottom: 1.5em;">
-                <label class="input-label" for="phone" style="padding-top: 3px"><i class="fa fa-mobile fa-2x"></i></label>
+                <label class="input-label" for="phone" style="padding-top: 3px"><i class="fa fa-phone fa-2x"></i></label>
                 <input style="padding-left:3em;" id="phone" class="form-control input-text" type="text">
             </div>
             <div class="col-xs-10 col-xs-offset-1" style="margin-bottom: 1.5em;">
@@ -90,13 +90,15 @@
             return;
         }
 
+
         $.ajax({
             url: "api/login",
-            type: "get",
-            data: {
+            type: "post",
+            headers: {'Content-Type': 'application/json'},
+            data: JSON.stringify({
                 phone: phone,
                 password:password
-            }
+            })
         }).done(function (data) {
             if (data == 'success') {
                 //存储用户账号密码

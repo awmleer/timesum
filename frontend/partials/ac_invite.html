@@ -7,9 +7,9 @@
     <div style="margin-top: 1rem;margin-bottom: auto">
         <!--<button type="button" class="button button-pill button-main" >查看任务状态</button>-->
         <p style="color:#999999;font-size: 1.6rem;margin-top: 1rem">邀请函二维码已生成</p>
-        <img src="http://qr.liantu.com/api.php?text=http://www.timesum.net/join_ac/{{ ac_id }}" style="width:60%;max-width: 300px;">
+        <img src="http://qr.liantu.com/api.php?text=http://www.timesum.net/join_ac/{{ aid }}" style="width:60%;max-width: 300px;">
         <p></p>
-        <p id="invite_url">{{ 'http://www.timesum.net/join_ac/' + ac_id  }}</p>
+        <p id="invite_url">{{ 'http://www.timesum.net/join_ac/' + aid  }}</p>
     </div>
         <button data-clipboard-target="#invite_url" type="button" id="copyurl" class="button button-pill button-main" style="margin-top: 1rem;width:60%;max-width: 300px;">复制链接</button><br>
         <a ui-sref="home" class="button button-pill button-main button-border" style="margin-top: 1rem;width:60%;max-width: 300px;">返回主页</a>
