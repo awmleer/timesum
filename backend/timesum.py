@@ -178,6 +178,15 @@ def signup():
     resp.set_cookie('All_Hail_Fqs', base64.b64encode(salt + str(sum)), max_age=2592000)
     return resp
 # --------------------我是分界线--------------------
+@app.route('/api/is_signed')
+def is_signed():
+    phone = request.args.get('phone')
+    if (users.objects(phone=phone).first() == None):
+        resp = make_response('false', 200)
+    else:
+        resp = make_response('true', 200)
+    return resp
+# --------------------我是分界线--------------------
 @app.route('/api/short_message_code')
 def short_message_code():
     phone = request.args.get('phone')
