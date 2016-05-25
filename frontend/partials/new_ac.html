@@ -62,37 +62,52 @@
         <div class="acinput">
             <div class="form-group label-floating">
                 <label class="control-label" for="title">主题</label>
-                <input ng-model="title" class="form-control" id="title" type="text" style="padding: 0;">
+                <input ng-model="activity.title" class="form-control" id="title" type="text" style="padding: 0;">
             </div>
             <div >
-                <div style="width:47.6% ;display:inline-block;margin-right:0.8rem">
+                <div style="width:47% ;display:inline-block;">
                     <div class="form-group label-floating">
-                        <label class="control-label" for="organizer">主办方</label>
-                        <input ng-model="organizer" class="form-control" id="organizer" type="text" style="padding: 0;">
+                        <label class="control-label" for="organizer">主办方(选填)</label>
+                        <input ng-model="activity.organizer" class="form-control" id="organizer" type="text" style="padding: 0;">
                     </div>
                 </div>
-                <div style="width: 47.6%;display:inline-block">
+                <div style="width:47% ;display:inline-block;float: right;">
                     <div class="form-group label-floating">
-                        <label class="control-label" for="expected_number">预计人数</label>
-                        <input ng-model="expected_number" class="form-control" id="expected_number" type="number" style="padding: 0;">
+                        <label class="control-label" for="place">地点(选填)</label>
+                        <input ng-model="activity.place" class="form-control" id="place" type="text" style="padding: 0;">
                     </div>
                 </div>
             </div>
             <div>
-                    <label class="control-label" for="description">简介</label>
-                    <textarea ng-model="description" class="form-control" rows="3" id="description" style="padding: 0;"></textarea>
+                <label class="control-label" for="description">简介</label>
+                <textarea ng-model="activity.description" class="form-control" rows="3" id="description" style="padding: 0;margin-bottom: 1rem"></textarea>
+            </div>
+            <div>
+                <div class="form-group label-floating">
+                    <label class="control-label" for="expected_number">预计人数</label>
+                    <input ng-model="activity.expected_number" class="form-control" id="expected_number" type="number" style="padding: 0;">
+                </div>
+            </div>
+            <div>
+                <div class="form-group label-floating">
+                    <label class="control-label" for="duration">预计时长</label>
+                    <input ng-model="activity.duration" class="form-control" id="duration" type="number" style="padding: 0;">
+                </div>
             </div>
         </div>
 
         <div style="margin-bottom:1rem;">
-
-            <div ng-repeat="date in dates" class="div_date text-gray" align="left" style="border:2px solid #16a085;border-radius:0.8rem;background:url(img/new_ac/Timestamp-Corner.svg) right center no-repeat;padding-top: 1rem">
-                <div style="line-height:1.6rem;position: relative">
-                    <p class="font-number" style=" margin-bottom: 0;padding-right:0; text-align: left;font-size: 2.6rem;margin-left: 0.4rem;">{{ date.month }}<span style="font-size: 1.1rem">月</span></p>
-                    <p class="font-number" style="text-align: left;font-size: 1.7rem;margin-left: 0.4rem;margin-right: 0">{{ date.day }}<span style="font-size: 1.1rem">日</span></p>
-                    <i ng-click="delete_date()" style="position:absolute;bottom:-1rem;right:0;  color:white;padding-right:0.3rem;padding-top:1rem;padding-left:1rem;padding-bottom: 0.5rem;" class="fa fa-minus"></i>
+            <label class="control-label">活动时间</label>
+            <div>
+                <div ng-repeat="date in activity.date_range" class="div_date text-gray" align="left" style="border:2px solid #16a085;border-radius:0.8rem;background:url(img/new_ac/Timestamp-Corner.svg) right center no-repeat;padding-top: 1rem">
+                    <div style="line-height:1.6rem;position: relative">
+                        <p class="font-number" style=" margin-bottom: 0;padding-right:0; text-align: left;font-size: 2.6rem;margin-left: 0.4rem;">{{ date.month }}<span style="font-size: 1.1rem">月</span></p>
+                        <p class="font-number" style="text-align: left;font-size: 1.7rem;margin-left: 0.4rem;margin-right: 0">{{ date.day }}<span style="font-size: 1.1rem">日</span></p>
+                        <i ng-click="delete_date()" style="position:absolute;bottom:-1rem;right:0;  color:white;padding-right:0.3rem;padding-top:1rem;padding-left:1rem;padding-bottom: 0.5rem;" class="fa fa-minus"></i>
+                    </div>
                 </div>
             </div>
+
 
             <div id="add_date" class="div_date" align="center" style="border:2px dashed #16a085;border-radius: 0.8rem;">
                 <i class="fa fa-plus text-green" style="margin-top:28%;font-size: 3rem;display: block;"></i>

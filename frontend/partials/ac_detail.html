@@ -59,7 +59,8 @@
         </p>
     </div>
 
-    <table class="function_group" ng-if="ac.relation=='published'">
+    <!--publisher对应的功能区-->
+    <table class="function_group" ng-if="ac.relation=='published' && !ac.history">
         <colgroup>
             <col width="33%">
             <col width="34%">
@@ -80,7 +81,8 @@
         </tbody>
     </table>
 
-    <div class="function_group function_group_participated hover-pointer" ng-if="ac.me.relation=='participated'" align="center" ui-sref="ac_time_input({aid:ac.aid})">
+    <!--participator对应的功能区-->
+    <div class="function_group function_group_participated hover-pointer" ng-if="ac.me.relation=='participated' && !ac.history" align="center" ui-sref="ac_time_input({aid:ac.aid})">
         <i class="fa fa-clock-o fa-fw" style="margin-bottom: -2rem"></i><span style="font-size: 1.4rem;margin-bottom: 0.5rem;display: inline-block;">{{ ac.me.time_inputed?'修改':'录入' }}个人时间情况</span>
     </div>
 </div>

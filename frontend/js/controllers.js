@@ -181,29 +181,45 @@ app.controller("ctrl_home",function($scope,$rootScope,$http,$state) {
 
 
 app.controller("ctrl_new_ac",function($scope,$rootScope,$http) {
-    $scope.dates=[];
+
+    $scope.activity={
+        title:'',
+        description:'',
+        organizer:'',
+        expected_number:'',
+        date_range:[],
+        place:'',
+        duration:''
+    };
 
     $scope.submit_ac= function () {
-        var obj={
-            title:$scope.title,
-            description:$scope.description,
-            organizer:$scope.organizer,
-            expected_number:$scope.expected_number,
-            date_range:$scope.dates
-        };
+        // var obj={
+        //     title:$scope.title,
+        //     description:$scope.description,
+        //     organizer:$scope.organizer,
+        //     expected_number:$scope.expected_number,
+        //     date_range:$scope.date_range,
+        //     place:$scope.place,
+        //     duration:$scope.duration
+        // };
         $http({
             url: 'api/new_ac',
             method: 'post',
             headers: {'Content-Type': 'application/json'},
-            data: JSON.stringify(obj)
+            data: angular.toJson($scope.activity)
         }).success(function (data) {
             if (data.result == 'success') {
-                alert("添加成功");
+                //提醒用户跳转到时间录入界面
+                if (window.confirm('添加成功，是否现在录入时间？')) {
+                    $state.go('ac_time_input',{aid:data.aid});
+                }else{
+                    $state.go('ac_detail',{aid:data.aid});
+                }
             }else{
                 alert(data.message);
             }
         }).error(function () {
-            alert("获取信息失败，请稍后再试");
+            alert("操作失败");
         });
         console.log($scope.description);
 
@@ -217,11 +233,12 @@ app.controller("ctrl_new_ac",function($scope,$rootScope,$http) {
             month:moment(current_date).format("M"),
             day:moment(current_date).format("D")
         };
-        $scope.dates.push(obj_date);
+        console.log(obj_date);
+        $scope.activity.date_range.push(obj_date);
     };
 
     $scope.delete_date= function () {
-        $scope.dates.remove(this.date);
+        $scope.activity.date_range.remove(this.date);
     }
 });
 
@@ -384,49 +401,59 @@ app.controller("ctrl_ac_detail",function($scope,$rootScope,$http,$stateParams) {
     // alert($stateParams.aid);
     // $scope.test_id=111;
 
-    $scope.ac={
-        me:{
-            relation:'participated',
-            time_inputed:false
-        },
-        aid:21513,
-        title:'sparker开发团队会议',
-        publisher:{
-            uid:1658165,
-            name:'小明'
-        },
-        organizer:'sparker团队',
-        place:'月牙楼元空间',
-        description:'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut beatae consectetur nisi nulla quidem saepe tempora. Ea eligendi ipsam laborum praesentium ullam? Itaque iure laborum, laudantium porro quisquam vel voluptatibus?',
-        duration:13,
-        date_range:[
-            {year:2016,month:5,day:19,day_in_week:'周四'},
-            {year:2016,month:5,day:20,day_in_week:'周四'}
-        ],
-        opening:false,
-        participators:[
-            {
-                uid:186115,
-                name:'aaa',
-                time_inputed:true,
-                attendable:2
-            },
-            {
-                uid:164866,
-                name:'bbb',
-                time_inputed:false,
-                attendable:0
-            }
-        ],
-        expected_number:5,
-        published_time:1463295585807,
-        time_determined:13584846,
-        comments:[
-            {"uid":165156,"name":'小明',"time":1463295585807,"text":"lorem afaefqgjqpog"},
-            {"uid":165861,"name":'小华',"time":1463295585807,"text":"lorem qeee"}
-        ]
-    };
+    // $scope.ac={
+    //     me:{
+    //         relation:'participated',
+    //         time_inputed:false
+    //     },
+    //     aid:21513,
+    //     title:'sparker开发团队会议',
+    //     publisher:{
+    //         uid:1658165,
+    //         name:'小明'
+    //     },
+    //     organizer:'sparker团队',
+    //     place:'月牙楼元空间',
+    //     description:'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut beatae consectetur nisi nulla quidem saepe tempora. Ea eligendi ipsam laborum praesentium ullam? Itaque iure laborum, laudantium porro quisquam vel voluptatibus?',
+    //     duration:13,
+    //     date_range:[
+    //         {year:2016,month:5,day:19,day_in_week:'周四'},
+    //         {year:2016,month:5,day:20,day_in_week:'周四'}
+    //     ],
+    //     opening:false,
+    //     history:false,
+    //     participators:[
+    //         {
+    //             uid:186115,
+    //             name:'aaa',
+    //             time_inputed:true,
+    //             attendable:2
+    //         },
+    //         {
+    //             uid:164866,
+    //             name:'bbb',
+    //             time_inputed:false,
+    //             attendable:0
+    //         }
+    //     ],
+    //     expected_number:5,
+    //     published_time:1463295585807,
+    //     time_determined:13584846,
+    //     comments:[
+    //         {"uid":165156,"name":'小明',"time":1463295585807,"text":"lorem afaefqgjqpog"},
+    //         {"uid":165861,"name":'小华',"time":1463295585807,"text":"lorem qeee"}
+    //     ]
+    // };
 
+    $http({
+        url: 'api/activities',
+        method: 'get',
+        params: {}
+    }).success(function (data) {
+        $scope.ac=data;
+    }).error(function () {
+        alert("获取信息失败，请稍后再试");
+    });
 
     $scope.submit_comment= function () {
         if ($scope.my_comment=='' || $scope.my_comment==undefined) {
@@ -475,43 +502,43 @@ app.controller("ctrl_ac_join",function($scope,$rootScope,$location,$http,$stateP
     $scope.already_login=false;
 
 
-    // $http({
-    //     url: 'api/userinfo',
-    //     method: 'get',
-    //     params: {}
-    // }).success(function (data) {
-    //     $scope.already_login=true;
-    //     $scope.userinfo=data;
-    // }).error(function (data,status) {
-    //     if (status == 401) {//如果是unauthorized
-    //         //webstorge获取暂存的用户名和密码，并且尝试自动登录
-    //         var phone=store.get('phone');
-    //         var password=store.get('password');
-    //         if (phone&&password) {
-    //             $.ajax({
-    //                 url: "api/login",
-    //                 type: "post",
-    //                 headers: {'Content-Type': 'application/json'},
-    //                 data: JSON.stringify({
-    //                     phone: phone,
-    //                     password:password
-    //                 })
-    //             }).done(function (data) {
-    //                 if (data == 'success') {
-    //                     location.reload();
-    //                 }else{
-    //                     $scope.already_login=false;
-    //                 }
-    //             }).fail(function () {
-    //                 $scope.already_login=false;
-    //             });
-    //         }else {
-    //             $scope.already_login=false;
-    //         }
-    //     }else{
-    //         alert("获取用户个人信息失败，请稍后再试");
-    //     }
-    // });
+    $http({
+        url: 'api/userinfo',
+        method: 'get',
+        params: {}
+    }).success(function (data) {
+        $scope.already_login=true;
+        $scope.userinfo=data;
+    }).error(function (data,status) {
+        if (status == 401) {//如果是unauthorized
+            //webstorge获取暂存的用户名和密码，并且尝试自动登录
+            var phone=store.get('phone');
+            var password=store.get('password');
+            if (phone&&password) {
+                $http({
+                    url: 'api/login',
+                    method: 'post',
+                    headers: {'Content-Type': 'application/json'},
+                    data: JSON.stringify({
+                        phone: phone,
+                        password: password
+                    })
+                }).success(function (data) {
+                    if (data == 'success') {
+                        location.reload();
+                    }else{
+                        $scope.already_login=false;
+                    }
+                }).error(function () {
+                    $scope.already_login=false;
+                });
+            }else {
+                $scope.already_login=false;
+            }
+        }else{
+            alert("获取用户个人信息失败，请稍后再试");
+        }
+    });
     $scope.already_login=true;
     $scope.userinfo=	{
         "uid" : 1,
@@ -550,7 +577,6 @@ app.controller("ctrl_ac_join",function($scope,$rootScope,$location,$http,$stateP
         published_time:1463295585807,
     };
 
-
     
     $scope.phone_check= function () {
         if (/^1[0-9]\d{9}$/.test($scope.phone)) {
@@ -570,8 +596,6 @@ app.controller("ctrl_ac_join",function($scope,$rootScope,$location,$http,$stateP
             });
         }
     };
-
-    
     
 
     //直接加入活动
