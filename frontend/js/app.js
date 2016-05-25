@@ -44,7 +44,7 @@ app.config(function($stateProvider, $urlRouterProvider){
             controller:'ctrl_time_input'
         })
         .state('time_input_done', {
-            url: "/time_input_done",
+            url: "/ac/:aid/time_input_done",
             templateUrl: "partials/time_input_done.html",
             controller:'ctrl_time_input_done'
         })

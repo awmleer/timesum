@@ -24,7 +24,6 @@
         z-index: 20;
         font-size: 2rem;
         color: #000000;
-
     }
     .div_fixed_icon i{
         background: #FFFFFF;
@@ -35,6 +34,9 @@
         margin-top: 1rem;
         text-align: center;
         box-shadow: 0.3rem 0.3rem 0.5rem gray;
+    }
+    .div_fixed_icon i:active{
+        background: #e1e1e1;
     }
 
 
@@ -115,7 +117,7 @@
             </div>
         </div>
 
-        <button class="button button-pill button-main" style="margin-top: 1.5rem;width: 90%;">提交</button>
+        <button class="button button-pill button-main" style="margin-top: 1.5rem;width: 90%;" ng-click="submit_time()">提交</button>
 
     </div>
 </div>

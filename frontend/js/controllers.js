@@ -1,7 +1,6 @@
 app.controller("ctrl_header",function($scope,$rootScope,$http,$state,$location) {
 
-    //如果是加入活动，则不会在这里请求userinfo
-    if (!(/\/ac\/\d+\/join/.test($location.path()))) {
+    $rootScope.get_userinfo=function () {
         //获取用户基本信息
         $http({
             url: 'api/userinfo',
@@ -40,6 +39,12 @@ app.controller("ctrl_header",function($scope,$rootScope,$http,$state,$location) 
                 alert("获取用户个人信息失败，请稍后再试");
             }
         });
+    };
+
+
+    //如果是加入活动，则不会在这里请求userinfo
+    if (!(/\/ac\/\d+\/join/.test($location.path()))) {
+        $rootScope.get_userinfo();
     }
 
 
@@ -334,11 +339,42 @@ app.controller("ctrl_time_input",function($scope,$rootScope,$http) {
     };
 
 
-    //todo 提交时把timeblock格式化掉
-    $scope.logdata= function () {
-        console.log(JSON.stringify($scope.time_data));
-    }
-    
+    $scope.submit_time= function () {
+        // console.log(JSON.stringify($scope.time_data));
+        var obj={
+            aid:$scope.ac.aid,
+            data:[]
+        };
+        for (var i = 0; i < $scope.time_data.length; i++) {
+            obj.data[i]={
+                date:{
+                    year:$scope.time_data[i].year,
+                    month:$scope.time_data[i].month,
+                    day:$scope.time_data[i].day
+                },
+                timeblocks:''
+            };
+            for (var j = 0; j < $scope.time_data[i].timeblocks.length; j++) {
+                obj.data[i].timeblocks+=$scope.time_data[i].timeblocks[j].status.toString();
+            }
+        }
+        $http({
+            url: 'api/time_input',
+            method: 'post',
+            headers: {'Content-Type': 'application/json'},
+            data: JSON.stringify(obj)
+        }).success(function (data) {
+            if (data == 'success') {
+                $state.go('ac_time_input_done',{aid:$scope.ac.aid});
+            }else {
+                alert(data);
+            }
+        }).error(function () {
+            alert("获取信息失败，请稍后再试");
+        });
+        
+    };
+
     
 });
 
@@ -421,7 +457,7 @@ app.controller("ctrl_ac_detail",function($scope,$rootScope,$http,$stateParams) {
 
 
 app.controller("ctrl_time_input_done",function($scope,$rootScope,$http,$stateParams) {
-    
+    $scope.aid=$stateParams.aid;
 });
 
 
@@ -535,6 +571,8 @@ app.controller("ctrl_ac_join",function($scope,$rootScope,$location,$http,$stateP
         }
     };
 
+    
+    
 
     //直接加入活动
     $scope.join= function () {
@@ -544,6 +582,7 @@ app.controller("ctrl_ac_join",function($scope,$rootScope,$location,$http,$stateP
             params: {aid:$scope.ac.aid}
         }).success(function (data) {
             if (data == 'success') {
+                //提醒用户跳转到时间录入界面
                 if (window.confirm('加入成功，是否现在录入时间？')) {
                     $state.go('ac_time_input',{aid:this.ac.aid});
                 }else{
@@ -571,7 +610,9 @@ app.controller("ctrl_ac_join",function($scope,$rootScope,$location,$http,$stateP
                 //存储用户账号密码
                 store.set('phone', phone);
                 store.set('password',password);
-                //登录成功后，调用加入活动
+                //登录成功后，获取userinfo
+                $rootScope.get_userinfo();
+                //然后加入活动
                 $scope.join();
             }else if (data == 'wrong password') {
                 alert("您输入的密码错误");
@@ -606,7 +647,9 @@ app.controller("ctrl_ac_join",function($scope,$rootScope,$location,$http,$stateP
                 //存储用户账号密码
                 store.set('phone', phone);
                 store.set('password',password);
-                //注册成功后，调用加入活动
+                //注册成功后，获取userinfo
+                $rootScope.get_userinfo();
+                //然后加入活动
                 $scope.join();
             } else {
                 alert(data);
