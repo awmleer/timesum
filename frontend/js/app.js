@@ -23,6 +23,11 @@ app.config(function($stateProvider, $urlRouterProvider){
             templateUrl: "partials/ac_detail.html",
             controller:'ctrl_ac_detail'
         })
+        .state('ac_recommend', {
+            url: "/ac/:aid/recommend",
+            templateUrl: "partials/ac_recommend.html",
+            controller:'ctrl_ac_recommend'
+        })
         .state('ac_edit', {
             url: "/ac/:aid/edit",
             templateUrl: "partials/ac_edit.html",

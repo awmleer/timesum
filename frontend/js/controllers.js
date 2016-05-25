@@ -80,107 +80,120 @@ app.controller("ctrl_home",function($scope,$rootScope,$http,$state) {
     };
 
 
+    $http({
+        url: 'api/activities',
+        method: 'get',
+        params: {}
+    }).success(function (data) {
+        $scope.ac_published=data.ac_published;
+        $scope.ac_participated=data.ac_participated;
+        $scope.ac_published_history=data.ac_published_history;
+        $scope.ac_participated_history=data.ac_participated_history;
+    }).error(function () {
+        alert("获取信息失败，请稍后再试");
+    });
+
     //临时模拟的数据
-    $scope.ac_published=[
-        {
-            aid:21513,
-            title:'sparker开发团队会议',
-            opening:false,
-            participators:[1256884,1846848,1865493],
-            expected_number:5,
-            published_time:1463295585807,
-            time_determined:0
-        },
-        {
-            aid:21514,
-            title:'小组讨论',
-            opening:true,
-            participators:[1256884,1846848],
-            expected_number:8,
-            published_time:1463295585807,
-            time_determined:1463395585807
-        },
-        {
-            aid:555,
-            title:'SQTP答辩',
-            opening:true,
-            participators:[1256884,1846848,1865493,4855556,84465],
-            expected_number:4,
-            published_time:1463295585807,
-            time_determined:0
-        }
-    ];
-
-    $scope.ac_participated=[
-        {
-            aid:666,
-            title:'sparker开发团队会议',
-            opening:false,
-            participators:[1256884,1846848,1865493],
-            expected_number:5,
-            published_time:1463295585807,
-            time_determined:0
-        },
-        {
-            aid:777,
-            title:'小组讨论',
-            opening:true,
-            participators:[1256884,1846848],
-            expected_number:8,
-            published_time:1463295585807,
-            time_determined:[1463396585807,1463497585807]
-        },
-        {
-            aid:888,
-            title:'SQTP答辩',
-            opening:true,
-            participators:[1256884,1846848,1865493,4855556,84465],
-            expected_number:4,
-            published_time:1463295585807,
-            time_determined:0
-        }
-    ];
-
-    $scope.ac_published_history=[
-        {
-            aid:999,
-            title:'sparker开发团队会议',
-            time_determined:[1463297585807,1463497585807]
-        },
-        {
-            aid:100,
-            title:'小组讨论',
-            time_determined:0
-        },
-        {
-            aid:1999,
-            title:'SQTP答辩',
-            time_determined:[1463295685807,1463497585807]
-        }
-    ];
-
-    $scope.ac_participated_history=[
-        {
-            aid:786,
-            title:'sparker开发团队会议',
-            time_determined:0
-        },
-        {
-            aid:7877,
-            title:'UI设计讨论',
-            time_determined:[1463396585807,1463497585807]
-        },
-        {
-            aid:8888,
-            title:'SQTP答辩',
-            time_determined:[1463295685807,1463497585807]
-        }
-    ];
+    // $scope.ac_published=[
+    //     {
+    //         aid:21513,
+    //         title:'sparker开发团队会议',
+    //         opening:false,
+    //         participators:[1256884,1846848,1865493],
+    //         expected_number:5,
+    //         published_time:1463295585807,
+    //         time_determined:0
+    //     },
+    //     {
+    //         aid:21514,
+    //         title:'小组讨论',
+    //         opening:true,
+    //         participators:[1256884,1846848],
+    //         expected_number:8,
+    //         published_time:1463295585807,
+    //         time_determined:1463395585807
+    //     },
+    //     {
+    //         aid:555,
+    //         title:'SQTP答辩',
+    //         opening:true,
+    //         participators:[1256884,1846848,1865493,4855556,84465],
+    //         expected_number:4,
+    //         published_time:1463295585807,
+    //         time_determined:0
+    //     }
+    // ];
+    //
+    // $scope.ac_participated=[
+    //     {
+    //         aid:666,
+    //         title:'sparker开发团队会议',
+    //         opening:false,
+    //         participators:[1256884,1846848,1865493],
+    //         expected_number:5,
+    //         published_time:1463295585807,
+    //         time_determined:0
+    //     },
+    //     {
+    //         aid:777,
+    //         title:'小组讨论',
+    //         opening:true,
+    //         participators:[1256884,1846848],
+    //         expected_number:8,
+    //         published_time:1463295585807,
+    //         time_determined:[1463396585807,1463497585807]
+    //     },
+    //     {
+    //         aid:888,
+    //         title:'SQTP答辩',
+    //         opening:true,
+    //         participators:[1256884,1846848,1865493,4855556,84465],
+    //         expected_number:4,
+    //         published_time:1463295585807,
+    //         time_determined:0
+    //     }
+    // ];
+    //
+    // $scope.ac_published_history=[
+    //     {
+    //         aid:999,
+    //         title:'sparker开发团队会议',
+    //         time_determined:[1463297585807,1463497585807]
+    //     },
+    //     {
+    //         aid:100,
+    //         title:'小组讨论',
+    //         time_determined:0
+    //     },
+    //     {
+    //         aid:1999,
+    //         title:'SQTP答辩',
+    //         time_determined:[1463295685807,1463497585807]
+    //     }
+    // ];
+    //
+    // $scope.ac_participated_history=[
+    //     {
+    //         aid:786,
+    //         title:'sparker开发团队会议',
+    //         time_determined:0
+    //     },
+    //     {
+    //         aid:7877,
+    //         title:'UI设计讨论',
+    //         time_determined:[1463396585807,1463497585807]
+    //     },
+    //     {
+    //         aid:8888,
+    //         title:'SQTP答辩',
+    //         time_determined:[1463295685807,1463497585807]
+    //     }
+    // ];
 });
 
 
 
-app.controller("ctrl_new_ac",function($scope,$rootScope,$http) {
+app.controller("ctrl_new_ac",function($scope,$rootScope,$http,$state) {
 
     $scope.activity={
         title:'',
@@ -244,7 +257,7 @@ app.controller("ctrl_new_ac",function($scope,$rootScope,$http) {
 
 
 
-app.controller("ctrl_time_input",function($scope,$rootScope,$http) {
+app.controller("ctrl_time_input",function($scope,$rootScope,$http,$stateParams) {
 
     $scope.ac={
         aid:21513,
@@ -445,10 +458,11 @@ app.controller("ctrl_ac_detail",function($scope,$rootScope,$http,$stateParams) {
     //     ]
     // };
 
+    //获取活动详情
     $http({
-        url: 'api/activities',
+        url: 'api/ac_detail',
         method: 'get',
-        params: {}
+        params: {aid: $stateParams.aid}
     }).success(function (data) {
         $scope.ac=data;
     }).error(function () {
@@ -481,6 +495,9 @@ app.controller("ctrl_ac_detail",function($scope,$rootScope,$http,$stateParams) {
 
 
 
+app.controller("ctrl_ac_recommend",function($scope,$rootScope,$http,$stateParams) {
+    $scope.aid=$stateParams.aid;
+});
 
 
 app.controller("ctrl_time_input_done",function($scope,$rootScope,$http,$stateParams) {
@@ -508,7 +525,7 @@ app.controller("ctrl_ac_join",function($scope,$rootScope,$location,$http,$stateP
         params: {}
     }).success(function (data) {
         $scope.already_login=true;
-        $scope.userinfo=data;
+        $rootScope.userinfo=data;
     }).error(function (data,status) {
         if (status == 401) {//如果是unauthorized
             //webstorge获取暂存的用户名和密码，并且尝试自动登录
@@ -539,43 +556,43 @@ app.controller("ctrl_ac_join",function($scope,$rootScope,$location,$http,$stateP
             alert("获取用户个人信息失败，请稍后再试");
         }
     });
-    $scope.already_login=true;
-    $scope.userinfo=	{
-        "uid" : 1,
-        "name" : "小朋友",
-        "phone" : 12345678910,
-        "last_login" : "",
-        "login_count" : 5
-    };
+    // $scope.already_login=true;
+    // $rootScope.userinfo=	{
+    //     "uid" : 1,
+    //     "name" : "小朋友",
+    //     "phone" : 12345678910,
+    //     "last_login" : "",
+    //     "login_count" : 5
+    // };
 
-    //
-    // $http({
-    //     url: 'api/ac_preview',
-    //     method: 'get',
-    //     params: {aid:$stateParams.aid}
-    // }).success(function (data) {
-    //     $scope.ac=data;
-    // }).error(function () {
-    //     alert("获取信息失败");
-    // });
 
-    $scope.ac={
-        aid:21513,
-        title:'sparker开发团队会议',
-        publisher:{
-            uid:1658165,
-            name:'小明'
-        },
-        organizer:'sparker团队',
-        place:'月牙楼元空间',
-        description:'Loremipsumdolorsitamet,consecteturadipisicingelit.Autbeataeconsecteturnisinullaquidemsaepetempora.Eaeligendiipsamlaborumpraesentiumullam?Itaqueiurelaborum,laudantiumporroquisquamvelvoluptatibus?',
-        date_range:[
-            {year:2016,month:5,day:19,day_in_week:'周四'},
-            {year:2016,month:5,day:20,day_in_week:'周四'}
-        ],
-        opening:true,
-        published_time:1463295585807,
-    };
+    $http({
+        url: 'api/ac_preview',
+        method: 'get',
+        params: {aid:$stateParams.aid}
+    }).success(function (data) {
+        $scope.ac=data;
+    }).error(function () {
+        alert("获取信息失败");
+    });
+
+    // $scope.ac={
+    //     aid:21513,
+    //     title:'sparker开发团队会议',
+    //     publisher:{
+    //         uid:1658165,
+    //         name:'小明'
+    //     },
+    //     organizer:'sparker团队',
+    //     place:'月牙楼元空间',
+    //     description:'Loremipsumdolorsitamet,consecteturadipisicingelit.Autbeataeconsecteturnisinullaquidemsaepetempora.Eaeligendiipsamlaborumpraesentiumullam?Itaqueiurelaborum,laudantiumporroquisquamvelvoluptatibus?',
+    //     date_range:[
+    //         {year:2016,month:5,day:19,day_in_week:'周四'},
+    //         {year:2016,month:5,day:20,day_in_week:'周四'}
+    //     ],
+    //     opening:true,
+    //     published_time:1463295585807,
+    // };
 
     
     $scope.phone_check= function () {
