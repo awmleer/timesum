@@ -41,6 +41,12 @@ class data_in(EmbeddedDocument):
     date = EmbeddedDocumentField(date_in, required=True)
     timeblocks = StringField(required=True)
 
+class time_format(EmbeddedDocument):
+    year = StringField(required=True)
+    month = StringField(required=True)
+    day = StringField(required=True)
+    time = IntField(required=True)
+
 class time_collection_in(EmbeddedDocument):
     uid = IntField(required=True)
     data = ListField(EmbeddedDocumentField(data_in), required=True)
@@ -64,7 +70,7 @@ class activity(Document):
     expected_number = IntField(required=True)
     duration = IntField(required=True)
     published_time = IntField(required=True, default=int(time.time() * 1000))
-    time_determined = IntField(required=True, default=123)
+    time_determined = ListField(EmbeddedDocumentField(time_format), required=True, default=[])
     date_range = ListField(EmbeddedDocumentField(date_in), required=True)
     comments = ListField(EmbeddedDocumentField(comments_in), required=True, default=[])
 # --------------------我是分界线--------------------
@@ -94,7 +100,6 @@ salt = '5aWZak2n35Wk fqsws'
 # ccc['comments'].append(comments_in(uid=164,time=64546546,text='65464'))
 # ccc.save()
 
-
 def islogin():
     uid_code = request.cookies.get('All_Hail_Fqs')
     if (uid_code == None) or (uid_code == ''):
@@ -117,10 +122,11 @@ def sendsms4(operate, code, person, mobile):
     finalstr += '发送给%s的短信的发送结果：%s\n' %(person, result['reason'].encode('utf-8'))
     return finalstr
 # --------------------我是分界线--------------------
-@app.route('/api/login')
+@app.route('/api/login', methods=['POST'])
 def login():
-    phone = request.args.get('phone')
-    password = request.args.get('password')
+    text = request.json
+    phone = str(text['phone'])
+    password = str(text['password'])
     if (phone == '' or password == ''):
         resp = make_response('信息不完整', 200)
         return resp
@@ -190,6 +196,9 @@ def is_signed():
 @app.route('/api/short_message_code')
 def short_message_code():
     phone = request.args.get('phone')
+    if (users.objects(phone=phone).first() != None):
+        resp = make_response('(´・ω・`)该手机号已经注册过啦', 200)
+        return resp
     info = verification.objects(phone=phone).first()
     code = str(random.randint(1000,9999))
     flag = True
@@ -200,12 +209,12 @@ def short_message_code():
     if (flag and (int(time.time() * 1000) - info['last_verify'] < 60000)):
         resp = make_response('一分钟之内只能发送一次验证码！', 200)
         return resp
-    operate = '注册用户'
-    person = '用户'+ phone
+    operate = u'注册用户'
+    person = u'新用户' + phone
     print sendsms4(operate.encode('utf-8'), code, person.encode('utf-8'), int(phone))
     info['last_verify'] = int(time.time() * 1000)
     info['verify_code'] = code
-    info.update()
+    info.save()
     resp = make_response('success', 200)
     return resp
 # --------------------我是分界线--------------------
@@ -228,7 +237,7 @@ def userinfo():
 def changepwd():
     flag = islogin()
     if (not flag[0]):
-        resp = make_response('cookies error', 401)
+        resp = make_response('', 200)
         return resp
     uid = flag[1]
 
@@ -246,13 +255,48 @@ def changepwd():
     resp = make_response('success', 200)
     return resp
 # --------------------我是分界线--------------------
-# @app.route('/api/activities')
-# def activities():
-#     flag = islogin()
-#     if (not flag[0]):
-#         resp = make_response('cookies error', 401)
-#         return resp
-#     uid = flag[1]
+@app.route('/api/activities')
+def activities():
+    flag = islogin()
+    if (not flag[0]):
+        resp = make_response('', 200)
+        return resp
+    uid = flag[1]
+
+    resp_json = {'ac_published': [], 'ac_participated': [], 'ac_published_history': [], 'ac_participated_history': []}
+    for one_ac in activity.objects(publisher=uid):
+        if (one_ac['history'] == False):
+            temp = {}
+            temp.update({'aid': one_ac['aid'], 'title': one_ac['title'], 'opening': one_ac['opening'], 'participators': one_ac['participators']})
+            temp.update({'expected_number': one_ac['expected_number'], 'published_time': one_ac['published_time'], 'time_determined': one_ac['time_determined']})
+            resp_json['ac_published'].append(temp)
+        else:
+            temp = {}
+            temp.update({'aid': one_ac['aid'], 'title': one_ac['title'], 'time_determined': one_ac['time_determined']})
+            resp_json['ac_published_history'].append(temp)
+    for one_ac in activity.objects(participators__all=[participators_in(uid=uid, time_inputed=True)]):
+        if (one_ac['history'] == False):
+            temp = {}
+            temp.update({'aid': one_ac['aid'], 'title': one_ac['title'], 'opening': one_ac['opening'], 'participators': one_ac['participators']})
+            temp.update({'expected_number': one_ac['expected_number'], 'published_time': one_ac['published_time'], 'time_determined': one_ac['time_determined']})
+            resp_json['ac_participated'].append(temp)
+        else:
+            temp = {}
+            temp.update({'aid': one_ac['aid'], 'title': one_ac['title'], 'time_determined': one_ac['time_determined']})
+            resp_json['ac_participated_history'].append(temp)
+    for one_ac in activity.objects(participators__all=[participators_in(uid=uid, time_inputed=False)]):
+        if (one_ac['history'] == False):
+            temp = {}
+            temp.update({'aid': one_ac['aid'], 'title': one_ac['title'], 'opening': one_ac['opening'], 'participators': one_ac['participators']})
+            temp.update({'expected_number': one_ac['expected_number'], 'published_time': one_ac['published_time'], 'time_determined': one_ac['time_determined']})
+            resp_json['ac_participated'].append(temp)
+        else:
+            temp = {}
+            temp.update({'aid': one_ac['aid'], 'title': one_ac['title'], 'time_determined': one_ac['time_determined']})
+            resp_json['ac_participated_history'].append(temp)
+    resp_json = dumps(resp_json)
+    resp = make_response(resp_json, 200)
+    return resp
 # --------------------我是分界线--------------------
 @app.route('/api/ac_join')
 def ac_join():
