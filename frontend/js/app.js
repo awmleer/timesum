@@ -89,6 +89,8 @@ app.run(['$rootScope', '$window', '$location','$state', '$log', function ($rootS
             $rootScope.header_text='修改活动';
         }else if (/\/ac\/\d+\/invite/.test(path)) {
             $rootScope.header_text='邀请加入';
+        }else if (/\/ac\/\d+\/join/.test(path)) {
+            $rootScope.header_text='加入活动';
         }else if (path=='/time_input_done') {
             $rootScope.header_text='录入完成';
         }else if (path=='/about') {
