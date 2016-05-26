@@ -1,7 +1,6 @@
 # coding:utf-8
 
 from flask import Flask, request, make_response
-import time
 import random
 import urllib
 import urllib2
@@ -9,6 +8,7 @@ import hashlib
 import base64
 import pymongo
 import json
+import time
 import datetime
 from pymongo import MongoClient
 from mongoengine import *
@@ -22,11 +22,6 @@ app = Flask(__name__)
 CORS(app)   #跨域访问
 # --------------------我是分界线--------------------
 connect('timesum', host='121.42.209.162', username='fqs1', password='123456')    #登录及用户认证
-# --------------------我是分界线--------------------
-class me_ta(Document):
-    me_ta = StringField(required=True)
-    activity = IntField(required=True)
-    uid = IntField(required=True)
 # --------------------我是分界线--------------------
 class participators_in(EmbeddedDocument):
     uid=IntField(required=True)
@@ -55,24 +50,29 @@ class comments_in(EmbeddedDocument):
     uid = IntField(required=True)
     time = IntField(required=True, default=int(time.time() * 1000))
     text = StringField(required=True)
-
+# --------------------我是分界线--------------------
+class me_ta(Document):
+    me_ta = StringField(required=True)
+    aid = IntField(required=True)
+    uid = IntField(required=True)
+# --------------------我是分界线--------------------
 class activity(Document):
-    aid = IntField(requird=True)
-    publisher = IntField(requird=True)
-    title = StringField(required=True)
-    description = StringField(required=True)
-    place = StringField(required=True)
-    organizer = StringField(required=True)
+    aid = IntField(required=True)
+    publisher = IntField(required=True)
+    title = StringField(required=True, default='')
+    description = StringField(required=True, default='')
+    place = StringField(required=True, default='')
+    organizer = StringField(required=True, default='')
     opening = BooleanField(required=True, default=True)
     history = BooleanField(required=True, default=False)
-    participators = ListField(EmbeddedDocumentField(participators_in), required=True, default=[])
-    time_collection = ListField(EmbeddedDocumentField(time_collection_in), required=True, default=[])
+    participators = ListField(EmbeddedDocumentField(participators_in), default=[])
+    time_collection = ListField(EmbeddedDocumentField(time_collection_in), default=[])
     expected_number = IntField(required=True)
     duration = IntField(required=True)
     published_time = IntField(required=True, default=int(time.time() * 1000))
-    time_determined = ListField(EmbeddedDocumentField(time_format), required=True, default=[])
-    date_range = ListField(EmbeddedDocumentField(date_in), required=True)
-    comments = ListField(EmbeddedDocumentField(comments_in), required=True, default=[])
+    time_determined = ListField(EmbeddedDocumentField(time_format), default=[])
+    date_range = ListField(EmbeddedDocumentField(date_in), default=[])
+    comments = ListField(EmbeddedDocumentField(comments_in), default=[])
 # --------------------我是分界线--------------------
 class users(Document):
     uid = IntField(required=True)
@@ -99,6 +99,10 @@ salt = '5aWZak2n35Wk fqsws'
 # ccc = activity.objects(aid=1).first()
 # ccc['comments'].append(comments_in(uid=164,time=64546546,text='65464'))
 # ccc.save()
+
+# anyday=datetime.datetime(2012,2,15).strftime("%w")
+# print anyday
+
 
 def islogin():
     uid_code = request.cookies.get('All_Hail_Fqs')
@@ -381,30 +385,21 @@ def new_ac():
 
     text = request.json
     resp_json = json.dumps({'result': 'fail', 'message': '信息不完整'})
-    if (text['title'] == '' or text['description'] == '' or text['place'] == '' or text['organizer'] == ''):
-        resp = make_response(resp_json, 200)
-        return resp
-    if (text['expected_number'] == '' or text['duration'] == '' or text['date_range'] == []):
+    if (text['expected_number'] == '' or text['duration'] == '' or text['date_range'] == [] or text['title'] == ''):
         resp = make_response(resp_json, 200)
         return resp
 
     sum = me_ta.objects(me_ta='auto_increase').first()['aid']
     sum = sum + 1
     me_ta.objects(me_ta='auto_increase').update_one(set__aid=sum)
-    text_save = activity(aid=sum, publisher=uid)
-    text_save['title'] = str(text['title'])
-    text_save['description'] = str(text['description'])
-    text_save['place'] = str(text['place'])
-    text_save['organizer'] = str(text['organizer'])
-    text_save['expected_number'] = int(text['expected_number'])
-    text_save['duration'] = int(text['duration'])
-    text_save['date_range'] = text['date_range']
+    text.update({'aid': sum, 'publisher': uid})
+    text_save = activity.from_json(dumps(text))
     text_save.save()
     resp_json = json.dumps({'result': 'success', 'aid': sum})
     resp = make_response(resp_json, 200)
     return resp
 # --------------------我是分界线--------------------
 if __name__ == '__main__':
-    # app.debug = True
+    app.debug = True
     app.run(host='0.0.0.0', port= 5001)
 # --------------------我是分界线--------------------
