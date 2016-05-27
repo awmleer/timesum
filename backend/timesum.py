@@ -349,6 +349,8 @@ def ac_detail():
     ac_info['date_range'][1].update({'day_in_week': week_day(ac_info['date_range'][1]['year'], ac_info['date_range'][1]['month'], ac_info['date_range'][1]['day'])})
     for person in ac_info['participators']:
         person.update({'name': users.objects(uid=person['uid']).first()['name']})
+    for person in ac_info['comments']:
+        person.update({'name': users.objects(uid=person['uid']).first()['name']})
     del ac_info['_id']
     del ac_info['time_collection']
     resp_json.update(ac_info)
