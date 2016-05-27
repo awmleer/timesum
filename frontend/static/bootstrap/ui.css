@@ -11,6 +11,10 @@
   cursor: pointer;
 }
 
+.active-gray:active {
+  background: #e1e1e1!important;
+}
+
 
 .no-padding{
   padding: 0;

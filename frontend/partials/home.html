@@ -74,29 +74,25 @@
 
 
     .ac_participated{
-        background: url(img/main/Slim-Green.svg) no-repeat right;
         background-color: #FFFFFF;
         height: 9rem;
         width:100%;
         border-bottom:solid 1px #e1e1e1;
     }
-    .ac_participated:active{
-        background-color: #e1e1e1;
-    }
     .ac_participated.green{
-        background-image: url(img/main/Slim-Green.svg);
+        background: url(img/main/Slim-Green.svg) no-repeat right;
     }
     .ac_participated.green .text-colorful{
         color: #1ab99b;
     }
     .ac_participated.orange{
-        background-image: url(img/main/Slim-Orange.svg);
+        background: url(img/main/Slim-Orange.svg) no-repeat right;
     }
     .ac_participated.orange .text-colorful{
         color: #f39c11;
     }
     .ac_participated.gray{
-        background-image: url(img/main/Slim-Gray.svg);
+        background: url(img/main/Slim-Gray.svg) no-repeat right;
     }
     .ac_participated.gray .text-colorful{
         color: #666666;
@@ -128,9 +124,6 @@
         padding-top: 0.6rem;
         font-size: 1rem;
     }
-    .div_toggle_history:active{
-        background-color: #e1e1e1;
-    }
     .div_toggle_history span{
         display: inline-block;
     }
@@ -145,14 +138,17 @@
         padding: 0.3rem 0;
         padding-left: 1rem;
     }
-    .ac_history:active{
-        background-color: #e1e1e1;
-    }
     .ac_history i{
         color:#919191;
         font-size: 5rem;
         display: inline-block;
         margin-right: 0.8rem;
+    }
+
+
+
+    #icon_new_ac:active{
+        background: #12644e!important;
     }
 
 </style>
@@ -165,6 +161,9 @@
 
 
 <div class="ac_group">
+    <div ng-if="ac_published.length==0" class="ac_published" style="height: auto;padding:1rem 0">
+        <p style="font-size: 1.2rem" class="text-center">近期您还没有组织过活动<br>点击<strong>右下方的"+"</strong>创建一个活动吧</p>
+    </div>
     <div class="ac_published hover-pointer" ng-class="{'green':ac.time_determined!=0,'orange':ac.time_determined==0 && ac.opening==true,'gray':ac.time_determined==0 && ac.opening==false}" ng-repeat="ac in ac_published">
         <div class="div_click_to_detail" ui-sref="ac_detail({aid:ac.aid})"></div>
         <div class="left" ng-if="ac.time_determined!=0">
@@ -200,7 +199,9 @@
 
     <div class="ac_history_group" ng-if="ac_published_history_showing">
         <span class="text-gray" style="display: inline-block;font-size: 1.2rem;margin: 0.5rem 1rem 0.4rem">历史活动</span>
-
+        <div class="ac_history" ng-if="ac_published_history.length==0">
+            <p class="text-center" style="font-size: 1.2rem">您还没有历史活动</p>
+        </div>
         <div class="ac_history hover-pointer" ng-repeat="ac in ac_published_history"  ui-sref="ac_detail({aid:ac.aid})">
             <i class="fa" ng-class="{'fa-check-circle':ac.time_determined!=0,'fa-times-circle':ac.time_determined==0}"></i>
             <div style="display: inline-block;padding-bottom: 0.5rem">
@@ -214,7 +215,7 @@
     </div>
 
 
-    <div class="div_toggle_history text-gray hover-pointer" ng-click="ac_published_history_toggle()">
+    <div class="div_toggle_history text-gray hover-pointer active-gray" ng-click="ac_published_history_toggle()">
         <div ng-if="ac_published_history_showing==false">
             <i class="fa fa-chevron-down"></i> <span>历史活动</span>
         </div>
@@ -239,8 +240,10 @@
 
 
 <div class="ac_group">
-
-    <div class="ac_participated hover-pointer" ng-repeat="ac in ac_participated" ng-class="{'green':ac.time_determined!=0,'orange':ac.time_determined==0 && ac.opening==true,'gray':ac.time_determined==0 && ac.opening==false}" ui-sref="ac_detail({aid:ac.aid})">
+    <div ng-if="ac_participated.length==0" class="ac_participated" style="height: auto;padding:1rem 0">
+        <p style="font-size: 1.2rem" class="text-center">近期您还没有参加过活动</p>
+    </div>
+    <div class="ac_participated hover-pointer active-gray" ng-repeat="ac in ac_participated" ng-class="{'green':ac.time_determined!=0,'orange':ac.time_determined==0 && ac.opening==true,'gray':ac.time_determined==0 && ac.opening==false}" ui-sref="ac_detail({aid:ac.aid})">
         <div class="left">
             <table style="margin-top: 0.6rem">
                 <tr>
@@ -273,8 +276,10 @@
 
     <div class="ac_history_group" ng-if="ac_participated_history_showing">
         <span class="text-gray" style="display: inline-block;font-size: 1rem;margin: 0.5rem 1rem 0.4rem">历史活动</span>
-
-        <div class="ac_history hover-pointer" ng-repeat="ac in ac_participated_history" ui-sref="ac_detail({aid:ac.aid})">
+        <div class="ac_history" ng-if="ac_participated_history.length==0">
+            <p class="text-center" style="font-size: 1.2rem">您还没有历史活动</p>
+        </div>
+        <div class="ac_history hover-pointer active-gray" ng-repeat="ac in ac_participated_history" ui-sref="ac_detail({aid:ac.aid})">
             <i class="fa" ng-class="{'fa-check-circle':ac.time_determined!=0,'fa-times-circle':ac.time_determined==0}"></i>
             <div style="display: inline-block;padding-bottom: 0.5rem">
                 <span style="display: block;font-size: 1.8rem">{{ ac.title }}</span>
@@ -287,7 +292,7 @@
     </div>
 
 
-    <div class="div_toggle_history text-gray hover-pointer" ng-click="ac_participated_history_toggle()">
+    <div class="div_toggle_history text-gray hover-pointer active-gray" ng-click="ac_participated_history_toggle()">
         <div ng-if="ac_participated_history_showing==false">
             <i class="fa fa-chevron-down"></i> <span>历史活动</span>
         </div>
@@ -299,6 +304,7 @@
 </div>
 
 
+<!--新建活动按钮-->
 <div class="div_fixed_icon" style="bottom: 1.5rem;position: fixed;right: 1rem;z-index: 20;font-size: 3rem;color: #FFFFFF;">
-    <i ui-sref="new_ac" class="fa fa-plus hover-pointer" style="background: #16a085;padding:1.3rem 1rem;border-radius: 8rem;height: 5rem;width: 5rem;margin-top: 1rem;text-align: center;box-shadow: 0.3rem 0.3rem 0.5rem gray;"></i>
+    <i id="icon_new_ac" ui-sref="new_ac" class="fa fa-plus hover-pointer" style="background: #16a085;padding:1.3rem 1rem;border-radius: 8rem;height: 5rem;width: 5rem;margin-top: 1rem;text-align: center;box-shadow: 0.3rem 0.3rem 0.5rem gray;"></i>
 </div>
