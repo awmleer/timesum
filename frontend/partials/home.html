@@ -205,7 +205,9 @@
             <i class="fa" ng-class="{'fa-check-circle':ac.time_determined!=0,'fa-times-circle':ac.time_determined==0}"></i>
             <div style="display: inline-block;padding-bottom: 0.5rem">
                 <span style="display: block;font-size: 1.8rem">{{ ac.title }}</span>
-                <span ng-if="ac.time_determined!=0" style="display: block;font-size: 1rem" class="text-gray">{{ ac.time_determined[0] | date:'M月d日 H:mm' }}-{{ ac.time_determined[1] | date:'H:mm' }}</span>
+                <span ng-if="ac.time_determined!=0" style="display: block;font-size: 1rem" class="text-gray">
+                    {{ ac.time_determined[0].month }}月{{ ac.time_determined[0].day }}日&nbsp;{{ ac.time_determined[0].time | timeblock }}-{{ ac.time_determined[0].time | timeblock }}
+                </span>
                 <span ng-if="ac.time_determined==0" style="display: block;font-size: 1rem" class="text-gray">时间未确定</span>
             </div>
         </div>
@@ -248,13 +250,13 @@
                     <td colspan="3"><span style="display: block;font-size: 3rem;height: 4.5rem;padding-bottom: 0.3rem;padding-top: 0.2rem">尚未确定</span></td>
                 </tr>
                 <tr ng-if="ac.time_determined!=0">
-                    <td><span style="display: block;font-size: 4rem" class="font-number">{{ ac.time_determined[0] | date:'M.d' }}</span></td>
+                    <td><span style="display: block;font-size: 4rem" class="font-number">{{ ac.time_determined[0].month }}.{{ ac.time_determined[0].day }}</span></td>
                     <td>
                         <div style="background-color: #16a085;height: 3rem;width: 2px;margin: 0 3px;"></div>
                     </td>
                     <td>
-                        <span style="display: block;font-size: 1.3rem" class="text-gray">{{ ac.time_determined[0] | date: 'EEE' }}</span>
-                        <span style="display: block;font-size: 1.3rem" class="text-gray">{{ ac.time_determined[0] | date:'H:mm' }}-{{ ac.time_determined[1] | date:'H:mm' }}</span>
+                        <span style="display: block;font-size: 1.3rem" class="text-gray">{{ ac.time_determined[0].day_in_week }}</span>
+                        <span style="display: block;font-size: 1.3rem" class="text-gray">{{ ac.time_determined[0].time | timeblock }}-{{ ac.time_determined[1].time | timeblock }}</span>
                     </td>
                 </tr>
                 <tr>
@@ -276,7 +278,9 @@
             <i class="fa" ng-class="{'fa-check-circle':ac.time_determined!=0,'fa-times-circle':ac.time_determined==0}"></i>
             <div style="display: inline-block;padding-bottom: 0.5rem">
                 <span style="display: block;font-size: 1.8rem">{{ ac.title }}</span>
-                <span ng-if="ac.time_determined!=0" style="display: block;font-size: 1rem" class="text-gray">{{ ac.time_determined[0] | date:'M月d日 H:mm' }}-{{ ac.time_determined[1] | date:'H:mm' }}</span>
+                <span ng-if="ac.time_determined!=0" style="display: block;font-size: 1rem" class="text-gray">
+                    {{ ac.time_determined[0].month }}月{{ ac.time_determined[0].day }}日&nbsp;{{ ac.time_determined[0].time | timeblock }}-{{ ac.time_determined[0].time | timeblock }}
+                </span>
                 <span ng-if="ac.time_determined==0" style="display: block;font-size: 1rem" class="text-gray">时间未确定</span>
             </div>
         </div>

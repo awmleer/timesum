@@ -111,7 +111,10 @@ app.controller("ctrl_home",function($scope,$rootScope,$http,$state) {
     //         participators:[1256884,1846848],
     //         expected_number:8,
     //         published_time:1463295585807,
-    //         time_determined:1463395585807
+    //         time_determined:[
+    //             {year:2016,month:12,day:7,day_in_week:'周五',time:90},
+    //             {year:2016,month:12,day:7,day_in_week:'周五',time:96}
+    //         ]
     //     },
     //     {
     //         aid:555,
@@ -141,7 +144,10 @@ app.controller("ctrl_home",function($scope,$rootScope,$http,$state) {
     //         participators:[1256884,1846848],
     //         expected_number:8,
     //         published_time:1463295585807,
-    //         time_determined:[1463396585807,1463497585807]
+    //         time_determined:[
+    //             {year:2016,month:12,day:7,day_in_week:'周五',time:90},
+    //             {year:2016,month:12,day:7,day_in_week:'周五',time:90}
+    //         ]
     //     },
     //     {
     //         aid:888,
@@ -158,7 +164,10 @@ app.controller("ctrl_home",function($scope,$rootScope,$http,$state) {
     //     {
     //         aid:999,
     //         title:'sparker开发团队会议',
-    //         time_determined:[1463297585807,1463497585807]
+    //         time_determined:[
+    //             {year:2016,month:12,day:7,day_in_week:'周五',time:90},
+    //             {year:2016,month:12,day:7,day_in_week:'周五',time:90}
+    //         ]
     //     },
     //     {
     //         aid:100,
@@ -168,7 +177,10 @@ app.controller("ctrl_home",function($scope,$rootScope,$http,$state) {
     //     {
     //         aid:1999,
     //         title:'SQTP答辩',
-    //         time_determined:[1463295685807,1463497585807]
+    //         time_determined:[
+    //             {year:2016,month:12,day:7,day_in_week:'周五',time:90},
+    //             {year:2016,month:12,day:7,day_in_week:'周五',time:90}
+    //         ]
     //     }
     // ];
     //
@@ -181,12 +193,18 @@ app.controller("ctrl_home",function($scope,$rootScope,$http,$state) {
     //     {
     //         aid:7877,
     //         title:'UI设计讨论',
-    //         time_determined:[1463396585807,1463497585807]
+    //         time_determined:[
+    //             {year:2016,month:12,day:7,day_in_week:'周五',time:90},
+    //             {year:2016,month:12,day:7,day_in_week:'周五',time:90}
+    //         ]
     //     },
     //     {
     //         aid:8888,
     //         title:'SQTP答辩',
-    //         time_determined:[1463295685807,1463497585807]
+    //         time_determined:[
+    //             {year:2016,month:12,day:7,day_in_week:'周五',time:90},
+    //             {year:2016,month:12,day:7,day_in_week:'周五',time:90}
+    //         ]
     //     }
     // ];
 });

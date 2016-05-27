@@ -1,5 +1,20 @@
 var app = angular.module('timesum', ['ui.router']);
 
+app.filter('timeblock', function () {
+    return function (input, capitalize_index, specified_char) {
+
+        var output;
+        var minute=input%6;
+        var hour=(input-minute)/6;
+        if (minute == 0) {
+            minute='00';
+        }else {
+            minute=minute*10;
+        }
+        output=hour+':'+minute;
+        return output;
+    };
+});
 
 app.config(function($stateProvider, $urlRouterProvider){
     /*路由模块*/
