@@ -55,7 +55,8 @@
         </p>
         <p>
             <span><i class="fa fa-user text-green fa-fw"></i>{{ ac.publisher.name }}<span ng-if="ac.organizer!=''" class="text-gray">&nbsp;@{{ ac.organizer }}</span></span><br>
-            <span><i class="fa fa-map-marker text-green fa-fw"></i>{{ ac.place }}</span>
+            <span ng-if="!ac.place">&nbsp;</span>
+            <span ng-if="ac.place"><i class="fa fa-map-marker text-green fa-fw"></i>{{ ac.place }}</span>
         </p>
     </div>
 

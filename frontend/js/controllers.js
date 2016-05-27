@@ -275,45 +275,58 @@ app.controller("ctrl_new_ac",function($scope,$rootScope,$http,$state) {
 
 
 
-app.controller("ctrl_time_input",function($scope,$rootScope,$http,$stateParams) {
-
-    $scope.ac={
-        aid:21513,
-        title:'sparker开发团队会议',
-        publisher:{
-            uid:1658165,
-            name:'小明'
-        },
-        organizer:'sparker团队',
-        place:'月牙楼元空间',
-        duration:3,
-        date_range:[
-            {year:2016,month:5,day:19,day_in_week:'周四'},
-            {year:2016,month:5,day:20,day_in_week:'周五'},
-            {year:2016,month:5,day:20,day_in_week:'周五'},
-            {year:2016,month:5,day:20,day_in_week:'周五'},
-            {year:2016,month:5,day:22,day_in_week:'周日'}
-        ],
-        opening:true
-    };
+app.controller("ctrl_time_input",function($scope,$rootScope,$http,$stateParams,$state) {
 
 
+    $http({
+        url: 'api/ac_preview',
+        method: 'get',
+        params: {aid:$stateParams.aid}
+    }).success(function (data) {
+        $scope.ac=data;
 
-    //关于编辑的日期
-    var i=0;
-    $scope.time_data=$scope.ac.date_range;
-    for (i = 0; i < $scope.time_data.length; i++) {
-        $scope.time_data[i].timeblocks=[];
-        $scope.time_data[i].clean=true;
-    }
-    //使用date_active来控制编辑哪一天
-    $scope.date_active=0;
-    $scope.time_data[0].clean=false;
-    for (var j = 0; j <$scope.time_data.length ; j++) {
-        for (i = 1; i <=144; i++) {
-            $scope.time_data[j].timeblocks.push({time:i,status:0});
+        //关于编辑的日期
+        var i=0;
+        $scope.time_data=$scope.ac.date_range;
+        for (i = 0; i < $scope.time_data.length; i++) {
+            $scope.time_data[i].timeblocks=[];
+            $scope.time_data[i].clean=true;
         }
-    }
+        //使用date_active来控制编辑哪一天
+        $scope.date_active=0;
+        $scope.time_data[0].clean=false;
+        for (var j = 0; j <$scope.time_data.length ; j++) {
+            for (i = 1; i <=144; i++) {
+                $scope.time_data[j].timeblocks.push({time:i,status:0});
+            }
+        }
+
+    }).error(function () {
+        alert("获取信息失败");
+    });
+
+    //
+    // $scope.ac={
+    //     aid:21513,
+    //     title:'sparker开发团队会议',
+    //     publisher:{
+    //         uid:1658165,
+    //         name:'小明'
+    //     },
+    //     organizer:'sparker团队',
+    //     place:'月牙楼元空间',
+    //     duration:3,
+    //     date_range:[
+    //         {year:2016,month:5,day:19,day_in_week:'周四'},
+    //         {year:2016,month:5,day:20,day_in_week:'周五'},
+    //         {year:2016,month:5,day:20,day_in_week:'周五'},
+    //         {year:2016,month:5,day:20,day_in_week:'周五'},
+    //         {year:2016,month:5,day:22,day_in_week:'周日'}
+    //     ],
+    //     opening:true
+    // };
+
+
 
 
     $scope.change_date_active= function () {
@@ -413,7 +426,7 @@ app.controller("ctrl_time_input",function($scope,$rootScope,$http,$stateParams) 
             data: JSON.stringify(obj)
         }).success(function (data) {
             if (data == 'success') {
-                $state.go('ac_time_input_done',{aid:$scope.ac.aid});
+                $state.go('time_input_done',{aid:$scope.ac.aid});
             }else {
                 alert(data);
             }
@@ -493,7 +506,7 @@ app.controller("ctrl_ac_detail",function($scope,$rootScope,$http,$stateParams) {
             return;
         }
         $http({
-            url: 'submit_comment',
+            url: 'api/submit_comment',
             method: 'get',
             params: {aid:$scope.ac.aid,comment:$scope.my_comment}
         }).success(function (data) {
@@ -574,14 +587,6 @@ app.controller("ctrl_ac_join",function($scope,$rootScope,$location,$http,$stateP
             alert("获取用户个人信息失败，请稍后再试");
         }
     });
-    // $scope.already_login=true;
-    // $rootScope.userinfo=	{
-    //     "uid" : 1,
-    //     "name" : "小朋友",
-    //     "phone" : 12345678910,
-    //     "last_login" : "",
-    //     "login_count" : 5
-    // };
 
 
     $http({
@@ -593,24 +598,6 @@ app.controller("ctrl_ac_join",function($scope,$rootScope,$location,$http,$stateP
     }).error(function () {
         alert("获取信息失败");
     });
-
-    // $scope.ac={
-    //     aid:21513,
-    //     title:'sparker开发团队会议',
-    //     publisher:{
-    //         uid:1658165,
-    //         name:'小明'
-    //     },
-    //     organizer:'sparker团队',
-    //     place:'月牙楼元空间',
-    //     description:'Loremipsumdolorsitamet,consecteturadipisicingelit.Autbeataeconsecteturnisinullaquidemsaepetempora.Eaeligendiipsamlaborumpraesentiumullam?Itaqueiurelaborum,laudantiumporroquisquamvelvoluptatibus?',
-    //     date_range:[
-    //         {year:2016,month:5,day:19,day_in_week:'周四'},
-    //         {year:2016,month:5,day:20,day_in_week:'周四'}
-    //     ],
-    //     opening:true,
-    //     published_time:1463295585807,
-    // };
 
     
     $scope.phone_check= function () {
