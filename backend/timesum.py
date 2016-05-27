@@ -103,6 +103,7 @@ ac_preview_item = ['_id', 'history', 'participators', 'time_collection', 'expect
 # anyday=datetime.datetime(2012,2,15).strftime("%w")
 # print anyday
 
+
 def islogin():
     uid_code = request.cookies.get('All_Hail_Fqs')
     if (uid_code == None) or (uid_code == ''):
@@ -270,15 +271,17 @@ def changepwd():
 # --------------------我是分界线--------------------
 @app.route('/api/activities')
 def activities():
-    # flag = islogin()
-    # if (not flag[0]):
-    #     resp = make_response('', 200)
-    #     return resp
-    # uid = flag[1]
-    uid = 1
+    flag = islogin()
+    if (not flag[0]):
+        resp = make_response('', 200)
+        return resp
+    uid = flag[1]
+
     resp_json = {'ac_published': [], 'ac_participated': [], 'ac_published_history': [], 'ac_participated_history': []}
     for one_activity in activity.objects(publisher=uid):
         one_ac = dict(one_activity.to_mongo())
+        one_ac['time_determined'][0].update({'day_in_week': week_day(one_ac['time_determined'][0]['year'], one_ac['time_determined'][0]['month'], one_ac['time_determined'][0]['day'])})
+        one_ac['time_determined'][1].update({'day_in_week': week_day(one_ac['time_determined'][1]['year'], one_ac['time_determined'][1]['month'], one_ac['time_determined'][1]['day'])})
         if (one_ac['history'] == False):
             temp = {}
             temp.update({'aid': one_ac['aid'], 'title': one_ac['title'], 'opening': one_ac['opening'], 'participators': one_ac['participators']})
@@ -290,6 +293,8 @@ def activities():
             resp_json['ac_published_history'].append(temp)
     for one_activity in activity.objects(participators__all=[participators_in(uid=uid, time_inputed=True)]):
         one_ac = dict(one_activity.to_mongo())
+        one_ac['time_determined'][0].update({'day_in_week': week_day(one_ac['time_determined'][0]['year'], one_ac['time_determined'][0]['month'], one_ac['time_determined'][0]['day'])})
+        one_ac['time_determined'][1].update({'day_in_week': week_day(one_ac['time_determined'][1]['year'], one_ac['time_determined'][1]['month'], one_ac['time_determined'][1]['day'])})
         if (one_ac['history'] == False):
             temp = {}
             temp.update({'aid': one_ac['aid'], 'title': one_ac['title'], 'opening': one_ac['opening'], 'participators': one_ac['participators']})
@@ -301,6 +306,8 @@ def activities():
             resp_json['ac_participated_history'].append(temp)
     for one_activity in activity.objects(participators__all=[participators_in(uid=uid, time_inputed=False)]):
         one_ac = dict(one_activity.to_mongo())
+        one_ac['time_determined'][0].update({'day_in_week': week_day(one_ac['time_determined'][0]['year'], one_ac['time_determined'][0]['month'], one_ac['time_determined'][0]['day'])})
+        one_ac['time_determined'][1].update({'day_in_week': week_day(one_ac['time_determined'][1]['year'], one_ac['time_determined'][1]['month'], one_ac['time_determined'][1]['day'])})
         if (one_ac['history'] == False):
             temp = {}
             temp.update({'aid': one_ac['aid'], 'title': one_ac['title'], 'opening': one_ac['opening'], 'participators': one_ac['participators']})
@@ -338,8 +345,8 @@ def ac_detail():
         return resp
 
     ac_info['publisher'] = {'uid': ac_info['publisher'], 'name': users.objects(uid=ac_info['publisher']).first()['name']}
-    ac_info['date_range'][0].update({'week': week_day(ac_info['date_range'][0]['year'], ac_info['date_range'][0]['month'], ac_info['date_range'][0]['day'])})
-    ac_info['date_range'][1].update({'week': week_day(ac_info['date_range'][1]['year'], ac_info['date_range'][1]['month'], ac_info['date_range'][1]['day'])})
+    ac_info['date_range'][0].update({'day_in_week': week_day(ac_info['date_range'][0]['year'], ac_info['date_range'][0]['month'], ac_info['date_range'][0]['day'])})
+    ac_info['date_range'][1].update({'day_in_week': week_day(ac_info['date_range'][1]['year'], ac_info['date_range'][1]['month'], ac_info['date_range'][1]['day'])})
     for person in ac_info['participators']:
         person.update({'name': users.objects(uid=person['uid']).first()['name']})
     del ac_info['_id']
@@ -360,8 +367,8 @@ def ac_preview():
     aid = int(request.args.get('aid'))
     ac_info = dict(activity.objects(aid=aid).first().to_mongo())
     ac_info['publisher'] = {'uid': ac_info['publisher'], 'name': users.objects(uid=ac_info['publisher']).first()['name']}
-    ac_info['date_range'][0].update({'week': week_day(ac_info['date_range'][0]['year'], ac_info['date_range'][0]['month'], ac_info['date_range'][0]['day'])})
-    ac_info['date_range'][1].update({'week': week_day(ac_info['date_range'][1]['year'], ac_info['date_range'][1]['month'], ac_info['date_range'][1]['day'])})
+    ac_info['date_range'][0].update({'day_in_week': week_day(ac_info['date_range'][0]['year'], ac_info['date_range'][0]['month'], ac_info['date_range'][0]['day'])})
+    ac_info['date_range'][1].update({'day_in_week': week_day(ac_info['date_range'][1]['year'], ac_info['date_range'][1]['month'], ac_info['date_range'][1]['day'])})
     for item in ac_preview_item:
         del ac_info[item]
     resp_json = dumps(ac_info)
@@ -436,13 +443,17 @@ def time_input():
         return resp
 
     if (if_modify):
+        location = -1
         for user_time in ac_info['time_collection']:
+            location += 1
             if (user_time['uid'] == uid):
-               user_time['data'] = text['data']
-               ac_info.save()
-               resp = make_response('success', 200)
-               return resp
-    ac_info['time_collection'].append(time_collection_in(uid=uid, data=data_in.from_json(text['data'])))
+                time_collect_in = dumps({'uid': uid, 'data': text['data']})
+                ac_info['time_collection'][location] = time_collection_in.from_json(time_collect_in)
+                ac_info.save()
+                resp = make_response('success', 200)
+                return resp
+    time_collect_in = dumps({'uid': uid, 'data': text['data']})
+    ac_info['time_collection'].append(time_collection_in.from_json(time_collect_in))
     ac_info.save()
     resp = make_response('success', 200)
     return resp
