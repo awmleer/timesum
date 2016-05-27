@@ -27,7 +27,7 @@
 <body>
 <div class="container" style="margin-bottom: 2em">
     <div class="row">
-        <div id="logo_group" class="col-xs-8 col-xs-offset-2">
+        <div id="logo_group" class="col-xs-8 col-xs-offset-2 col-lg-6 col-lg-offset-3">
             <img src="img/logo/logo_circle.svg" style="width: 100%;margin: 2em 0">
             <img src="img/logo/timesum.svg" style="width: 90%;margin-left: 5%">
             <p style="width: 100%;text-align: center;color: gray;font-size: 1.5em;margin-top: 0.3em">活动时间协调利器</p>
@@ -37,7 +37,7 @@
     <form>
         <div class="row">
             <div class="col-xs-10 col-xs-offset-1" style="margin-bottom: 1.5em;">
-                <label class="input-label" for="phone" style="padding-top: 3px"><i class="fa fa-phone fa-2x"></i></label>
+                <label class="input-label" for="phone" style="padding-top: 3px"><i class="fa fa-phone" style="font-size: 1.8rem;margin-top: 0.4rem"></i></label>
                 <input style="padding-left:3em;" id="phone" class="form-control input-text" type="text">
             </div>
             <div class="col-xs-10 col-xs-offset-1" style="margin-bottom: 1.5em;">
@@ -69,7 +69,7 @@
 </body>
 <script>
     $(document).ready(function () {
-        $("#logo_group").css("margin-top",0.1*document.body.clientHeight).css("margin-bottom",0.08*document.body.clientHeight);
+        $("#logo_group").css("margin-top",0.06*document.body.clientHeight).css("margin-bottom",0.08*document.body.clientHeight);
         $("#submit_button").css("width",$("#password").width()-$("#submit_div a").width());
         $("#phone").val(store.get('phone'));
         $("#password").val(store.get('password'));
