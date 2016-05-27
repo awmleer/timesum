@@ -115,7 +115,8 @@ def islogin():
             return [True, int(uid)]
     return [False, 'fqsws']
 
-def week_day(weekday):
+def week_day(year, month, day):
+    weekday=datetime.datetime(int(year),int(month),int(day)).strftime("%w")
     if (weekday == '1'): return '周一'
     if (weekday == '2'): return '周二'
     if (weekday == '3'): return '周三'
@@ -311,6 +312,41 @@ def activities():
     resp = make_response(resp_json, 200)
     return resp
 # --------------------我是分界线--------------------
+@app.route('/api/ac_detail')
+def ac_detail():
+    flag = islogin()
+    if (not flag[0]):
+        resp = make_response('', 200)
+        return resp
+    uid = flag[1]
+
+    aid = int(request.args.get('aid'))
+    ac_info = dict(activity.objects(aid=aid).first().to_mongo())
+    resp_json = {'me': {}}
+    flag = False
+    for person in ac_info['participators']:
+        if (uid == person['uid']):
+            flag = True
+            resp_json['me'].update({'relation': 'participated', 'time_inputed': person['time_inputed']})
+            break
+    if (uid == ac_info['publisher']):
+        resp_json['me']['relation'] = 'published'
+    if (not flag):
+        resp = make_response('（¯﹃¯）您还未加入该活动呢', 200)
+        return resp
+
+    ac_info['publisher'] = {'uid': ac_info['publisher'], 'name': users.objects(uid=ac_info['publisher']).first()['name']}
+    ac_info['date_range'][0].update({'week': week_day(ac_info['date_range'][0]['year'], ac_info['date_range'][0]['month'], ac_info['date_range'][0]['day'])})
+    ac_info['date_range'][1].update({'week': week_day(ac_info['date_range'][1]['year'], ac_info['date_range'][1]['month'], ac_info['date_range'][1]['day'])})
+    for person in ac_info['participators']:
+        person.update({'name': users.objects(uid=person['uid']).first()['name']})
+    del ac_info['_id']
+    del ac_info['time_collection']
+    resp_json.update(ac_info)
+    resp_json = dumps(resp_json)
+    resp = make_response(resp_json, 200)
+    return resp
+# --------------------我是分界线--------------------
 @app.route('/api/ac_preview')
 def ac_preview():
     flag = islogin()
@@ -319,25 +355,16 @@ def ac_preview():
         return resp
     uid = flag[1]
 
-    aid = request.args.get('aid')
+    aid = int(request.args.get('aid'))
     ac_info = dict(activity.objects(aid=aid).first().to_mongo())
     ac_info['publisher'] = {'uid': ac_info['publisher'], 'name': users.objects(uid=ac_info['publisher']).first()['name']}
-    year = int(ac_info['date_range'][0]['year'])
-    month = int(ac_info['date_range'][0]['month'])
-    day = int(ac_info['date_range'][0]['day'])
-    weekday=datetime.datetime(year, month, day).strftime("%w")
-    ac_info['date_range'][0].update({'week': week_day(weekday)})
-    year = int(ac_info['date_range'][1]['year'])
-    month = int(ac_info['date_range'][1]['month'])
-    day = int(ac_info['date_range'][1]['day'])
-    weekday=datetime.datetime(year, month, day).strftime("%w")
-    ac_info['date_range'][1].update({'week': week_day(weekday)})
+    ac_info['date_range'][0].update({'week': week_day(ac_info['date_range'][0]['year'], ac_info['date_range'][0]['month'], ac_info['date_range'][0]['day'])})
+    ac_info['date_range'][1].update({'week': week_day(ac_info['date_range'][1]['year'], ac_info['date_range'][1]['month'], ac_info['date_range'][1]['day'])})
     for item in ac_preview_item:
         del ac_info[item]
     resp_json = dumps(ac_info)
     resp = make_response(resp_json, 200)
     return resp
-
 # --------------------我是分界线--------------------
 @app.route('/api/ac_join')
 def ac_join():
@@ -397,16 +424,22 @@ def time_input():
     for person in ac_info['participators']:
         if (uid == person['uid']):
             flag = True
+            if_modify = True
+            if (not person['time_inputed']):
+                person['time_inputed'] = True
+                if_modify = False
             break
     if (not flag):
         resp = make_response('（¯﹃¯）您还未加入该活动呢', 200)
         return resp
-    for user_time in ac_info['time_collection']:
-        if (user_time['uid'] == uid):
-            user_time['data'] = text['data']
-            ac_info.save()
-            resp = make_response('success', 200)
-            return resp
+
+    if (if_modify):
+        for user_time in ac_info['time_collection']:
+            if (user_time['uid'] == uid):
+               user_time['data'] = text['data']
+               ac_info.save()
+               resp = make_response('success', 200)
+               return resp
     ac_info['time_collection'].append(time_collection_in(uid=uid, data=text['data']))
     ac_info.save()
     resp = make_response('success', 200)
@@ -429,7 +462,7 @@ def new_ac():
     sum = me_ta.objects(me_ta='auto_increase').first()['aid']
     sum = sum + 1
     me_ta.objects(me_ta='auto_increase').update_one(set__aid=sum)
-    text.update({'aid': sum, 'publisher': uid})
+    text.update({'aid': sum, 'publisher': uid, 'participators': [{'uid': uid, 'time_inputed': False}]})
     text_save = activity.from_json(dumps(text))
     text_save.save()
     resp_json = json.dumps({'result': 'success', 'aid': sum})
