@@ -39,7 +39,7 @@ class time_format(EmbeddedDocument):
     year = StringField(required=True)
     month = StringField(required=True)
     day = StringField(required=True)
-    time = IntField(required=True)
+    time = StringField(required=True)
 
 class time_collection_in(EmbeddedDocument):
     uid = IntField(required=True)
@@ -100,9 +100,8 @@ ac_preview_item = ['_id', 'history', 'participators', 'time_collection', 'expect
 # ccc['comments'].append(comments_in(uid=164,time=64546546,text='65464'))
 # ccc.save()
 
-anyday=datetime.datetime(2012,2,15).strftime("%w")
-print anyday
-
+# anyday=datetime.datetime(2012,2,15).strftime("%w")
+# print anyday
 
 def islogin():
     uid_code = request.cookies.get('All_Hail_Fqs')
@@ -271,14 +270,15 @@ def changepwd():
 # --------------------我是分界线--------------------
 @app.route('/api/activities')
 def activities():
-    flag = islogin()
-    if (not flag[0]):
-        resp = make_response('', 200)
-        return resp
-    uid = flag[1]
-
+    # flag = islogin()
+    # if (not flag[0]):
+    #     resp = make_response('', 200)
+    #     return resp
+    # uid = flag[1]
+    uid = 1
     resp_json = {'ac_published': [], 'ac_participated': [], 'ac_published_history': [], 'ac_participated_history': []}
-    for one_ac in activity.objects(publisher=uid):
+    for one_activity in activity.objects(publisher=uid):
+        one_ac = dict(one_activity.to_mongo())
         if (one_ac['history'] == False):
             temp = {}
             temp.update({'aid': one_ac['aid'], 'title': one_ac['title'], 'opening': one_ac['opening'], 'participators': one_ac['participators']})
@@ -288,7 +288,8 @@ def activities():
             temp = {}
             temp.update({'aid': one_ac['aid'], 'title': one_ac['title'], 'time_determined': one_ac['time_determined']})
             resp_json['ac_published_history'].append(temp)
-    for one_ac in activity.objects(participators__all=[participators_in(uid=uid, time_inputed=True)]):
+    for one_activity in activity.objects(participators__all=[participators_in(uid=uid, time_inputed=True)]):
+        one_ac = dict(one_activity.to_mongo())
         if (one_ac['history'] == False):
             temp = {}
             temp.update({'aid': one_ac['aid'], 'title': one_ac['title'], 'opening': one_ac['opening'], 'participators': one_ac['participators']})
@@ -298,7 +299,8 @@ def activities():
             temp = {}
             temp.update({'aid': one_ac['aid'], 'title': one_ac['title'], 'time_determined': one_ac['time_determined']})
             resp_json['ac_participated_history'].append(temp)
-    for one_ac in activity.objects(participators__all=[participators_in(uid=uid, time_inputed=False)]):
+    for one_activity in activity.objects(participators__all=[participators_in(uid=uid, time_inputed=False)]):
+        one_ac = dict(one_activity.to_mongo())
         if (one_ac['history'] == False):
             temp = {}
             temp.update({'aid': one_ac['aid'], 'title': one_ac['title'], 'opening': one_ac['opening'], 'participators': one_ac['participators']})
@@ -440,7 +442,7 @@ def time_input():
                ac_info.save()
                resp = make_response('success', 200)
                return resp
-    ac_info['time_collection'].append(time_collection_in(uid=uid, data=text['data']))
+    ac_info['time_collection'].append(time_collection_in(uid=uid, data=data_in.from_json(text['data'])))
     ac_info.save()
     resp = make_response('success', 200)
     return resp
