@@ -530,7 +530,7 @@ app.controller("ctrl_ac_invite",function($scope,$rootScope,$location,$http,$stat
 });
 
 
-app.controller("ctrl_ac_join",function($scope,$rootScope,$location,$http,$stateParams) {
+app.controller("ctrl_ac_join",function($scope,$rootScope,$location,$http,$stateParams,$state) {
 
     $scope.is_signed=false;
     $scope.phone_checked=false;
@@ -643,10 +643,12 @@ app.controller("ctrl_ac_join",function($scope,$rootScope,$location,$http,$stateP
             if (data == 'success') {
                 //提醒用户跳转到时间录入界面
                 if (window.confirm('加入成功，是否现在录入时间？')) {
-                    $state.go('ac_time_input',{aid:this.ac.aid});
+                    $state.go('ac_time_input',{aid:$scope.ac.aid});
                 }else{
-                    $state.go('ac_detail',{aid:this.ac.aid});
+                    $state.go('ac_detail',{aid:$scope.ac.aid});
                 }
+            }else {
+                alert(data);
             }
         }).error(function () {
             alert("获取信息失败，请稍后再试");
