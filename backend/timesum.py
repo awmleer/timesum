@@ -12,7 +12,6 @@ import time
 import datetime
 from pymongo import MongoClient
 from mongoengine import *
-from datetime import datetime
 import bson
 from bson import Binary, Code
 from bson.json_util import dumps, loads
@@ -88,8 +87,9 @@ class verification(Document):
     verify_code = StringField(required=True)
 # --------------------我是分界线--------------------
 salt = '5aWZak2n35Wk fqsws'
+ac_preview_item = ['_id', 'history', 'participators', 'time_collection', 'expected_number', 'duration', 'time_determined', 'comments']
 
-# aaaa = dict(users.objects(uid=1).first().to_mongo())
+# aaaa = dict(users.objects(uid=6).first().to_mongo())
 # print aaaa
 # aaa = {'phone':'65466','last_verify':312351,'verify_code': '6546'}
 # bbbb = dumps(aaa)
@@ -100,8 +100,8 @@ salt = '5aWZak2n35Wk fqsws'
 # ccc['comments'].append(comments_in(uid=164,time=64546546,text='65464'))
 # ccc.save()
 
-# anyday=datetime.datetime(2012,2,15).strftime("%w")
-# print anyday
+anyday=datetime.datetime(2012,2,15).strftime("%w")
+print anyday
 
 
 def islogin():
@@ -114,6 +114,15 @@ def islogin():
         if (str(user['uid']) == uid):
             return [True, int(uid)]
     return [False, 'fqsws']
+
+def week_day(weekday):
+    if (weekday == '1'): return '周一'
+    if (weekday == '2'): return '周二'
+    if (weekday == '3'): return '周三'
+    if (weekday == '4'): return '周四'
+    if (weekday == '5'): return '周五'
+    if (weekday == '6'): return '周六'
+    if (weekday == '7'): return '周日'
 
 def sendsms4(operate, code, person, mobile):
     d = {'#operate#': operate, '#code#': code}
@@ -301,6 +310,34 @@ def activities():
     resp_json = dumps(resp_json)
     resp = make_response(resp_json, 200)
     return resp
+# --------------------我是分界线--------------------
+@app.route('/api/ac_preview')
+def ac_preview():
+    flag = islogin()
+    if (not flag[0]):
+        resp = make_response('', 200)
+        return resp
+    uid = flag[1]
+
+    aid = request.args.get('aid')
+    ac_info = dict(activity.objects(aid=aid).first().to_mongo())
+    ac_info['publisher'] = {'uid': ac_info['publisher'], 'name': users.objects(uid=ac_info['publisher']).first()['name']}
+    year = int(ac_info['date_range'][0]['year'])
+    month = int(ac_info['date_range'][0]['month'])
+    day = int(ac_info['date_range'][0]['day'])
+    weekday=datetime.datetime(year, month, day).strftime("%w")
+    ac_info['date_range'][0].update({'week': week_day(weekday)})
+    year = int(ac_info['date_range'][1]['year'])
+    month = int(ac_info['date_range'][1]['month'])
+    day = int(ac_info['date_range'][1]['day'])
+    weekday=datetime.datetime(year, month, day).strftime("%w")
+    ac_info['date_range'][1].update({'week': week_day(weekday)})
+    for item in ac_preview_item:
+        del ac_info[item]
+    resp_json = dumps(ac_info)
+    resp = make_response(resp_json, 200)
+    return resp
+
 # --------------------我是分界线--------------------
 @app.route('/api/ac_join')
 def ac_join():
