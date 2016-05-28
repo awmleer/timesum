@@ -68,6 +68,13 @@ app.controller("ctrl_header",function($scope,$rootScope,$http,$state,$location) 
 });
 
 
+
+app.controller("ctrl_userinfo",function($scope,$rootScope,$http,$stateParams) {
+    $rootScope.get_userinfo();
+});
+
+
+
 app.controller("ctrl_home",function($scope,$rootScope,$http,$state) {
     //历史活动相关
     $scope.ac_published_history_showing=false;
@@ -487,6 +494,7 @@ app.controller("ctrl_ac_recommend",function($scope,$rootScope,$http,$stateParams
 });
 
 
+
 app.controller("ctrl_time_input_done",function($scope,$rootScope,$http,$stateParams) {
     $scope.aid=$stateParams.aid;
 });
@@ -497,6 +505,7 @@ app.controller("ctrl_ac_invite",function($scope,$rootScope,$location,$http,$stat
     $scope.aid=$stateParams.aid;
     console.log($scope.aid);
 });
+
 
 
 app.controller("ctrl_ac_join",function($scope,$rootScope,$location,$http,$stateParams,$state) {
@@ -665,3 +674,4 @@ app.controller("ctrl_ac_join",function($scope,$rootScope,$location,$http,$stateP
 
 
 });
+
