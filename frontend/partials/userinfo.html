@@ -1,0 +1,104 @@
+<!--<style>-->
+    <!--.round-div-green {-->
+        <!--background-color: #1ab99b;-->
+        <!--border-radius: 50%;-->
+        <!--width: auto;-->
+        <!--height: auto;-->
+        <!--margin: 2px;-->
+    <!--}-->
+<!--</style>-->
+<style>
+    .acinput input {
+        border-top: 0;
+        border-left: 0;
+        border-right: 0;
+        border-radius: 0;
+    }
+
+    .acinput input:focus {
+        border-top: 0;
+        border-left: 0;
+        border-right: 0;
+        border-radius: 0;
+    }
+
+    .acinput textarea {
+        border-top: 0;
+        border-left: 0;
+        border-right: 0;
+        border-radius: 0;
+    }
+
+    .acinput textarea:focus {
+        border-top: 0;
+        border-left: 0;
+        border-right: 0;
+        border-radius: 0;
+    }
+
+    .acinput {
+        margin-bottom: 1.5rem;
+    }
+</style>
+
+<br>
+<!--<div class="round-div-green col-xs-4 col-sm-4 col-md-4 col-lg-4">-->
+    <!--<p class="text-orange" style="font-size: large">-->
+        <!--<strong>UID</strong>-->
+    <!--</p>-->
+    <!--<p class="text-gray">-->
+        <!--{{userinfo.uid}}-->
+    <!--</p>-->
+<!--</div>-->
+<!--<div class="round-div-green col-xs-4 col-sm-4 col-md-4 col-lg-4">-->
+    <!--<p class="text-orange" style="font-size: large">-->
+        <!--<strong>姓名</strong>-->
+    <!--</p>-->
+    <!--<p class="text-gray">-->
+        <!--{{userinfo.name}}-->
+    <!--</p>-->
+<!--</div>-->
+<!--<div class="round-div-green col-xs-4 col-sm-4 col-md-4 col-lg-4">-->
+    <!--<p class="text-orange" style="font-size: large">-->
+        <!--<strong>手机号码</strong>-->
+    <!--</p>-->
+    <!--<p class="text-gray">-->
+        <!--{{userinfo.phone}}-->
+    <!--</p>-->
+<!--</div>-->
+<!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">-->
+    <!--设置姓名-->
+<!--</div>-->
+<!--老子不干了-->
+<table class="table">
+    <tr>
+        <td class="text-green" style="font-size: 2rem">
+            UID
+        </td>
+        <td class="text-gray">
+            {{userinfo.uid}}
+        </td>
+    </tr>
+    <tr>
+        <td class="text-green" style="font-size: 2rem">
+            姓名
+            <button ng-click="NameChgVisibleToogle();">修改</button>
+        </td>
+        <td class="text-gray">
+            {{userinfo.name}}
+        </td>
+    </tr>
+    <tr>
+        <td class="text-green" style="font-size: 2rem">
+            电话号码
+        </td>
+        <td class="text-gray">
+            {{userinfo.phone}}
+        </td>
+    </tr>
+</table>
+<div ng-hide="NameChgDivVisible">
+    姓名：
+    <input class="acinput" ng-model="userinfo.name"/>
+    <button ng-click="CommitNameChg();">提交</button>
+</div>
