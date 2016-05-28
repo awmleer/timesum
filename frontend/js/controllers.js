@@ -231,15 +231,15 @@ app.controller("ctrl_new_ac",function($scope,$rootScope,$http,$state) {
     };
 
     $scope.submit_ac= function () {
-        // var obj={
-        //     title:$scope.title,
-        //     description:$scope.description,
-        //     organizer:$scope.organizer,
-        //     expected_number:$scope.expected_number,
-        //     date_range:$scope.date_range,
-        //     place:$scope.place,
-        //     duration:$scope.duration
-        // };
+        console.log($scope.activity.date_range);
+        if ($scope.activity.duration==0) {
+            alert("请设置活动的预计时长");
+            return;
+        }
+        if ( $scope.activity.date_range.length==0 ) {
+            alert("请设置活动的可能进行日期");
+            return;
+        }
         $http({
             url: 'api/new_ac',
             method: 'post',
@@ -259,7 +259,6 @@ app.controller("ctrl_new_ac",function($scope,$rootScope,$http,$state) {
         }).error(function () {
             alert("操作失败");
         });
-        console.log($scope.description);
 
     };
 
@@ -267,9 +266,9 @@ app.controller("ctrl_new_ac",function($scope,$rootScope,$http,$state) {
         if (value==1) {
             $scope.activity.duration++;
         }else if (value == -1) {
-            $scope.activity.duration--;
+            if ($scope.activity.duration>0) $scope.activity.duration--;
         }
-    }
+    };
 
     $scope.setDateTime= function (current_date) {
         //TODO 判断日期是否已经存在了
@@ -279,13 +278,16 @@ app.controller("ctrl_new_ac",function($scope,$rootScope,$http,$state) {
             month:moment(current_date).format("M"),
             day:moment(current_date).format("D")
         };
-        console.log(obj_date);
+
         $scope.activity.date_range.push(obj_date);
     };
 
     $scope.delete_date= function () {
         $scope.activity.date_range.remove(this.date);
     }
+
+
+
 });
 
 
