@@ -31,7 +31,7 @@
 
 
 
-            <div ng-if="ac.opening">
+            <div ng-show="ac.opening">
                 <div ng-if="already_login">
                     <p style="margin-top: 2rem;margin-bottom: 0.3rem">检测到您已经登录</p>
                     <p style="margin-bottom: 2rem;font-size: 1.7rem">
@@ -41,7 +41,7 @@
                     <button type="button" class="button button-pill button-main" style="width:100%;" ng-click="join()" ng-show="already_login">加入活动</button>
                 </div>
 
-                <div ng-if="!already_login">
+                <div ng-show="!already_login">
                     <div style="margin-top: 2rem;padding-bottom:1.2rem;" align="left">
                         <label class="input-label" for="phone">电话</label>
                         <input style="padding-left:4em;" id="phone" class="form-control input-text" type="text" ng-model="phone" ng-change="phone_check()">
@@ -122,7 +122,7 @@
             if (data == 'success') {
                 //开始倒计时
                 $("#button_code").addClass('time_counting').attr('disabled','');
-                time_count=60;
+                time_count=120;
                 count_down();
             }else {
                 alert(data);//直接弹出服务器传回的错误信息

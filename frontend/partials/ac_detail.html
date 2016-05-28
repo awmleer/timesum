@@ -143,7 +143,7 @@
                 <p>
                     <span style="font-size: 1.4rem">参与人员</span><br>
                     <span ng-repeat="participator in ac.participators">
-                        <span class="tag" ng-class="{'tag-gray':!ac.time_determined || (ac.time_determined&&participator.attendable==0),'tag-green':ac.time_determined&&participator.attendable==2,'tag-orange':ac.time_determined&&participator.attendable==1}" style="margin-bottom: 0.4rem">{{ participator.name }}</span>
+                        <span class="tag" ng-class="{'tag-gray':ac.time_determined.length==0 || (ac.time_determined&&participator.attendable==0),'tag-green':ac.time_determined&&participator.attendable==2,'tag-orange':ac.time_determined&&participator.attendable==1}" style="margin-bottom: 0.4rem">{{ participator.name }}</span>
                         <span class="text-gray" ng-if="participator.time_inputed==false">&nbsp;尚未录入时间</span><br>
                     </span>
                 </p>

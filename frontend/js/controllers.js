@@ -43,7 +43,7 @@ app.controller("ctrl_header",function($scope,$rootScope,$http,$state,$location) 
 
 
     //如果是加入活动，则不会在这里请求userinfo
-    if (!(/\/ac\/\d+\/join/.test($location.path()))) {
+    if (!(/\/ac\/\d+\/join/.test($location.path()) || /\/ac\/\d+/.test($location.path())) ) {
         $rootScope.get_userinfo();
     }
 
@@ -463,15 +463,19 @@ app.controller("ctrl_time_input",function($scope,$rootScope,$http,$stateParams,$
 app.controller("ctrl_ac_detail",function($scope,$rootScope,$http,$stateParams) {
 
     //获取活动详情
-    $http({
-        url: 'api/ac_detail',
-        method: 'get',
-        params: {aid: $stateParams.aid}
-    }).success(function (data) {
-        $scope.ac=data;
-    }).error(function () {
-        alert("获取信息失败，请稍后再试");
-    });
+    $scope.get_ac_detail= function () {
+        $http({
+            url: 'api/ac_detail',
+            method: 'get',
+            params: {aid: $stateParams.aid}
+        }).success(function (data) {
+            $scope.ac=data;
+        }).error(function () {
+            alert("获取信息失败，请稍后再试");
+        });
+    }
+
+    $scope.get_ac_detail();
 
     $scope.submit_comment= function () {
         if ($scope.my_comment=='' || $scope.my_comment==undefined) {
@@ -484,7 +488,8 @@ app.controller("ctrl_ac_detail",function($scope,$rootScope,$http,$stateParams) {
             params: {aid:$scope.ac.aid,comment:$scope.my_comment}
         }).success(function (data) {
             if (data == 'success') {
-                location.reload();
+                $scope.get_ac_detail();
+                $scope.my_comment='';
             }else {
                 alert(data);
             }
@@ -574,20 +579,24 @@ app.controller("ctrl_ac_join",function($scope,$rootScope,$location,$http,$stateP
         alert("获取信息失败");
     });
 
-    
     $scope.phone_check= function () {
-        if (/^1[0-9]\d{9}$/.test($scope.phone)) {
+        if (/^1\d{10}$/.test($scope.phone)) {
             $http({
                 url: 'api/is_signed',
                 method: 'get',
                 params: {phone:$scope.phone}
             }).success(function (data) {
-                if (data==true || data==false) {
-                    $scope.is_signed=data;
+                if (data=='true' || data=='false') {
+                    if (data == 'true') {
+                        $scope.is_signed=true;
+                    }else{
+                        $scope.is_signed=false;
+                    }
                     $scope.phone_checked=true;
                 }else{
                     alert(data);
                 }
+                console.log($scope.is_signed);
             }).error(function () {
                 alert("抱歉，服务器出错了，请您过一会儿再来试试");
             });
