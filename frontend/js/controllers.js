@@ -50,7 +50,7 @@ app.controller("ctrl_header",function($scope,$rootScope,$http,$state,$location) 
 
 
     /*退出登录*/
-    $scope.logout=function () {
+    $rootScope.logout=function () {
         //api logout
         $http({
             url: 'api/logout',
@@ -79,7 +79,7 @@ app.controller("ctrl_userinfo",function($scope,$rootScope,$http,$stateParams) {
     };
     $scope.userinfo = $rootScope.userinfo;
     $scope.NameChgVisibleToogle = function () {
-        $socpe.NameChgDivVisible = !$socpe.NameChgDivVisible;
+        $scope.NameChgDivVisible = !$scope.NameChgDivVisible;
     }
     $scope.CommitNameChg = function () {
         $http({
@@ -87,8 +87,8 @@ app.controller("ctrl_userinfo",function($scope,$rootScope,$http,$stateParams) {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             data: JSON.stringify({
-                uid: userinfo.uid,
-                name:userinfo.name
+                uid: $rootScope.userinfo.uid,
+                name:$rootScope.userinfo.name
             })
         }).success(function (data) {
             if (data == 'success') {
