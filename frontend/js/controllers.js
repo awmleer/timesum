@@ -278,6 +278,8 @@ app.controller("ctrl_new_ac",function($scope,$rootScope,$http,$state) {
 app.controller("ctrl_time_input",function($scope,$rootScope,$http,$stateParams,$state) {
 
 
+    //TODO change to api timeblocks
+
     $http({
         url: 'api/ac_preview',
         method: 'get',
@@ -442,52 +444,6 @@ app.controller("ctrl_time_input",function($scope,$rootScope,$http,$stateParams,$
 
 
 app.controller("ctrl_ac_detail",function($scope,$rootScope,$http,$stateParams) {
-    // alert($stateParams.aid);
-    // $scope.test_id=111;
-
-    // $scope.ac={
-    //     me:{
-    //         relation:'participated',
-    //         time_inputed:false
-    //     },
-    //     aid:21513,
-    //     title:'sparker开发团队会议',
-    //     publisher:{
-    //         uid:1658165,
-    //         name:'小明'
-    //     },
-    //     organizer:'sparker团队',
-    //     place:'月牙楼元空间',
-    //     description:'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut beatae consectetur nisi nulla quidem saepe tempora. Ea eligendi ipsam laborum praesentium ullam? Itaque iure laborum, laudantium porro quisquam vel voluptatibus?',
-    //     duration:13,
-    //     date_range:[
-    //         {year:2016,month:5,day:19,day_in_week:'周四'},
-    //         {year:2016,month:5,day:20,day_in_week:'周四'}
-    //     ],
-    //     opening:false,
-    //     history:false,
-    //     participators:[
-    //         {
-    //             uid:186115,
-    //             name:'aaa',
-    //             time_inputed:true,
-    //             attendable:2
-    //         },
-    //         {
-    //             uid:164866,
-    //             name:'bbb',
-    //             time_inputed:false,
-    //             attendable:0
-    //         }
-    //     ],
-    //     expected_number:5,
-    //     published_time:1463295585807,
-    //     time_determined:13584846,
-    //     comments:[
-    //         {"uid":165156,"name":'小明',"time":1463295585807,"text":"lorem afaefqgjqpog"},
-    //         {"uid":165861,"name":'小华',"time":1463295585807,"text":"lorem qeee"}
-    //     ]
-    // };
 
     //获取活动详情
     $http({

@@ -15,9 +15,13 @@
     }
     .function_group tbody tr td .fa{
         display: block;
-        margin: 0.6rem 0;
+        margin: 0.6rem 0 0;
+        padding-bottom: 0.3rem;
         width:100%;
         text-align: center;
+    }
+    .function_group tbody tr td p{
+        font-size: 1.2rem;
     }
     .function_group tbody tr td:active{
         background: #1abc9c;
@@ -60,34 +64,39 @@
         </p>
     </div>
 
-    <!--publisher对应的功能区-->
-    <table class="function_group" ng-if="ac.relation=='published' && !ac.history">
-        <colgroup>
-            <col width="33%">
-            <col width="34%">
-            <col width="33%">
-        </colgroup>
-        <tbody>
-        <tr>
-            <td>
-                <i class="fa fa-clock-o"></i>
-            </td>
-            <td>
-                <i class="fa fa-pencil" style="border-left: solid 1px #FFFFFF;border-right: solid 1px #FFFFFF"></i>
-            </td>
-            <td>
-                <i class="fa fa-share-alt"></i>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+
 
     <!--participator对应的功能区-->
-    <div class="function_group function_group_participated hover-pointer" ng-if="ac.me.relation=='participated' && !ac.history" align="center" ui-sref="ac_time_input({aid:ac.aid})">
+    <div class="function_group function_group_participated hover-pointer" ng-if="!ac.history" align="center" ui-sref="ac_time_input({aid:ac.aid})">
         <i class="fa fa-clock-o fa-fw" style="margin-bottom: -2rem"></i><span style="font-size: 1.4rem;margin-bottom: 0.5rem;display: inline-block;">{{ ac.me.time_inputed?'修改':'录入' }}个人时间情况</span>
     </div>
 </div>
 
+
+<!--publisher对应的功能区-->
+<table class="function_group" style="margin-bottom: 1rem">
+    <colgroup>
+        <col width="33%">
+        <col width="34%">
+        <col width="33%">
+    </colgroup>
+    <tbody>
+    <tr class="hover-pointer">
+        <td ui-sref="ac_recommend({aid:ac.aid})">
+            <i class="fa fa-bar-chart"></i>
+            <p class="text-center">智能分析</p>
+        </td>
+        <td ui-sref="ac_edit({aid:ac.aid})">
+            <i class="fa fa-pencil" style="border-left: solid 1px #FFFFFF;border-right: solid 1px #FFFFFF"></i>
+            <p class="text-center" style="border-left: solid 1px #FFFFFF;border-right: solid 1px #FFFFFF">修改活动</p>
+        </td>
+        <td ui-sref="ac_invite({aid:ac.aid})">
+            <i class="fa fa-share-alt"></i>
+            <p class="text-center">邀请加入</p>
+        </td>
+    </tr>
+    </tbody>
+</table>
 
 
 <div class="white_block" ng-if="ac.description!=''">
@@ -116,7 +125,7 @@
                     <span style="font-size: 1.2rem">小时</span>
                 </p>
                 <p style="margin-bottom: 0.5rem">可选时间</p>
-                <div  ng-repeat="date in ac.date_range" class="date_box hover-pointer" ng-click="change_date_active()" ng-class="{'date_box_clean':date.clean,'date_box_dirty':!date.clean,'date_box_active':date_active==$index}" style="background: #1abc9c;margin-top: 0;margin-bottom: 1rem">
+                <div  ng-repeat="date in ac.date_range" class="date_box" ng-click="change_date_active()" ng-class="{'date_box_clean':date.clean,'date_box_dirty':!date.clean,'date_box_active':date_active==$index}" style="background: #1abc9c;margin-top: 0;margin-bottom: 1rem">
                     <span style="font-size: 2rem;" class="font-number">{{ date.month }}.{{ date.day }}</span>
                     <span>{{ date.day_in_week}}</span>
                 </div>

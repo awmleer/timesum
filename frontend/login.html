@@ -75,6 +75,17 @@
         $("#password").val(store.get('password'));
     });
 
+
+    //自动登录
+    $.ajax({
+        url: "api/userinfo",
+        type: "get",
+        data: {}
+    }).done(function (data) {
+        location.href='main.html';
+    }).fail(function () {
+    });
+
     function login() {
         var phone=$("#phone").val();
         var password=$("#password").val();
