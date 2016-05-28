@@ -92,7 +92,7 @@ app.controller("ctrl_userinfo",function($scope,$rootScope,$http,$stateParams) {
             headers: {'Content-Type': 'application/json'},
             data: JSON.stringify({
                 uid: $rootScope.userinfo.uid,
-                name:$rootScope.userinfo.name
+                name: $rootScope.userinfo.name
             })
         }).success(function (data) {
             if (data == 'success') {
@@ -102,30 +102,30 @@ app.controller("ctrl_userinfo",function($scope,$rootScope,$http,$stateParams) {
         }).error(function () {
             alert("操作失败");
         });
-        $scope.CommitPwdChg = function () {
-            if ($scope.pwdchg.newpwd == $scope.pwdchg.newpwdcfm) {
-                $http({
-                    url: 'api/changepwd',
-                    method: 'post',
-                    headers: {'Content-Type': 'application/json'},
-                    data: JSON.stringify({
-                        uid: $rootScope.userinfo.uid,
-                        name:$rootScope.userinfo.name
-                    })
-                }).success(function (data) {
-                    if (data == 'success') {
-                        alert("操作成功！");
-                        $scope.NameChgDivVisible = false;
-                    }
-                }).error(function () {
-                    alert("操作失败");
-                });
-            }
-            else {
-                alert("两次输入的密码不一致！");
-            }
+    }
+    $scope.CommitPwdChg = function () {
+        if ($scope.pwdchg.newpwd == $scope.pwdchg.newpwdcfm) {
+            $http({
+                url: 'api/changepwd',
+                method: 'post',
+                headers: {'Content-Type': 'application/json'},
+                data: JSON.stringify({
+                    uid: $rootScope.userinfo.uid,
+                    name:$rootScope.userinfo.name
+                })
+            }).success(function (data) {
+                if (data == 'success') {
+                    alert("操作成功！");
+                    $scope.NameChgDivVisible = false;
+                }
+            }).error(function () {
+                alert("操作失败");
+            });
         }
+        else {
+            alert("两次输入的密码不一致！");
         }
+    }
 });
 
 
