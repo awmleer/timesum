@@ -221,8 +221,8 @@ def short_message_code():
         info_save = verification(phone=phone, last_verify=int(time.time() * 1000), verify_code=code)
         info_save.save()
         flag = False
-    if (flag and (int(time.time() * 1000) - info['last_verify'] < 60000)):
-        resp = make_response('一分钟之内只能发送一次验证码！', 200)
+    if (flag and (int(time.time() * 1000) - info['last_verify'] < 120000)):
+        resp = make_response('两分钟之内只能发送一次验证码！', 200)
         return resp
     operate = u'注册用户'
     person = u'新用户' + phone
@@ -349,10 +349,8 @@ def ac_detail():
         return resp
 
     ac_info['publisher'] = {'uid': ac_info['publisher'], 'name': users.objects(uid=ac_info['publisher']).first()['name']}
-    position = -1
     for i in ac_info['date_range']:
-        position += 1
-        ac_info['date_range'][position].update({'day_in_week': week_day(ac_info['date_range'][position]['year'], ac_info['date_range'][position]['month'], ac_info['date_range'][position]['day'])})
+        i.update({'day_in_week': week_day(i['year'], i['month'], i['day'])})
     for person in ac_info['participators']:
         person.update({'name': users.objects(uid=person['uid']).first()['name']})
     for person in ac_info['comments']:
@@ -369,10 +367,8 @@ def ac_preview():
     aid = int(request.args.get('aid'))
     ac_info = dict(activity.objects(aid=aid).first().to_mongo())
     ac_info['publisher'] = {'uid': ac_info['publisher'], 'name': users.objects(uid=ac_info['publisher']).first()['name']}
-    position = -1
     for i in ac_info['date_range']:
-        position += 1
-        ac_info['date_range'][position].update({'day_in_week': week_day(ac_info['date_range'][position]['year'], ac_info['date_range'][position]['month'], ac_info['date_range'][position]['day'])})
+        i.update({'day_in_week': week_day(i['year'], i['month'], i['day'])})
     for item in ac_preview_item:
         del ac_info[item]
     resp_json = dumps(ac_info)
@@ -471,7 +467,6 @@ def timeblocks():
     uid = flag[1]
 
     aid = int(request.args.get('aid'))
-    resp_json = {'aid': aid}
     ac_info = dict(activity.objects(aid=aid).first().to_mongo())
     flag = False
     for person in ac_info['participators']:
@@ -482,16 +477,22 @@ def timeblocks():
     if (not flag):
         resp = make_response('（¯﹃¯）您还未加入该活动呢', 200)
         return resp
+
+    ac_info['publisher'] = {'uid': ac_info['publisher'], 'name': users.objects(uid=ac_info['publisher']).first()['name']}
+    resp_json = {'aid': aid, 'title': ac_info['title'], 'publisher': ac_info['publisher'], 'organizer': ac_info['organizer'], 'place': ac_info['place'], 'opening': ac_info['opening']}
     if (if_inputed):
         for person in ac_info['time_collection']:
             if (uid == person['uid']):
-                resp_json.update(person['data'])
+                temp = {'date_range': person['data']}
+                for i in temp['date_range']:
+                    i['date'].update({'day_in_week': week_day(i['date']['year'], i['date']['month'], i['date']['day'])})
                 break
     else:
-        temp = {'data': []}
-        for date in ac_info['date_range']:
-            temp['data'].append({'date': date, 'timeblocks': timeblocks_default})
-        resp_json.update(temp)
+        temp = {'date_range': []}
+        for i in ac_info['date_range']:
+            i.update({'day_in_week': week_day(i['year'], i['month'], i['day'])})
+            temp['date_range'].append({'date': i, 'timeblocks': timeblocks_default})
+    resp_json.update(temp)
     resp_json = dumps(resp_json)
     resp = make_response(resp_json, 200)
     return resp
