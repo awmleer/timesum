@@ -75,7 +75,7 @@
         <td class="text-green" style="font-size: 2rem">
             UID
         </td>
-        <td class="text-gray">
+        <td class="text-gray" style="font-size: 1.5rem">
             {{userinfo.uid}}
         </td>
     </tr>
@@ -84,7 +84,7 @@
             姓名
             <button ng-click="NameChgVisibleToogle();">修改</button>
         </td>
-        <td class="text-gray">
+        <td class="text-gray" style="font-size: 1.5rem">
             {{userinfo.name}}
         </td>
     </tr>
@@ -92,7 +92,7 @@
         <td class="text-green" style="font-size: 2rem">
             电话号码
         </td>
-        <td class="text-gray">
+        <td class="text-gray" style="font-size: 1.5rem">
             {{userinfo.phone}}
         </td>
     </tr>
@@ -102,4 +102,11 @@
     <input class="acinput" ng-model="userinfo.name"/>
     <button ng-click="CommitNameChg();">提交</button>
 </div>
+<button ng-click="logout()">修改密码</button>
 <button ng-click="logout()">退出登录</button>
+<div ng-hide="!PwdChgDivVisible">
+    旧密码：<input class="acinput" ng-model="pwdchg.oldpwd"/><br>
+    新密码：<input class="acinput" ng-model="pwdchg.newpwd"/><br>
+    确认新密码：<input class="acinput" ng-model="pwdchg.newpwdcfm"/><br>
+    <button ng-click="CommitPwdChg();">修改密码</button>
+</div>
