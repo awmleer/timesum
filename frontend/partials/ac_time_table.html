@@ -1,0 +1,49 @@
+<style>
+    .callout {
+        padding: 20px;
+        margin: 20px 0;
+        border: 1px solid #eee;
+        border-left-width: 5px;
+        border-radius: 3px;
+        background-color: #FFFFFF;
+    }
+    .callout h4 {
+        margin-top: 0;
+        margin-bottom: 5px
+    }
+    .callout p:last-child {
+        margin-bottom: 0
+    }
+    .callout code {
+        border-radius: 3px
+    }
+    .callout + .callout {
+        margin-top: -5px
+    }
+    .callout-danger {
+        border-left-color: #ce4844
+    }
+    .callout-danger h4 {
+        color: #ce4844
+    }
+    .callout-warning {
+        border-left-color: #aa6708
+    }
+    .callout-warning h4 {
+        color: #aa6708
+    }
+    .callout-info {
+        border-left-color: #1b809e
+    }
+    .callout-info h4 {
+        color: #1b809e
+    }
+</style>
+
+
+<div ng-repeat="p in time_table" class="callout callout-info">
+    <h4>{{ p.name }}</h4>
+    <div ng-repeat=""
+    <i class="fa fa-check-circle" style="color:#1abc9c;font-size: 1.5rem;"></i><p style="display:inline-block; margin-left: 1rem;font-size: 1.5rem;margin-bottom: 0;color:#1abc9c">{{  }}</p>
+    <!--<span class="fa fa-question-circle" style="margin-left: 1.2rem;color:#f39c12;font-size: 1.5rem;"></span><p style="display:inline-block; margin-left: 1rem;font-size: 1.5rem;margin-bottom: 0;color: #f39c12;">6</p>-->
+</div>

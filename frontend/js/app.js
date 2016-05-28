@@ -43,6 +43,11 @@ app.config(function($stateProvider, $urlRouterProvider){
             templateUrl: "partials/ac_recommend.html",
             controller:'ctrl_ac_recommend'
         })
+        .state('ac_time_table', {
+            url: "/ac/:aid/time_table",
+            templateUrl: "partials/ac_time_table.html",
+            controller:'ctrl_ac_time_table'
+        })
         .state('ac_edit', {
             url: "/ac/:aid/edit",
             templateUrl: "partials/ac_edit.html",
@@ -105,6 +110,10 @@ app.run(['$rootScope', '$window', '$location','$state', '$log', function ($rootS
             $rootScope.header_text='创建活动';
         }else if (/\/ac\/\d+\/detail/.test(path)) {
             $rootScope.header_text='活动详情';
+        }else if (/\/ac\/\d+\/recommend/.test(path)) {
+            $rootScope.header_text='时间推荐';
+        }else if (/\/ac\/\d+\/time_table/.test(path)) {
+            $rootScope.header_text='时间表';
         }else if (/\/ac\/\d+\/edit/.test(path)) {
             $rootScope.header_text='修改活动';
         }else if (/\/ac\/\d+\/invite/.test(path)) {

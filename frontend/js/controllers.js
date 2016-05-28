@@ -293,7 +293,7 @@ app.controller("ctrl_new_ac",function($scope,$rootScope,$http,$state) {
 
 
 app.controller("ctrl_time_input",function($scope,$rootScope,$http,$stateParams,$state) {
-    
+
     $http({
         url: 'api/timeblocks',
         method: 'get',
@@ -484,6 +484,106 @@ app.controller("ctrl_ac_detail",function($scope,$rootScope,$http,$stateParams) {
 
 app.controller("ctrl_ac_recommend",function($scope,$rootScope,$http,$stateParams) {
     $scope.aid=$stateParams.aid;
+});
+
+
+
+app.controller("ctrl_ac_time_table",function($scope,$rootScope,$http,$stateParams) {
+    $scope.aid=$stateParams.aid;
+    $scope.ac={
+        aid:43,
+        "time_collection" : [
+            {
+                "uid" : 8,
+                name:'小明',
+                "data" : [
+                    {
+                        "date" : {
+                            "year" : "2017",
+                            "month" : "5",
+                            "day" : "10",
+                            day_in_week:'周一'
+                        },
+                        "timeblocks" : "000000000011112222222200000000000000000001111111100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                    },
+                    {
+                        "date" : {
+                            "year" : "2016",
+                            "month" : "5",
+                            "day" : "29",
+                            day_in_week:'周一'
+                        },
+                        "timeblocks" : "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                    }
+                ]
+            },
+            {
+                "uid" : 5,
+                name:'小华',
+                "data" : [
+                    {
+                        "date" : {
+                            "year" : "2017",
+                            "month" : "5",
+                            "day" : "10",
+                            day_in_week:'周一'
+                        },
+                        "timeblocks" : "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                    },
+                    {
+                        "date" : {
+                            "year" : "2016",
+                            "month" : "5",
+                            "day" : "29",
+                            day_in_week:'周一'
+                        },
+                        "timeblocks" : "000000000000002200220022000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                    }
+                ]
+            }
+        ]
+    };
+
+    $scope.time_table=[];
+    for (var i in $scope.ac.time_collection) {
+        $scope.time_table.push({
+            name:$scope.ac.time_collection[i].name,
+            uid:$scope.ac.time_collection[i].uid,
+            date:[]
+        });
+        angular.forEach($scope.ac.time_collection[i].data, function(data,index,array){
+            console.log(data.timeblocks);
+            var timeblocks=data.timeblocks;
+            console.log(index);
+            $scope.time_table[i].date.push(data.date);
+            $scope.time_table[i].date[index].periods=[];
+            var flag=0;
+            var start;
+            var end;
+            for (var j = 0; j < 144 ; j++) {
+                if (flag != 0) {
+                    if (timeblocks.charAt(j)!=flag) {
+                        end=j;
+                        $scope.time_table[i].date[index].periods.push({
+                            start:start,
+                            end:end,
+                            status:flag
+                        });
+                        start=j;
+                        flag=timeblocks.charAt(j);
+                    }
+                }else {
+                    if (timeblocks.charAt(j)!=0) {
+                        flag=timeblocks.charAt(j);
+                        start=j;
+                    }
+                }
+            }
+        });
+    }
+    console.log($scope.time_table);
+    
+    
 });
 
 
