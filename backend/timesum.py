@@ -117,14 +117,14 @@ def islogin():
     return [False, 'fqsws']
 
 def week_day(year, month, day):
-    weekday=datetime.datetime(int(year),int(month),int(day)).strftime("%w")
+    weekday = datetime.datetime(int(year), int(month), int(day)).strftime("%w")
     if (weekday == '1'): return '周一'
     if (weekday == '2'): return '周二'
     if (weekday == '3'): return '周三'
     if (weekday == '4'): return '周四'
     if (weekday == '5'): return '周五'
     if (weekday == '6'): return '周六'
-    if (weekday == '7'): return '周日'
+    if (weekday == '0'): return '周日'
 
 def sendsms4(operate, code, person, mobile):
     d = {'#operate#': operate, '#code#': code}
@@ -518,6 +518,28 @@ def new_ac():
     text_save.save()
     resp_json = json.dumps({'result': 'success', 'aid': sum})
     resp = make_response(resp_json, 200)
+    return resp
+# --------------------我是分界线--------------------
+@app.route('/api/determine_time')
+def determine_time():
+    flag = islogin()
+    if (not flag[0]):
+        resp = make_response('', 200)
+        return resp
+    uid = flag[1]
+
+    text = request.json
+    text['aid'] = int(text['aid'])
+    ac_info = activity.objects(aid=text['aid']).first()
+    if (ac_info['publisher'] != uid):
+        resp = make_response('您没有权限', 200)
+        return resp
+    temp = []
+    for time_form in text['time_determined']:
+        temp.append(time_format.from_json(dumps(time_form)))
+    ac_info['time_determined'] = temp
+    ac_info.save()
+    resp = make_response('success', 200)
     return resp
 # --------------------我是分界线--------------------
 if __name__ == '__main__':
