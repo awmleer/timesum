@@ -88,6 +88,7 @@ class verification(Document):
 # --------------------我是分界线--------------------
 salt = '5aWZak2n35Wk fqsws'
 ac_preview_item = ['_id', 'history', 'participators', 'time_collection', 'expected_number', 'duration', 'time_determined', 'comments']
+timeblocks_default = '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
 
 # aaaa = dict(users.objects(uid=6).first().to_mongo())
 # print aaaa
@@ -461,6 +462,40 @@ def time_input():
     resp = make_response('success', 200)
     return resp
 # --------------------我是分界线--------------------
+@app.route('/api/timeblocks')
+def timeblocks():
+    flag = islogin()
+    if (not flag[0]):
+        resp = make_response('', 200)
+        return resp
+    uid = flag[1]
+
+    aid = int(request.args.get('aid'))
+    resp_json = {'aid': aid}
+    ac_info = dict(activity.objects(aid=aid).first().to_mongo())
+    flag = False
+    for person in ac_info['participators']:
+        if (uid == person['uid']):
+            flag = True
+            if_inputed = person['time_inputed']
+            break
+    if (not flag):
+        resp = make_response('（¯﹃¯）您还未加入该活动呢', 200)
+        return resp
+    if (if_inputed):
+        for person in ac_info['time_collection']:
+            if (uid == person['uid']):
+                resp_json.update(person['data'])
+                break
+    else:
+        temp = {'data': []}
+        for date in ac_info['date_range']:
+            temp['data'].append({'date': date, 'timeblocks': timeblocks_default})
+        resp_json.update(temp)
+    resp_json = dumps(resp_json)
+    resp = make_response(resp_json, 200)
+    return resp
+# --------------------我是分界线--------------------
 @app.route('/api/new_ac', methods=['POST'])
 def new_ac():
     flag = islogin()
@@ -486,6 +521,6 @@ def new_ac():
     return resp
 # --------------------我是分界线--------------------
 if __name__ == '__main__':
-    app.debug = True
+    # app.debug = True
     app.run(host='0.0.0.0', port= 5001)
 # --------------------我是分界线--------------------
