@@ -6,10 +6,12 @@
         border-left-width: 5px;
         border-radius: 3px;
         background-color: #FFFFFF;
+        border-left-color: #acacac;
     }
     .callout h4 {
         margin-top: 0;
         margin-bottom: 5px
+        color: #626262;
     }
     .callout p:last-child {
         margin-bottom: 0
@@ -38,12 +40,21 @@
     .callout-info h4 {
         color: #1b809e
     }
+
+
+    .fa-check-circle{
+        color:#1abc9c;
+    }
+    .fa-question-circle{
+        color:#f39c12;
+    }
 </style>
 
 
-<div ng-repeat="p in time_table" class="callout callout-info">
+<div ng-repeat="p in time_table" class="callout">
     <h4>{{ p.name }}</h4>
-    <div ng-repeat=""
-    <i class="fa fa-check-circle" style="color:#1abc9c;font-size: 1.5rem;"></i><p style="display:inline-block; margin-left: 1rem;font-size: 1.5rem;margin-bottom: 0;color:#1abc9c">{{  }}</p>
-    <!--<span class="fa fa-question-circle" style="margin-left: 1.2rem;color:#f39c12;font-size: 1.5rem;"></span><p style="display:inline-block; margin-left: 1rem;font-size: 1.5rem;margin-bottom: 0;color: #f39c12;">6</p>-->
+    <div ng-repeat="period in p.periods">
+        <i class="fa fa-check-circle" ng-class="{'fa-check-circle':period.status==2,'fa-question-circle':period.status==1}" style="font-size: 1.5rem;"></i><p style="display:inline-block; margin-left: 1rem;font-size: 1.5rem;margin-bottom: 0;">{{ period.month }}月{{ period.day }}日&nbsp;{{ period.start | timeblock }}-{{ period.end | timeblock }}</p>
+    </div>
+
 </div>

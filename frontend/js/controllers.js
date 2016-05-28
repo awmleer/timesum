@@ -490,6 +490,9 @@ app.controller("ctrl_ac_recommend",function($scope,$rootScope,$http,$stateParams
 
 app.controller("ctrl_ac_time_table",function($scope,$rootScope,$http,$stateParams) {
     $scope.aid=$stateParams.aid;
+
+
+    //临时模拟数据
     $scope.ac={
         aid:43,
         "time_collection" : [
@@ -544,19 +547,19 @@ app.controller("ctrl_ac_time_table",function($scope,$rootScope,$http,$stateParam
         ]
     };
 
+
+
     $scope.time_table=[];
-    for (var i in $scope.ac.time_collection) {
+    angular.forEach($scope.ac.time_collection, function (person, i, array) {
         $scope.time_table.push({
-            name:$scope.ac.time_collection[i].name,
-            uid:$scope.ac.time_collection[i].uid,
-            date:[]
+            name:person.name,
+            uid:person.uid,
+            periods:[]
         });
-        angular.forEach($scope.ac.time_collection[i].data, function(data,index,array){
+        angular.forEach(person.data, function(data,ii,array){
             console.log(data.timeblocks);
             var timeblocks=data.timeblocks;
-            console.log(index);
-            $scope.time_table[i].date.push(data.date);
-            $scope.time_table[i].date[index].periods=[];
+            // console.log(ii);
             var flag=0;
             var start;
             var end;
@@ -564,7 +567,9 @@ app.controller("ctrl_ac_time_table",function($scope,$rootScope,$http,$stateParam
                 if (flag != 0) {
                     if (timeblocks.charAt(j)!=flag) {
                         end=j;
-                        $scope.time_table[i].date[index].periods.push({
+                        $scope.time_table[i].periods.push({
+                            month:data.date.month,
+                            day:data.date.day,
                             start:start,
                             end:end,
                             status:flag
@@ -580,7 +585,12 @@ app.controller("ctrl_ac_time_table",function($scope,$rootScope,$http,$stateParam
                 }
             }
         });
-    }
+    })
+    
+
+    // for (var i in $scope.ac.time_collection) {
+    //
+    // }
     console.log($scope.time_table);
     
     
