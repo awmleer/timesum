@@ -97,7 +97,7 @@
         </td>
     </tr>
 </table>
-<div ng-hide="NameChgDivVisible">
+<div ng-hide="!NameChgDivVisible">
     姓名：
     <input class="acinput" ng-model="userinfo.name"/>
     <button ng-click="CommitNameChg();">提交</button>

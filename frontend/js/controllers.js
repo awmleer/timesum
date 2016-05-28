@@ -93,6 +93,7 @@ app.controller("ctrl_userinfo",function($scope,$rootScope,$http,$stateParams) {
         }).success(function (data) {
             if (data == 'success') {
                 alert("操作成功！");
+                $scope.NameChgDivVisible = false;
             }
         }).error(function () {
             alert("操作失败");
