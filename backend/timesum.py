@@ -47,7 +47,7 @@ class time_collection_in(EmbeddedDocument):
 
 class comments_in(EmbeddedDocument):
     uid = IntField(required=True)
-    time = IntField(required=True, default=int(time.time() * 1000))
+    time = IntField(required=True)
     text = StringField(required=True)
 # --------------------我是分界线--------------------
 class me_ta(Document):
@@ -68,7 +68,7 @@ class activity(Document):
     time_collection = ListField(EmbeddedDocumentField(time_collection_in), default=[])
     expected_number = IntField(required=True)
     duration = IntField(required=True)
-    published_time = IntField(required=True, default=int(time.time() * 1000))
+    published_time = IntField(required=True)
     time_determined = ListField(EmbeddedDocumentField(time_format), default=[])
     date_range = ListField(EmbeddedDocumentField(date_in), default=[])
     comments = ListField(EmbeddedDocumentField(comments_in), default=[])
@@ -280,8 +280,9 @@ def activities():
     resp_json = {'ac_published': [], 'ac_participated': [], 'ac_published_history': [], 'ac_participated_history': []}
     for one_activity in activity.objects(publisher=uid):
         one_ac = dict(one_activity.to_mongo())
-        one_ac['time_determined'][0].update({'day_in_week': week_day(one_ac['time_determined'][0]['year'], one_ac['time_determined'][0]['month'], one_ac['time_determined'][0]['day'])})
-        one_ac['time_determined'][1].update({'day_in_week': week_day(one_ac['time_determined'][1]['year'], one_ac['time_determined'][1]['month'], one_ac['time_determined'][1]['day'])})
+        if (one_ac['time_determined'] != []):
+            one_ac['time_determined'][0].update({'day_in_week': week_day(one_ac['time_determined'][0]['year'], one_ac['time_determined'][0]['month'], one_ac['time_determined'][0]['day'])})
+            one_ac['time_determined'][1].update({'day_in_week': week_day(one_ac['time_determined'][1]['year'], one_ac['time_determined'][1]['month'], one_ac['time_determined'][1]['day'])})
         if (one_ac['history'] == False):
             temp = {}
             temp.update({'aid': one_ac['aid'], 'title': one_ac['title'], 'opening': one_ac['opening'], 'participators': one_ac['participators']})
@@ -293,8 +294,9 @@ def activities():
             resp_json['ac_published_history'].append(temp)
     for one_activity in activity.objects(participators__all=[participators_in(uid=uid, time_inputed=True)]):
         one_ac = dict(one_activity.to_mongo())
-        one_ac['time_determined'][0].update({'day_in_week': week_day(one_ac['time_determined'][0]['year'], one_ac['time_determined'][0]['month'], one_ac['time_determined'][0]['day'])})
-        one_ac['time_determined'][1].update({'day_in_week': week_day(one_ac['time_determined'][1]['year'], one_ac['time_determined'][1]['month'], one_ac['time_determined'][1]['day'])})
+        if (one_ac['time_determined'] != []):
+            one_ac['time_determined'][0].update({'day_in_week': week_day(one_ac['time_determined'][0]['year'], one_ac['time_determined'][0]['month'], one_ac['time_determined'][0]['day'])})
+            one_ac['time_determined'][1].update({'day_in_week': week_day(one_ac['time_determined'][1]['year'], one_ac['time_determined'][1]['month'], one_ac['time_determined'][1]['day'])})
         if (one_ac['history'] == False):
             temp = {}
             temp.update({'aid': one_ac['aid'], 'title': one_ac['title'], 'opening': one_ac['opening'], 'participators': one_ac['participators']})
@@ -306,8 +308,9 @@ def activities():
             resp_json['ac_participated_history'].append(temp)
     for one_activity in activity.objects(participators__all=[participators_in(uid=uid, time_inputed=False)]):
         one_ac = dict(one_activity.to_mongo())
-        one_ac['time_determined'][0].update({'day_in_week': week_day(one_ac['time_determined'][0]['year'], one_ac['time_determined'][0]['month'], one_ac['time_determined'][0]['day'])})
-        one_ac['time_determined'][1].update({'day_in_week': week_day(one_ac['time_determined'][1]['year'], one_ac['time_determined'][1]['month'], one_ac['time_determined'][1]['day'])})
+        if (one_ac['time_determined'] != []):
+            one_ac['time_determined'][0].update({'day_in_week': week_day(one_ac['time_determined'][0]['year'], one_ac['time_determined'][0]['month'], one_ac['time_determined'][0]['day'])})
+            one_ac['time_determined'][1].update({'day_in_week': week_day(one_ac['time_determined'][1]['year'], one_ac['time_determined'][1]['month'], one_ac['time_determined'][1]['day'])})
         if (one_ac['history'] == False):
             temp = {}
             temp.update({'aid': one_ac['aid'], 'title': one_ac['title'], 'opening': one_ac['opening'], 'participators': one_ac['participators']})
@@ -345,8 +348,10 @@ def ac_detail():
         return resp
 
     ac_info['publisher'] = {'uid': ac_info['publisher'], 'name': users.objects(uid=ac_info['publisher']).first()['name']}
-    ac_info['date_range'][0].update({'day_in_week': week_day(ac_info['date_range'][0]['year'], ac_info['date_range'][0]['month'], ac_info['date_range'][0]['day'])})
-    ac_info['date_range'][1].update({'day_in_week': week_day(ac_info['date_range'][1]['year'], ac_info['date_range'][1]['month'], ac_info['date_range'][1]['day'])})
+    position = -1
+    for i in ac_info['date_range']:
+        position += 1
+        ac_info['date_range'][position].update({'day_in_week': week_day(ac_info['date_range'][position]['year'], ac_info['date_range'][position]['month'], ac_info['date_range'][position]['day'])})
     for person in ac_info['participators']:
         person.update({'name': users.objects(uid=person['uid']).first()['name']})
     for person in ac_info['comments']:
@@ -360,17 +365,13 @@ def ac_detail():
 # --------------------我是分界线--------------------
 @app.route('/api/ac_preview')
 def ac_preview():
-    flag = islogin()
-    if (not flag[0]):
-        resp = make_response('', 200)
-        return resp
-    uid = flag[1]
-
     aid = int(request.args.get('aid'))
     ac_info = dict(activity.objects(aid=aid).first().to_mongo())
     ac_info['publisher'] = {'uid': ac_info['publisher'], 'name': users.objects(uid=ac_info['publisher']).first()['name']}
-    ac_info['date_range'][0].update({'day_in_week': week_day(ac_info['date_range'][0]['year'], ac_info['date_range'][0]['month'], ac_info['date_range'][0]['day'])})
-    ac_info['date_range'][1].update({'day_in_week': week_day(ac_info['date_range'][1]['year'], ac_info['date_range'][1]['month'], ac_info['date_range'][1]['day'])})
+    position = -1
+    for i in ac_info['date_range']:
+        position += 1
+        ac_info['date_range'][position].update({'day_in_week': week_day(ac_info['date_range'][position]['year'], ac_info['date_range'][position]['month'], ac_info['date_range'][position]['day'])})
     for item in ac_preview_item:
         del ac_info[item]
     resp_json = dumps(ac_info)
@@ -415,7 +416,7 @@ def submit_comment():
     if (not flag):
         resp = make_response('（¯﹃¯）您还未加入该活动呢', 200)
         return resp
-    ac_info['comments'].append(comments_in(uid=uid, text=comment))
+    ac_info['comments'].append(comments_in(uid=uid, time=int(time.time() * 1000), text=comment))
     ac_info.save()
     resp = make_response('success', 200)
     return resp
@@ -477,7 +478,7 @@ def new_ac():
     sum = me_ta.objects(me_ta='auto_increase').first()['aid']
     sum = sum + 1
     me_ta.objects(me_ta='auto_increase').update_one(set__aid=sum)
-    text.update({'aid': sum, 'publisher': uid, 'participators': [{'uid': uid, 'time_inputed': False}]})
+    text.update({'aid': sum, 'publisher': uid, 'participators': [{'uid': uid, 'time_inputed': False}], 'published_time': int(time.time() * 1000)})
     text_save = activity.from_json(dumps(text))
     text_save.save()
     resp_json = json.dumps({'result': 'success', 'aid': sum})
