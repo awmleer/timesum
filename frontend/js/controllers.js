@@ -61,7 +61,7 @@ app.controller("ctrl_header",function($scope,$rootScope,$http,$state,$location) 
                 location.href="login.html";
             }
         }).error(function () {
-            alert("获取信息失败，请稍后再试");
+            alert("操作失败");
         });
     }
 
@@ -97,7 +97,7 @@ app.controller("ctrl_home",function($scope,$rootScope,$http,$state) {
         $scope.ac_published_history=data.ac_published_history;
         $scope.ac_participated_history=data.ac_participated_history;
     }).error(function () {
-        alert("获取信息失败，请稍后再试");
+        alert("获取活动列表失败");
     });
 
     //临时模拟的数据
@@ -293,12 +293,9 @@ app.controller("ctrl_new_ac",function($scope,$rootScope,$http,$state) {
 
 
 app.controller("ctrl_time_input",function($scope,$rootScope,$http,$stateParams,$state) {
-
-
-    //TODO change to api timeblocks
-
+    
     $http({
-        url: 'api/ac_preview',
+        url: 'api/timeblocks',
         method: 'get',
         params: {aid:$stateParams.aid}
     }).success(function (data) {
@@ -307,16 +304,21 @@ app.controller("ctrl_time_input",function($scope,$rootScope,$http,$stateParams,$
         //关于编辑的日期
         var i=0;
         $scope.time_data=$scope.ac.date_range;
+        var timeblock_temp;
         for (i = 0; i < $scope.time_data.length; i++) {
+            timeblock_temp=$scope.time_data[i].timeblocks;
             $scope.time_data[i].timeblocks=[];
             $scope.time_data[i].clean=true;
+            for (var j = 1; j <=144; j++) {
+                $scope.time_data[i].timeblocks.push({time:j,status:timeblock_temp.charAt(j)});
+            }
         }
         //使用date_active来控制编辑哪一天
         $scope.date_active=0;
         $scope.time_data[0].clean=false;
-        for (var j = 0; j <$scope.time_data.length ; j++) {
-            for (i = 1; i <=144; i++) {
-                $scope.time_data[j].timeblocks.push({time:i,status:0});
+        if ($scope.ac.time_inputed) {
+            for (var ii = 1; ii < $scope.time_data.length; ii++) {
+                $scope.time_data[ii].clean=false;
             }
         }
 
@@ -324,33 +326,10 @@ app.controller("ctrl_time_input",function($scope,$rootScope,$http,$stateParams,$
         alert("获取信息失败");
     });
 
-    //
-    // $scope.ac={
-    //     aid:21513,
-    //     title:'sparker开发团队会议',
-    //     publisher:{
-    //         uid:1658165,
-    //         name:'小明'
-    //     },
-    //     organizer:'sparker团队',
-    //     place:'月牙楼元空间',
-    //     duration:3,
-    //     date_range:[
-    //         {year:2016,month:5,day:19,day_in_week:'周四'},
-    //         {year:2016,month:5,day:20,day_in_week:'周五'},
-    //         {year:2016,month:5,day:20,day_in_week:'周五'},
-    //         {year:2016,month:5,day:20,day_in_week:'周五'},
-    //         {year:2016,month:5,day:22,day_in_week:'周日'}
-    //     ],
-    //     opening:true
-    // };
-
-
-
 
     $scope.change_date_active= function () {
         $scope.date_active=this.$index;
-        this.date.clean=false;
+        this.d.clean=false;
     };
 
 
@@ -420,7 +399,6 @@ app.controller("ctrl_time_input",function($scope,$rootScope,$http,$stateParams,$
 
 
     $scope.submit_time= function () {
-        // console.log(JSON.stringify($scope.time_data));
         var obj={
             aid:$scope.ac.aid,
             data:[]
@@ -428,9 +406,9 @@ app.controller("ctrl_time_input",function($scope,$rootScope,$http,$stateParams,$
         for (var i = 0; i < $scope.time_data.length; i++) {
             obj.data[i]={
                 date:{
-                    year:$scope.time_data[i].year,
-                    month:$scope.time_data[i].month,
-                    day:$scope.time_data[i].day
+                    year:$scope.time_data[i].date.year,
+                    month:$scope.time_data[i].date.month,
+                    day:$scope.time_data[i].date.day
                 },
                 timeblocks:''
             };
@@ -450,7 +428,7 @@ app.controller("ctrl_time_input",function($scope,$rootScope,$http,$stateParams,$
                 alert(data);
             }
         }).error(function () {
-            alert("获取信息失败，请稍后再试");
+            alert("操作失败");
         });
         
     };
@@ -471,7 +449,7 @@ app.controller("ctrl_ac_detail",function($scope,$rootScope,$http,$stateParams) {
         }).success(function (data) {
             $scope.ac=data;
         }).error(function () {
-            alert("获取信息失败，请稍后再试");
+            alert("获取活动详情失败");
         });
     }
 
@@ -622,7 +600,7 @@ app.controller("ctrl_ac_join",function($scope,$rootScope,$location,$http,$stateP
                 alert(data);
             }
         }).error(function () {
-            alert("获取信息失败，请稍后再试");
+            alert("操作失败");
         });
     };
 

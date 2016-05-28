@@ -81,12 +81,12 @@
         <span ng-if="ac.place"><i class="fa fa-map-marker text-green fa-fw"></i>{{ ac.place }}</span>
 
         <div style="margin-top: 1.5rem;margin-bottom: 1.5rem">
-            <div ng-repeat="date in ac.date_range">
-                <div class="date_box hover-pointer" ng-click="change_date_active()" ng-class="{'date_box_clean':date.clean,'date_box_dirty':!date.clean,'date_box_active':date_active==$index}">
-                    <span style="font-size: 2rem;" class="font-number">{{ date.month }}.{{ date.day }}</span>
-                    <span>{{ date.day_in_week}}</span>
+            <div ng-repeat="d in time_data">
+                <div class="date_box hover-pointer" ng-click="change_date_active()" ng-class="{'date_box_clean':d.clean,'date_box_dirty':!d.clean,'date_box_active':date_active==$index}">
+                    <span style="font-size: 2rem;" class="font-number">{{ d.date.month }}.{{ d.date.day }}</span>
+                    <span>{{ d.date.day_in_week}}</span>
                 </div>
-                <span>{{ date_active==$index?'正在录入':date.clean?'未填写':'已填写' }}</span>
+                <span>{{ date_active==$index?'正在录入':d.clean?'未填写':'已填写' }}</span>
             </div>
 
         </div>

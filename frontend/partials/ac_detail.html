@@ -74,7 +74,7 @@
 
 
 <!--publisher对应的功能区-->
-<table class="function_group" style="margin-bottom: 1rem" ng-if="ac.relation=='published' && !ac.history">
+<table class="function_group" style="margin-bottom: 1rem" ng-if="ac.me.relation=='published' && !ac.history">
     <colgroup>
         <col width="33%">
         <col width="34%">
@@ -159,6 +159,9 @@
     <p class="block_title" style="margin-left: 1rem">
         <i class="fa fa-commenting fa-fw text-green"></i>留言
     </p>
+    <div ng-if="ac.comments.length==0" style="border-bottom: solid 1px #e1e1e1;">
+        <p class="text-center" style="font-size: 1.2rem;">还没有留言</p>
+    </div>
     <div ng-repeat="comment in ac.comments" style="border-bottom: solid 1px #e1e1e1;padding: 1rem;">
         <p style="font-size: 1.5rem;margin-bottom: 0">{{ comment.name }}</p>
         <p style="font-size: 1rem;margin-bottom: 0">{{ comment.time | date:'yyyy.M.d H:mm' }}</p>
