@@ -263,6 +263,14 @@ app.controller("ctrl_new_ac",function($scope,$rootScope,$http,$state) {
 
     };
 
+    $scope.change_duration= function (value) {
+        if (value==1) {
+            $scope.activity.duration++;
+        }else if (value == -1) {
+            $scope.activity.duration--;
+        }
+    }
+
     $scope.setDateTime= function (current_date) {
         //TODO 判断日期是否已经存在了
 

@@ -90,8 +90,10 @@
             </div>
             <div>
                 <div class="form-group label-floating">
-                    <label class="control-label" for="duration">预计时长</label>
-                    <input ng-model="activity.duration" class="form-control" id="duration" type="number" style="padding: 0;">
+                    <label class="control-label">预计时长</label><br>
+                    <button ng-click="change_duration(-1)" class="button button-square button-main button-small">-</button>
+                    <span style="font-size: 1.8rem;color: #000;">&nbsp;{{ activity.duration | timeblock }}&nbsp;</span>
+                    <button ng-click="change_duration(1)" class="button button-square button-main button-small">+</button>
                 </div>
             </div>
         </div>
