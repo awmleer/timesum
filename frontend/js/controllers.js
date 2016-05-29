@@ -292,6 +292,96 @@ app.controller("ctrl_new_ac",function($scope,$rootScope,$http,$state) {
 
 
 
+app.controller("ctrl_ac_edit",function($scope,$rootScope,$http,$stateParams,$state) {
+
+    $http({
+        url: 'api/ac_preview',
+        method: 'get',
+        params: {aid:$stateParams.aid}
+    }).success(function (data) {
+        $scope.activity={
+            title:data.title,
+            description:data.description,
+            organizer:data.organizer,
+            expected_number:data.expected_number,
+            // date_range:[],//暂时不允许修改date_range
+            place:data.place,
+            duration:5
+        };
+        // angular.forEach(data.date_range, function (date,i, array) {
+        //     $scope.date_range.push({
+        //         year:date.year,
+        //         month:date.month,
+        //         day:date.day
+        //     })
+        // });
+    }).error(function () {
+        alert("获取活动信息失败");
+    });
+
+
+    $scope.submit_ac= function () {
+        console.log($scope.activity.date_range);
+        if ($scope.activity.duration==0) {
+            alert("请设置活动的预计时长");
+            return;
+        }
+        if ( $scope.activity.date_range.length==0 ) {
+            alert("请设置活动的可能进行日期");
+            return;
+        }
+        $http({
+            url: 'api/new_ac',
+            method: 'post',
+            headers: {'Content-Type': 'application/json'},
+            data: angular.toJson($scope.activity)
+        }).success(function (data) {
+            if (data.result == 'success') {
+                //提醒用户跳转到时间录入界面
+                if (window.confirm('添加成功，是否现在录入时间？')) {
+                    $state.go('ac_time_input',{aid:data.aid});
+                }else{
+                    $state.go('ac_detail',{aid:data.aid});
+                }
+            }else{
+                alert(data.message);
+            }
+        }).error(function () {
+            alert("操作失败");
+        });
+
+    };
+
+    $scope.change_duration= function (value) {
+        if (value==1) {
+            $scope.activity.duration++;
+        }else if (value == -1) {
+            if ($scope.activity.duration>0) $scope.activity.duration--;
+        }
+    };
+
+    $scope.setDateTime= function (current_date) {
+        //TODO 判断日期是否已经存在了
+
+        var obj_date={
+            year:moment(current_date).format("YYYY"),
+            month:moment(current_date).format("M"),
+            day:moment(current_date).format("D")
+        };
+
+        $scope.activity.date_range.push(obj_date);
+    };
+
+    $scope.delete_date= function () {
+        $scope.activity.date_range.remove(this.date);
+    }
+
+
+
+});
+
+
+
 app.controller("ctrl_time_input",function($scope,$rootScope,$http,$stateParams,$state) {
 
     $http({
