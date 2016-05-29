@@ -35,8 +35,8 @@
             </div>
         </div>
         <div>
-            <label class="control-label" for="description">简介</label>
-            <textarea ng-model="activity.description" class="form-control input-line" rows="3" id="description" style="padding: 0;margin-bottom: 1rem" required></textarea>
+            <label class="control-label" for="description">简介(选填)</label>
+            <textarea ng-model="activity.description" class="form-control input-line" rows="3" id="description" style="padding: 0;margin-bottom: 1rem"></textarea>
         </div>
         <div>
             <div class="form-group label-floating">
@@ -54,7 +54,7 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row" style="width: 100%;">
         <div class="col-xs-10 col-xs-offset-1 col-md-8 col-md-offset-2">
             <button ng-click="edit_ac()" type="button" class="button button-pill button-main button-block-level">提交</button>
         </div>
