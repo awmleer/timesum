@@ -1,0 +1,63 @@
+<div class="text-green">
+    <table class="table">
+        <tr>
+            <td rowspan="2" style="width:7rem; vertical-align:middle; border:0">
+                <img src="img/logo/logo_circle.svg" width="100%">
+            </td>
+            <td style="padding-bottom:0; border:0">
+                <h2 style="margin-bottom: 0;margin-top: 1.5rem;font-weight: bold">活动信息</h2>
+            </td>
+        </tr>
+        <tr>
+            <td class="text-gray" style="padding-top:0; font-size:1.7rem; border:0">
+                Info
+            </td>
+        </tr>
+    </table>
+
+    <div style="margin-bottom: 1.5rem;">
+        <div class="form-group label-floating">
+            <label class="control-label" for="title">主题</label>
+            <input ng-model="activity.title" class="form-control input-line" id="title" type="text" style="padding: 0;" required>
+        </div>
+        <div >
+            <div style="width:47% ;display:inline-block;">
+                <div class="form-group label-floating">
+                    <label class="control-label" for="organizer">主办方(选填)</label>
+                    <input ng-model="activity.organizer" class="form-control input-line" id="organizer" type="text" style="padding: 0;">
+                </div>
+            </div>
+            <div style="width:47% ;display:inline-block;float: right;">
+                <div class="form-group label-floating">
+                    <label class="control-label" for="place">地点(选填)</label>
+                    <input ng-model="activity.place" class="form-control input-line" id="place" type="text" style="padding: 0;">
+                </div>
+            </div>
+        </div>
+        <div>
+            <label class="control-label" for="description">简介</label>
+            <textarea ng-model="activity.description" class="form-control input-line" rows="3" id="description" style="padding: 0;margin-bottom: 1rem" required></textarea>
+        </div>
+        <div>
+            <div class="form-group label-floating">
+                <label class="control-label" for="expected_number">预计人数</label>
+                <input ng-model="activity.expected_number" class="form-control input-line" id="expected_number" type="number" style="padding: 0;" required>
+            </div>
+        </div>
+        <div>
+            <div class="form-group label-floating">
+                <label class="control-label">预计时长</label><br>
+                <button ng-click="change_duration(-1)" class="button button-square button-main button-small" style="font-size: 1.3rem">-</button>
+                <span style="font-size: 1.8rem;color: #000;">&nbsp;{{ activity.duration | timeblock }}&nbsp;</span>
+                <button ng-click="change_duration(1)" class="button button-square button-main button-small" style="font-size: 1.3rem">+</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-10 col-xs-offset-1 col-md-8 col-md-offset-2">
+            <button ng-click="edit_ac()" type="button" class="button button-pill button-main button-block-level">提交</button>
+        </div>
+    </div>
+</div>
+

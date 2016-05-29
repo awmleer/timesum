@@ -300,13 +300,14 @@ app.controller("ctrl_ac_edit",function($scope,$rootScope,$http,$stateParams,$sta
         params: {aid:$stateParams.aid}
     }).success(function (data) {
         $scope.activity={
+            aid:data.aid,
             title:data.title,
             description:data.description,
             organizer:data.organizer,
             expected_number:data.expected_number,
             // date_range:[],//暂时不允许修改date_range
             place:data.place,
-            duration:5
+            duration:data.duration
         };
         // angular.forEach(data.date_range, function (date,i, array) {
         //     $scope.date_range.push({
@@ -318,20 +319,14 @@ app.controller("ctrl_ac_edit",function($scope,$rootScope,$http,$stateParams,$sta
     }).error(function () {
         alert("获取活动信息失败");
     });
-
-
-    $scope.submit_ac= function () {
-        console.log($scope.activity.date_range);
+    
+    $scope.edit_ac= function () {
         if ($scope.activity.duration==0) {
             alert("请设置活动的预计时长");
             return;
         }
-        if ( $scope.activity.date_range.length==0 ) {
-            alert("请设置活动的可能进行日期");
-            return;
-        }
         $http({
-            url: 'api/new_ac',
+            url: 'api/edit_ac',
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             data: angular.toJson($scope.activity)
@@ -349,8 +344,7 @@ app.controller("ctrl_ac_edit",function($scope,$rootScope,$http,$stateParams,$sta
         }).error(function () {
             alert("操作失败");
         });
-
-    };
+    }
 
     $scope.change_duration= function (value) {
         if (value==1) {
@@ -359,25 +353,7 @@ app.controller("ctrl_ac_edit",function($scope,$rootScope,$http,$stateParams,$sta
             if ($scope.activity.duration>0) $scope.activity.duration--;
         }
     };
-
-    $scope.setDateTime= function (current_date) {
-        //TODO 判断日期是否已经存在了
-
-        var obj_date={
-            year:moment(current_date).format("YYYY"),
-            month:moment(current_date).format("M"),
-            day:moment(current_date).format("D")
-        };
-
-        $scope.activity.date_range.push(obj_date);
-    };
-
-    $scope.delete_date= function () {
-        $scope.activity.date_range.remove(this.date);
-    }
-
-
-
+    
 });
 
 
