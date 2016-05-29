@@ -50,7 +50,7 @@ app.controller("ctrl_header",function($scope,$rootScope,$http,$state,$location) 
 
 
     /*退出登录*/
-    $scope.logout=function () {
+    $rootScope.logout=function () {
         //api logout
         $http({
             url: 'api/logout',
@@ -70,7 +70,62 @@ app.controller("ctrl_header",function($scope,$rootScope,$http,$state,$location) 
 
 
 app.controller("ctrl_userinfo",function($scope,$rootScope,$http,$stateParams) {
-    $rootScope.get_userinfo();
+    $scope.NameChgDivVisible = false;
+    $scope.PwdChgDivVisible = false;
+    //$rootScope.get_userinfo();
+    $rootScope.userinfo = {
+        "uid": 1,
+        "name": "秦泽浩",
+        "phone": "15764384954"
+    };
+    $scope.userinfo = $rootScope.userinfo;
+    $scope.NameChgVisibleToogle = function () {
+        $scope.NameChgDivVisible = !$scope.NameChgDivVisible;
+    }
+    $scope.PwdChgVisibleToogle = function () {
+        $scope.PwdChgDivVisible = !$scope.PwdChgDivVisible;
+    }
+    $scope.CommitNameChg = function () {
+        $http({
+            url: 'api/changename',
+            method: 'post',
+            headers: {'Content-Type': 'application/json'},
+            data: JSON.stringify({
+                uid: $rootScope.userinfo.uid,
+                name: $rootScope.userinfo.name
+            })
+        }).success(function (data) {
+            if (data == 'success') {
+                alert("操作成功！");
+                $scope.NameChgDivVisible = false;
+            }
+        }).error(function () {
+            alert("操作失败");
+        });
+    }
+    $scope.CommitPwdChg = function () {
+        if ($scope.pwdchg.newpwd == $scope.pwdchg.newpwdcfm) {
+            $http({
+                url: 'api/changepwd',
+                method: 'post',
+                headers: {'Content-Type': 'application/json'},
+                data: JSON.stringify({
+                    uid: $rootScope.userinfo.uid,
+                    name:$rootScope.userinfo.name
+                })
+            }).success(function (data) {
+                if (data == 'success') {
+                    alert("操作成功！");
+                    $scope.NameChgDivVisible = false;
+                }
+            }).error(function () {
+                alert("操作失败");
+            });
+        }
+        else {
+            alert("两次输入的密码不一致！");
+        }
+    }
 });
 
 
