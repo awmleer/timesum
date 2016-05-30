@@ -73,6 +73,24 @@ class activity(Document):
     date_range = ListField(EmbeddedDocumentField(date_in), default=[])
     comments = ListField(EmbeddedDocumentField(comments_in), default=[])
 # --------------------我是分界线--------------------
+class ac_deleted(Document):
+    aid = IntField(required=True)
+    publisher = IntField(required=True)
+    title = StringField(required=True, default='')
+    description = StringField(required=True, default='')
+    place = StringField(required=True, default='')
+    organizer = StringField(required=True, default='')
+    opening = BooleanField(required=True, default=True)
+    history = BooleanField(required=True, default=False)
+    participators = ListField(EmbeddedDocumentField(participators_in), default=[])
+    time_collection = ListField(EmbeddedDocumentField(time_collection_in), default=[])
+    expected_number = IntField(required=True)
+    duration = IntField(required=True)
+    published_time = IntField(required=True)
+    time_determined = ListField(EmbeddedDocumentField(time_format), default=[])
+    date_range = ListField(EmbeddedDocumentField(date_in), default=[])
+    comments = ListField(EmbeddedDocumentField(comments_in), default=[])
+# --------------------我是分界线--------------------
 class users(Document):
     uid = IntField(required=True)
     name = StringField(required=True)
@@ -87,7 +105,7 @@ class verification(Document):
     verify_code = StringField(required=True)
 # --------------------我是分界线--------------------
 salt = '5aWZak2n35Wk fqsws'
-ac_preview_item = ['_id', 'history', 'participators', 'time_collection', 'expected_number', 'duration', 'time_determined', 'comments']
+ac_preview_item = ['_id', 'history', 'participators', 'time_collection', 'time_determined', 'comments']
 timeblocks_default = '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
 
 # aaaa = dict(users.objects(uid=6).first().to_mongo())
@@ -522,6 +540,28 @@ def new_ac():
     resp = make_response(resp_json, 200)
     return resp
 # --------------------我是分界线--------------------
+@app.route('/api/delete_ac')
+def delete_ac():
+    flag = islogin()
+    if (not flag[0]):
+        resp = make_response('', 200)
+        return resp
+    uid = flag[1]
+
+    aid = int(request.args.get('aid'))
+    ac_info = dict(activity.objects(aid=aid).first().to_mongo())
+    if (ac_info['publisher'] != uid):
+        resp = make_response('您没有权限', 200)
+        return resp
+
+    del ac_info['_id']
+    ac_deleted_save = ac_deleted.from_json(dumps(ac_info))
+    ac_deleted_save.save()
+    ac_info = activity.objects(aid=aid).first()
+    ac_info.delete()
+    resp = make_response('success', 200)
+    return resp
+# --------------------我是分界线--------------------
 @app.route('/api/determine_time')
 def determine_time():
     flag = islogin()
@@ -536,6 +576,7 @@ def determine_time():
     if (ac_info['publisher'] != uid):
         resp = make_response('您没有权限', 200)
         return resp
+
     temp = []
     for time_form in text['time_determined']:
         temp.append(time_format.from_json(dumps(time_form)))
