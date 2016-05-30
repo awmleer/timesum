@@ -382,6 +382,33 @@ def ac_detail():
     resp = make_response(resp_json, 200)
     return resp
 # --------------------我是分界线--------------------
+@app.route('/api/time_collection')
+def time_collection():
+    flag = islogin()
+    if (not flag[0]):
+        resp = make_response('', 200)
+        return resp
+    uid = flag[1]
+
+    aid = int(request.args.get('aid'))
+    ac_info = dict(activity.objects(aid=aid).first().to_mongo())
+    flag = False
+    for person in ac_info['participators']:
+        if (uid == person['uid']):
+            flag = True
+            break
+    if (not flag):
+        resp = make_response('（¯﹃¯）您还未加入该活动呢', 200)
+        return resp
+
+    for person in ac_info['time_collection']:
+        person.update({'name': users.objects(uid=person['uid']).first()['name']})
+        for i in person['data']:
+            i['date'].update({'day_in_week': week_day(i['date']['year'], i['date']['month'], i['date']['day'])})
+    resp_json = dumps({'aid': aid, 'time_collection': ac_info['time_collection']})
+    resp = make_response(resp_json, 200)
+    return resp
+# --------------------我是分界线--------------------
 @app.route('/api/ac_preview')
 def ac_preview():
     aid = int(request.args.get('aid'))
