@@ -1,9 +1,17 @@
+<style>
+    #header div,p{
+        padding-top: 0.5rem;
+        padding-bottom: 0.2rem;
+    }
+</style>
 <div id="header" style="box-shadow: 0 0.7rem 0.7rem lightgray;background-color: #ffffff;margin-bottom: 1rem;height: 4rem;">
-    <div class="container-fluid" style="padding-left:0;">
-        <div style="margin:0;width: 15%;display: inline-block;" ui-sref="home">
-            <img style="border-right:1px solid #DBDBDB;height: 2.5rem;margin-top:0;padding: 0.3rem 0.8rem;" src="img/logo/logo_black.svg" alt="timesum" class="active-gray hover-pointer">
-        </div>
-        <p style="font-size: 1.8rem;margin-top:0.8rem;display: inline-block;width: 75%;height: auto;vertical-align: middle" class="text-center">{{ header_text }}</p>
-        <!--TODO 这里还应该有一个userinfo的logo，以及还应该有userinfo的界面-->
+
+    <div style="margin:0;width: 14%;display: inline-block;" ui-sref="home">
+        <img style="border-right:1px solid #DBDBDB;height: 2.5rem;margin-top:0;padding: 0.3rem 0.8rem;" src="img/logo/logo_black.svg" class="active-gray hover-pointer">
     </div>
+    <p style="font-size: 1.8rem;margin: 0;display: inline-block;width: 70%;height: auto;vertical-align: middle" class="text-center">{{ header_text }}</p>
+    <div style="margin:0;width: 14%;display: inline-block;float: right;" ui-sref="userinfo">
+        <img style="border-left:1px solid #DBDBDB;height: 2.5rem;margin-top:0;padding: 0.3rem 0.8rem;float: right;" src="img/logo/user-temp.png" class="active-gray hover-pointer">
+    </div>
+
 </div>
