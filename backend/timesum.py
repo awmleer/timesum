@@ -568,7 +568,7 @@ def new_ac():
     resp = make_response(resp_json, 200)
     return resp
 # --------------------我是分界线--------------------
-@app.route('/api/edit_ac')
+@app.route('/api/edit_ac', methods=['POST'])
 def edit_ac():
     flag = islogin()
     if (not flag[0]):
