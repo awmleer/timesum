@@ -107,6 +107,7 @@ class verification(Document):
 salt = '5aWZak2n35Wk fqsws'
 ac_preview_item = ['_id', 'history', 'participators', 'time_collection', 'time_determined', 'comments']
 timeblocks_default = '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
+edit_ac_item = ['title', 'organizer', 'place', 'description', 'expected_number', 'duration']
 
 # aaaa = dict(users.objects(uid=6).first().to_mongo())
 # print aaaa
@@ -538,6 +539,29 @@ def new_ac():
     text_save.save()
     resp_json = json.dumps({'result': 'success', 'aid': sum})
     resp = make_response(resp_json, 200)
+    return resp
+# --------------------我是分界线--------------------
+@app.route('/api/edit_ac')
+def edit_ac():
+    flag = islogin()
+    if (not flag[0]):
+        resp = make_response('', 200)
+        return resp
+    uid = flag[1]
+
+    text = request.json
+    text['aid'] = int(text['aid'])
+    ac_info = activity.objects(aid=text['aid']).first()
+    if (ac_info['publisher'] != uid):
+        resp = make_response('您没有权限', 200)
+        return resp
+    if (text['expected_number'] == '' or text['duration'] == '' or text['title'] == ''):
+        resp = make_response('信息不完整', 200)
+        return resp
+
+    for item in edit_ac_item:
+        ac_info[item] = text[item]
+    resp = make_response('success', 200)
     return resp
 # --------------------我是分界线--------------------
 @app.route('/api/delete_ac')
