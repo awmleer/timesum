@@ -218,7 +218,7 @@ def change_name():
     uid = flag[1]
 
     name = request.args.get('name')
-    if (name == ''):
+    if (name == '' or name == None):
         resp = make_response('(｡・`ω´･)所以说姓名怎么能是空呢？', 200)
         return resp
     user_info = users.objects(uid=uid).first()
