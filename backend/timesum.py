@@ -209,6 +209,24 @@ def signup():
     resp.set_cookie('All_Hail_Fqs', base64.b64encode(salt + str(sum)), max_age=2592000)
     return resp
 # --------------------我是分界线--------------------
+@app.route('/api/change_name')
+def change_name():
+    flag = islogin()
+    if (not flag[0]):
+        resp = make_response('cookies error', 401)
+        return resp
+    uid = flag[1]
+
+    name = request.args.get('name')
+    if (name == ''):
+        resp = make_response('(｡・`ω´･)所以说姓名怎么能是空呢？', 200)
+        return resp
+    user_info = users.objects(uid=uid).first()
+    user_info['name'] = name
+    user_info.save()
+    resp = make_response('success', 200)
+    return resp
+# --------------------我是分界线--------------------
 @app.route('/api/is_signed')
 def is_signed():
     phone = request.args.get('phone')
@@ -272,7 +290,7 @@ def changepwd():
     text['pwd_new'] = str(text['pwd_new'])
     user_info = users.objects(uid=uid).first()
     old_password_hash = hashlib.md5(text['pwd_old'] + salt).hexdigest()
-    new_password_hash = hashlib.md5(text['new_old'] + salt).hexdigest()
+    new_password_hash = hashlib.md5(text['pwd_new'] + salt).hexdigest()
     if (user_info['password'] != old_password_hash):
         resp = make_response('(￢_￢)旧密码输错啦', 200)
         return resp
