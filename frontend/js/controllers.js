@@ -63,17 +63,15 @@ app.controller("ctrl_userinfo",function($scope,$rootScope,$http) {
     }
     $scope.CommitNameChg = function () {
         $http({
-            url: 'api/changename',
-            method: 'post',
-            headers: {'Content-Type': 'application/json'},
-            data: JSON.stringify({
-                uid: $rootScope.userinfo.uid,
-                name: $scope.name_changed
-            })
+            url: 'api/change_name',
+            method: 'get',
+            params: {name: $scope.name_changed}
         }).success(function (data) {
             if (data == 'success') {
                 alert("操作成功！");
                 $scope.NameChgDivVisible = false;
+                $scope.name_changed='';
+                $scope.get_userinfo();
             }else {
                 alert(data);
             }
@@ -126,29 +124,32 @@ app.controller("ctrl_userinfo",function($scope,$rootScope,$http) {
 });
 
 
-app.controller("ctrl_changepwd",function($scope,$rootScope,$http) {
+
+app.controller("ctrl_changepwd",function($scope,$rootScope,$http,$state) {
 
     $scope.CommitPwdChg = function () {
-        if ($scope.pwdchg.newpwd == $scope.pwdchg.newpwdcfm) {
+        if ($scope.password_new == $scope.password_confirm) {
             $http({
                 url: 'api/changepwd',
                 method: 'post',
                 headers: {'Content-Type': 'application/json'},
                 data: JSON.stringify({
-                    uid: $rootScope.userinfo.uid,
-                    name:$rootScope.userinfo.name
+                    pwd_old: $scope.password_old,
+                    pwd_new:$scope.password_new
                 })
             }).success(function (data) {
                 if (data == 'success') {
                     alert("操作成功！");
-                    $scope.NameChgDivVisible = false;
+                    $state.go('home');
+                }else{
+                    alert(data);
                 }
             }).error(function () {
                 alert("操作失败");
             });
         }
         else {
-            alert("两次输入的密码不一致！");
+            alert("两次输入的密码不一致");
         }
     }
 });
@@ -411,15 +412,10 @@ app.controller("ctrl_ac_edit",function($scope,$rootScope,$http,$stateParams,$sta
             headers: {'Content-Type': 'application/json'},
             data: angular.toJson($scope.activity)
         }).success(function (data) {
-            if (data.result == 'success') {
-                //提醒用户跳转到时间录入界面
-                if (window.confirm('添加成功，是否现在录入时间？')) {
-                    $state.go('ac_time_input',{aid:data.aid});
-                }else{
-                    $state.go('ac_detail',{aid:data.aid});
-                }
+            if (data == 'success') {
+                $state.go('ac_detail',{aid:$scope.activity.aid});
             }else{
-                alert(data.message);
+                alert(data);
             }
         }).error(function () {
             alert("操作失败");
@@ -634,6 +630,15 @@ app.controller("ctrl_ac_detail",function($scope,$rootScope,$http,$stateParams) {
 
 app.controller("ctrl_ac_recommend",function($scope,$rootScope,$http,$stateParams) {
     $scope.aid=$stateParams.aid;
+    $http({
+        url: 'api/time_recommend',
+        method: 'get',
+        params: {aid:$scope.aid}
+    }).success(function (data) {
+        console.log(data);
+    }).error(function () {
+        alert("获取信息失败，请稍后再试");
+    });
 });
 
 
@@ -643,105 +648,113 @@ app.controller("ctrl_ac_time_table",function($scope,$rootScope,$http,$stateParam
 
 
     //临时模拟数据
-    $scope.ac={
-        aid:43,
-        "time_collection" : [
-            {
-                "uid" : 8,
-                name:'小明',
-                "data" : [
-                    {
-                        "date" : {
-                            "year" : "2017",
-                            "month" : "5",
-                            "day" : "10",
-                            day_in_week:'周一'
-                        },
-                        "timeblocks" : "000000000011112222222200000000000000000001111111100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
-                    },
-                    {
-                        "date" : {
-                            "year" : "2016",
-                            "month" : "5",
-                            "day" : "29",
-                            day_in_week:'周一'
-                        },
-                        "timeblocks" : "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
-                    }
-                ]
-            },
-            {
-                "uid" : 5,
-                name:'小华',
-                "data" : [
-                    {
-                        "date" : {
-                            "year" : "2017",
-                            "month" : "5",
-                            "day" : "10",
-                            day_in_week:'周一'
-                        },
-                        "timeblocks" : "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
-                    },
-                    {
-                        "date" : {
-                            "year" : "2016",
-                            "month" : "5",
-                            "day" : "29",
-                            day_in_week:'周一'
-                        },
-                        "timeblocks" : "000000000000002200220022000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
-                    }
-                ]
-            }
-        ]
-    };
-
-
-
-    $scope.time_table=[];
-    angular.forEach($scope.ac.time_collection, function (person, i, array) {
-        $scope.time_table.push({
-            name:person.name,
-            uid:person.uid,
-            periods:[]
-        });
-        angular.forEach(person.data, function(data,ii,array){
-            console.log(data.timeblocks);
-            var timeblocks=data.timeblocks;
-            // console.log(ii);
-            var flag=0;
-            var start;
-            var end;
-            for (var j = 0; j < 144 ; j++) {
-                if (flag != 0) {
-                    if (timeblocks.charAt(j)!=flag) {
-                        end=j;
-                        $scope.time_table[i].periods.push({
-                            month:data.date.month,
-                            day:data.date.day,
-                            start:start,
-                            end:end,
-                            status:flag
-                        });
-                        start=j;
-                        flag=timeblocks.charAt(j);
-                    }
-                }else {
-                    if (timeblocks.charAt(j)!=0) {
-                        flag=timeblocks.charAt(j);
-                        start=j;
+    $http({
+        url: 'api/time_collection',
+        method: 'get',
+        params: {aid:$scope.aid}
+    }).success(function (data) {
+        $scope.ac=data;
+        $scope.time_table=[];
+        angular.forEach($scope.ac.time_collection, function (person, i, array) {
+            $scope.time_table.push({
+                name:person.name,
+                uid:person.uid,
+                periods:[]
+            });
+            angular.forEach(person.data, function(data,ii,array){
+                // console.log(data.timeblocks);
+                var timeblocks=data.timeblocks;
+                // console.log(ii);
+                var flag=0;
+                var start;
+                var end;
+                for (var j = 0; j < 144 ; j++) {
+                    if (flag != 0) {
+                        if (timeblocks.charAt(j)!=flag) {
+                            end=j;
+                            $scope.time_table[i].periods.push({
+                                month:data.date.month,
+                                day:data.date.day,
+                                start:start,
+                                end:end,
+                                status:flag
+                            });
+                            start=j;
+                            flag=timeblocks.charAt(j);
+                        }
+                    }else {
+                        if (timeblocks.charAt(j)!=0) {
+                            flag=timeblocks.charAt(j);
+                            start=j;
+                        }
                     }
                 }
-            }
-        });
-    })
+            });
+        })
+    }).error(function () {
+        alert("获取信息失败，请稍后再试");
+    });
+    // $scope.ac={
+    //     aid:43,
+    //     "time_collection" : [
+    //         {
+    //             "uid" : 8,
+    //             name:'小明',
+    //             "data" : [
+    //                 {
+    //                     "date" : {
+    //                         "year" : "2017",
+    //                         "month" : "5",
+    //                         "day" : "10",
+    //                         day_in_week:'周一'
+    //                     },
+    //                     "timeblocks" : "000000000011112222222200000000000000000001111111100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+    //                 },
+    //                 {
+    //                     "date" : {
+    //                         "year" : "2016",
+    //                         "month" : "5",
+    //                         "day" : "29",
+    //                         day_in_week:'周一'
+    //                     },
+    //                     "timeblocks" : "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+    //                 }
+    //             ]
+    //         },
+    //         {
+    //             "uid" : 5,
+    //             name:'小华',
+    //             "data" : [
+    //                 {
+    //                     "date" : {
+    //                         "year" : "2017",
+    //                         "month" : "5",
+    //                         "day" : "10",
+    //                         day_in_week:'周一'
+    //                     },
+    //                     "timeblocks" : "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+    //                 },
+    //                 {
+    //                     "date" : {
+    //                         "year" : "2016",
+    //                         "month" : "5",
+    //                         "day" : "29",
+    //                         day_in_week:'周一'
+    //                     },
+    //                     "timeblocks" : "000000000000002200220022000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+    //                 }
+    //             ]
+    //         }
+    //     ]
+    // };
+
+
     
 
     // for (var i in $scope.ac.time_collection) {
     //
     // }
-    console.log($scope.time_table);
+    // console.log($scope.time_table);
     
     
 });
