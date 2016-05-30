@@ -55,7 +55,7 @@ app.controller("ctrl_header",function($scope,$rootScope,$http,$state,$location) 
 
 
 
-app.controller("ctrl_userinfo",function($scope,$rootScope,$http,$stateParams) {
+app.controller("ctrl_userinfo",function($scope,$rootScope,$http) {
     $scope.NameChgDivVisible = false;
     $rootScope.get_userinfo();
     $scope.NameChgVisibleToogle = function () {
@@ -123,6 +123,34 @@ app.controller("ctrl_userinfo",function($scope,$rootScope,$http,$stateParams) {
     //         alert("两次输入的密码不一致！");
     //     }
     // }
+});
+
+
+app.controller("ctrl_changepwd",function($scope,$rootScope,$http) {
+
+    $scope.CommitPwdChg = function () {
+        if ($scope.pwdchg.newpwd == $scope.pwdchg.newpwdcfm) {
+            $http({
+                url: 'api/changepwd',
+                method: 'post',
+                headers: {'Content-Type': 'application/json'},
+                data: JSON.stringify({
+                    uid: $rootScope.userinfo.uid,
+                    name:$rootScope.userinfo.name
+                })
+            }).success(function (data) {
+                if (data == 'success') {
+                    alert("操作成功！");
+                    $scope.NameChgDivVisible = false;
+                }
+            }).error(function () {
+                alert("操作失败");
+            });
+        }
+        else {
+            alert("两次输入的密码不一致！");
+        }
+    }
 });
 
 
@@ -428,7 +456,7 @@ app.controller("ctrl_time_input",function($scope,$rootScope,$http,$stateParams,$
             $scope.time_data[i].timeblocks=[];
             $scope.time_data[i].clean=true;
             for (var j = 1; j <=144; j++) {
-                $scope.time_data[i].timeblocks.push({time:j,status:timeblock_temp.charAt(j)});
+                $scope.time_data[i].timeblocks.push({time:j,status:timeblock_temp.charAt(j-1)});
             }
         }
         //使用date_active来控制编辑哪一天
@@ -530,8 +558,12 @@ app.controller("ctrl_time_input",function($scope,$rootScope,$http,$stateParams,$
                 },
                 timeblocks:''
             };
-            for (var j = 0; j < $scope.time_data[i].timeblocks.length; j++) {
-                obj.data[i].timeblocks+=$scope.time_data[i].timeblocks[j].status.toString();
+            for (var j = 0; j < 144; j++) {
+                obj.data[i].timeblocks+=$scope.time_data[i].timeblocks[j].status.toString()+'t';
+            }
+            obj.data[i].timeblocks=obj.data[i].timeblocks.replace(/t/g,'');
+            if (obj.data[i].timeblocks.length != 144) {
+                alert("数据长度出现问题");
             }
         }
         $http({
