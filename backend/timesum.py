@@ -220,6 +220,7 @@ def short_message_code():
     if (info == None):
         info_save = verification(phone=phone, last_verify=int(time.time() * 1000), verify_code=code)
         info_save.save()
+        info = verification.objects(phone=phone).first()
         flag = False
     if (flag and (int(time.time() * 1000) - info['last_verify'] < 120000)):
         resp = make_response('两分钟之内只能发送一次验证码！', 200)
@@ -483,12 +484,12 @@ def timeblocks():
     if (if_inputed):
         for person in ac_info['time_collection']:
             if (uid == person['uid']):
-                temp = {'date_range': person['data']}
+                temp = {'date_range': person['data'], 'time_inputed': True}
                 for i in temp['date_range']:
                     i['date'].update({'day_in_week': week_day(i['date']['year'], i['date']['month'], i['date']['day'])})
                 break
     else:
-        temp = {'date_range': []}
+        temp = {'date_range': [], 'time_inputed': False}
         for i in ac_info['date_range']:
             i.update({'day_in_week': week_day(i['year'], i['month'], i['day'])})
             temp['date_range'].append({'date': i, 'timeblocks': timeblocks_default})
@@ -544,6 +545,6 @@ def determine_time():
     return resp
 # --------------------我是分界线--------------------
 if __name__ == '__main__':
-    # app.debug = True
+    app.debug = True
     app.run(host='0.0.0.0', port= 5001)
 # --------------------我是分界线--------------------
