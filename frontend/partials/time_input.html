@@ -46,7 +46,6 @@
 
 
 
-
     .div_status_select{
         width:30%;
         text-align: center;
@@ -68,6 +67,7 @@
     .div_status_select span{
         display: inline-block;
     }
+
 </style>
 
 
@@ -76,11 +76,13 @@
 <div id="left" style="width: 70%;position: fixed;height: 100%;box-shadow: 0.5rem 0 0.7rem gray;z-index: 10;">
     <div style="background-color: #16a085;height: 7rem;width: 1rem;float: left;margin-top: 2rem"></div>
     <div style="margin: 2rem 1.7rem 0 1.7rem">
+        <!--活动信息-->
         <p style="font-size: 2rem;font-weight: bold" class="text-green">{{ ac.title }}</p>
         <span><i class="fa fa-user text-green fa-fw"></i>{{ ac.publisher.name }}<span ng-if="ac.organizer!=''" class="text-gray">&nbsp;@{{ ac.organizer }}</span></span><br>
         <span ng-if="ac.place"><i class="fa fa-map-marker text-green fa-fw"></i>{{ ac.place }}</span>
 
-        <div style="margin-top: 1.5rem;margin-bottom: 1.5rem">
+        <!--日期选择-->
+        <div style="margin-top: 1.5rem;margin-bottom: 1.5rem" class="help_pop" data-container="body" data-toggle="popover" data-content="在这里选择要填写的日期" data-placement="top">
             <div ng-repeat="d in time_data">
                 <div class="date_box hover-pointer" ng-click="change_date_active()" ng-class="{'date_box_clean':d.clean,'date_box_dirty':!d.clean,'date_box_active':date_active==$index}">
                     <span style="font-size: 2rem;" class="font-number">{{ d.date.month }}.{{ d.date.day }}</span>
@@ -88,12 +90,12 @@
                 </div>
                 <span>{{ date_active==$index?'正在录入':d.clean?'未填写':'已填写' }}</span>
             </div>
-
         </div>
 
         <hr style="border: 1px solid #dadada;width: 90%;">
 
-        <div style="width: 100%;">
+        <!--时间状态选择-->
+        <div style="width: 100%;"  class="help_pop" data-container="body" data-toggle="popover" data-content="在这里选择要在右边输入的时间状态" data-placement="top">
             <div class="div_status_select">
                 <div style="background-color: #999999;" class="hover-pointer" ng-click="change_input_status(0)">
                     <i class="fa fa-paint-brush" ng-show="input_status==0"></i>
@@ -124,21 +126,20 @@
 </div>
 
 
-
 <!--右上角的帮助按钮-->
-<div class="div_fixed_icon" style="top: 1rem;">
-    <i class="fa fa-question hover-pointer"></i>
+<div class="div_fixed_icon" style="top: 1rem;" onclick="help()">
+    <i class="fa fa-question hover-pointer" id="icon_help" data-container="body" data-toggle="popover" data-content="点我查看帮助" data-placement="left"></i>
 </div>
 
 <!--右下角的放大缩小按钮-->
 <div class="div_fixed_icon" style="bottom: 1.5rem;">
     <i class="fa fa-plus hover-pointer" ng-click="scale_minus()"></i>
     <br>
-    <i class="fa fa-minus hover-pointer" ng-click="scale_plus()"></i>
+    <i class="fa fa-minus hover-pointer help_pop" ng-click="scale_plus()"  data-container="body" data-toggle="popover" data-content="点这两个按钮可以把时间刻度缩放" data-placement="left"></i>
 </div>
 
 
-
+<!--右边的timeblocks-->
 <div style="width: 30%;float: right;position: relative;z-index: 0;" ng-repeat="day in time_data" ng-show="date_active == $index">
     <div style="position: absolute;top: 0;left: -2rem;">
         <table style="width: 2rem;">
@@ -162,7 +163,7 @@
         </tbody>
     </table>
 </div>
-
+<a  class="help_pop" data-container="body" data-toggle="popover" data-content="点右边来输入你的时间状态" data-placement="left" style="margin-top: 2rem;float: right;"></a>
 
 
 <script>
@@ -170,5 +171,16 @@
         if (document.body.clientWidth>=500){
             $("#left").css('width',document.getElementById('container').offsetWidth*0.7);
         }
+        var has_used_time_input=store.get('has_used_time_input');
+        if (has_used_time_input == undefined) {
+            $("#icon_help").popover().popover('show');
+            store.set('has_used_time_input','true');
+        }
     });
+
+    function help() {
+        $("#icon_help").popover('destroy');
+        $('.help_pop').popover();
+        $(".help_pop").popover('toggle');
+    }
 </script>
