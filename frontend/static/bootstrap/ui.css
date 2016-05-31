@@ -60,6 +60,7 @@
   color: #FFFFFF;
   display: inline-block;
   margin-right: 1rem;
+  text-align: center;
 }
 .date_box_dirty{
   background-color: #1abc9c;
