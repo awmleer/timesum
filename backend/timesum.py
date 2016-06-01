@@ -694,7 +694,7 @@ def delete_ac():
     resp = make_response('success', 200)
     return resp
 # --------------------我是分界线--------------------
-@app.route('/api/determine_time')
+@app.route('/api/determine_time', methods=['POST'])
 def determine_time():
     flag = islogin()
     if (not flag[0]):
