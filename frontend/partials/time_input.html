@@ -83,7 +83,7 @@
 
         <!--日期选择-->
         <div style="margin-top: 1.5rem;margin-bottom: 1.5rem" class="help_pop" data-container="body" data-toggle="popover" data-content="在这里选择要填写的日期" data-placement="top">
-            <div ng-repeat="d in time_data">
+            <div ng-repeat="d in time_data | orderBy:'date.day' ">
                 <div class="date_box hover-pointer" ng-click="change_date_active()" ng-class="{'date_box_clean':d.clean,'date_box_dirty':!d.clean,'date_box_active':date_active==$index}">
                     <span style="font-size: 2rem;" class="font-number">{{ d.date.month }}.{{ d.date.day }}</span>
                     <span>{{ d.date.day_in_week}}</span>

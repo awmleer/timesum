@@ -56,7 +56,9 @@
 
     <div class="row" style="width: 100%;">
         <div class="col-xs-10 col-xs-offset-1 col-md-8 col-md-offset-2">
-            <button ng-click="edit_ac()" type="button" class="button button-pill button-main button-block-level">提交</button>
+            <button ui-sref="ac_detail({aid:activity.aid})" type="button" class="button button-pill button-main button-block-level button-border" style="margin-bottom: 1rem">返回</button>
+            <button ng-click="edit_ac()" type="button" class="button button-pill button-main button-block-level" style="margin-bottom: 1rem">提交</button>
+            <button ng-click="delete_ac()" type="button" class="button button-pill button-caution button-block-level" style="margin-bottom: 1rem">删除活动</button>
         </div>
     </div>
 </div>

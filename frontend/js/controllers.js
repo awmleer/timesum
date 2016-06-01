@@ -420,7 +420,27 @@ app.controller("ctrl_ac_edit",function($scope,$rootScope,$http,$stateParams,$sta
         }).error(function () {
             alert("操作失败");
         });
-    }
+    };
+    
+    
+    $scope.delete_ac=function () {
+        if (window.confirm("确定要删除这个活动吗？")) {
+            $http({
+                url: 'api/delete_ac',
+                method: 'get',
+                params: {aid:$scope.activity.aid}
+            }).success(function (data) {
+                if (data == 'success') {
+                    alert("删除成功");
+                    $state.go('home');
+                }else{
+                    alert(data);
+                }
+            }).error(function () {
+                alert("获取信息失败，请稍后再试");
+            });
+        }
+    };
 
     $scope.change_duration= function (value) {
         if (value==1) {
