@@ -64,9 +64,40 @@
         </p>
     </div>
 
+    <!--publisher对应的功能区-->
+    <table style="width: 90%;margin: 0 5% 1rem;" ng-if="ac.me.relation=='published' && !ac.history">
+        <colgroup>
+            <col width="33%">
+            <col width="34%">
+            <col width="33%">
+        </colgroup>
+        <tbody>
+        <tr class="hover-pointer">
+            <td align="center">
+                <div class="active-gray" style="padding: 0.5rem 0;" ui-sref="ac_edit({aid:ac.aid})">
+                    <i class="fa fa-pencil"></i>
+                    <span>修改活动</span>
+                </div>
+            </td>
+            <td align="center">
+                <div class="active-gray" style="padding: 0.5rem 0;" ng-click="delete_ac()">
+                    <i class="fa fa-trash-o"></i>
+                    <span>删除活动</span>
+                </div>
+            </td>
+            <td align="center">
+                <div class="active-gray" style="padding: 0.5rem 0;" ui-sref="ac_invite({aid:ac.aid})">
+                    <i class="fa fa-share-alt"></i>
+                    <span>邀请加入</span>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
 
-    <!--participator对应的功能区-->
+
+    <!--时间录入按钮-->
     <div class="function_group function_group_participated hover-pointer" ng-if="!ac.history" align="center" ui-sref="ac_time_input({aid:ac.aid})">
         <i class="fa fa-clock-o fa-fw" style="margin-bottom: -2rem"></i><span style="font-size: 1.4rem;margin-bottom: 0.5rem;display: inline-block;">{{ ac.me.time_inputed?'修改':'录入' }}个人时间情况</span>
     </div>
@@ -86,13 +117,14 @@
             <i class="fa fa-bar-chart"></i>
             <p class="text-center">时间统计</p>
         </td>
-        <td ui-sref="ac_edit({aid:ac.aid})">
-            <i class="fa fa-pencil" style="border-left: solid 1px #FFFFFF;border-right: solid 1px #FFFFFF"></i>
-            <p class="text-center" style="border-left: solid 1px #FFFFFF;border-right: solid 1px #FFFFFF">修改活动</p>
+        <td ui-sref="ac_recommend({aid:ac.aid})">
+            <i class="fa fa-thumbs-o-up" style="border-left: solid 1px #FFFFFF;border-right: solid 1px #FFFFFF"></i>
+            <p class="text-center" style="border-left: solid 1px #FFFFFF;border-right: solid 1px #FFFFFF">智能推荐</p>
         </td>
+        <!--todo ui-sref-->
         <td ui-sref="ac_invite({aid:ac.aid})">
             <i class="fa fa-share-alt"></i>
-            <p class="text-center">邀请加入</p>
+            <p class="text-center">确定时间</p>
         </td>
     </tr>
     </tbody>

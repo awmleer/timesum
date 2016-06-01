@@ -48,6 +48,11 @@ app.config(function($stateProvider, $urlRouterProvider){
             templateUrl: "partials/ac_time_table.html",
             controller:'ctrl_ac_time_table'
         })
+        .state('ac_determine', {
+            url: "/ac/:aid/determine",
+            templateUrl: "partials/ac_determine.html",
+            controller:'ctrl_ac_determine'
+        })
         .state('ac_edit', {
             url: "/ac/:aid/edit",
             templateUrl: "partials/ac_edit.html",
