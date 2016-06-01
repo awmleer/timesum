@@ -365,12 +365,12 @@ def activities():
 # --------------------我是分界线--------------------
 @app.route('/api/ac_detail')
 def ac_detail():
-    # flag = islogin()
-    # if (not flag[0]):
-    #     resp = make_response('', 200)
-    #     return resp
-    # uid = flag[1]
-    uid = 1
+    flag = islogin()
+    if (not flag[0]):
+        resp = make_response('', 200)
+        return resp
+    uid = flag[1]
+
     aid = int(request.args.get('aid'))
     ac_info = dict(activity.objects(aid=aid).first().to_mongo())
     resp_json = {'me': {}}
@@ -429,11 +429,9 @@ def ac_detail():
                 for time in ac_info['time_collection']:
                     if (time['uid'] == person['uid']):
                         flag = 2
-                        print 'haha'
                         for days in time['data']:
                             if (flag == 0): break
                             day = date_to_day(int(days['date']['year']), int(days['date']['month']), int(days['date']['day']))
-                            print day
                             if (day == day_start):
                                 for i in range(time_start, 144):
                                     if (days['timeblocks'][i] == '0'):
