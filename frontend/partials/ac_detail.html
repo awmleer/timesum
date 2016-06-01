@@ -121,8 +121,7 @@
             <i class="fa fa-thumbs-o-up" style="border-left: solid 1px #FFFFFF;border-right: solid 1px #FFFFFF"></i>
             <p class="text-center" style="border-left: solid 1px #FFFFFF;border-right: solid 1px #FFFFFF">智能推荐</p>
         </td>
-        <!--todo ui-sref-->
-        <td ui-sref="ac_invite({aid:ac.aid})">
+        <td ui-sref="ac_determine({aid:ac.aid})">
             <i class="fa fa-share-alt"></i>
             <p class="text-center">确定时间</p>
         </td>
@@ -156,11 +155,19 @@
                     <span class="font-number text-green" style="font-size: 3rem">{{(ac.duration-ac.duration%6)/6 }}:{{ ac.duration%6 * 10 }}</span>
                     <span style="font-size: 1.2rem">小时</span>
                 </p>
-                <p style="margin-bottom: 0.5rem">可选时间</p>
-                <div  ng-repeat="date in ac.date_range" class="date_box" ng-click="change_date_active()" ng-class="{'date_box_clean':date.clean,'date_box_dirty':!date.clean,'date_box_active':date_active==$index}" style="background: #1abc9c;margin-top: 0;margin-bottom: 1rem">
-                    <span style="font-size: 2rem;" class="font-number">{{ date.month }}.{{ date.day }}</span>
-                    <span>{{ date.day_in_week}}</span>
+                <div ng-show="ac.time_determined.length==0">
+                    <p style="margin-bottom: 0.5rem">可选时间</p>
+                    <div  ng-repeat="date in ac.date_range" class="date_box" ng-click="change_date_active()" ng-class="{'date_box_clean':date.clean,'date_box_dirty':!date.clean,'date_box_active':date_active==$index}" style="background: #1abc9c;margin-top: 0;margin-bottom: 1rem">
+                        <span style="font-size: 2rem;" class="font-number">{{ date.month }}.{{ date.day }}</span>
+                        <span>{{ date.day_in_week}}</span>
+                    </div>
                 </div>
+                <div ng-show="ac.time_determined.length>0">
+                    <p style="margin-bottom: 0.5rem">已定于</p>
+                    <p class="font-number text-green" style="font-size: 3rem;margin: -0.5rem 0;padding: 0;">{{ ac.time_determined[0].month }}月{{ ac.time_determined[0].day }}日</p>
+                    <span class="font-number" style="font-size: 2rem">{{ ac.time_determined[0].time | timeblock }}-{{ ac.time_determined[1].time | timeblock }}</span>
+                </div>
+
             </div>
         </td>
         <td align="right">

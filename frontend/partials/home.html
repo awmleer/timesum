@@ -249,10 +249,10 @@
                 <tr>
                     <td colspan="3"><span style="display: block;margin-bottom: -0.8rem" class="text-colorful">活动时间</span></td>
                 </tr>
-                <tr ng-if="ac.time_determined==0">
+                <tr ng-if="ac.time_determined.length==0">
                     <td colspan="3"><span style="display: block;font-size: 3rem;height: 4.5rem;padding-bottom: 0.3rem;padding-top: 0.2rem">尚未确定</span></td>
                 </tr>
-                <tr ng-if="ac.time_determined!=0">
+                <tr ng-if="ac.time_determined.length>0">
                     <td><span style="display: block;font-size: 4rem" class="font-number">{{ ac.time_determined[0].month }}.{{ ac.time_determined[0].day }}</span></td>
                     <td>
                         <div style="background-color: #16a085;height: 3rem;width: 2px;margin: 0 3px;"></div>

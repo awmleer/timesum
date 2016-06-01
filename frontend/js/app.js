@@ -119,6 +119,8 @@ app.run(['$rootScope', '$window', '$location','$state', '$log', function ($rootS
             $rootScope.header_text='时间推荐';
         }else if (/\/ac\/\d+\/time_table/.test(path)) {
             $rootScope.header_text='时间表';
+        }else if (/\/ac\/\d+\/determine/.test(path)) {
+            $rootScope.header_text='确定时间';
         }else if (/\/ac\/\d+\/edit/.test(path)) {
             $rootScope.header_text='修改活动';
         }else if (/\/ac\/\d+\/invite/.test(path)) {

@@ -784,7 +784,7 @@ app.controller("ctrl_ac_time_table",function($scope,$rootScope,$http,$stateParam
 app.controller("ctrl_ac_determine",function($scope,$rootScope,$http,$stateParams) {
     $scope.aid=$stateParams.aid;
     
-
+    
 });
 
 
