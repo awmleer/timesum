@@ -781,10 +781,64 @@ app.controller("ctrl_ac_time_table",function($scope,$rootScope,$http,$stateParam
 
 
 
-app.controller("ctrl_ac_determine",function($scope,$rootScope,$http,$stateParams) {
+app.controller("ctrl_ac_determine",function($scope,$rootScope,$http,$stateParams,$state) {
     $scope.aid=$stateParams.aid;
-    
-    
+    $scope.time_determined=[
+        {
+            year:'',
+            month:'',
+            day:'',
+            time:''
+        },
+        {
+            year:'',
+            month:'',
+            day:'',
+            time:''
+        }
+    ];
+
+    $scope.select_date= function (index) {
+        $scope.index=index;
+    };
+    $scope.setDateTime= function (current_date) {
+        $scope.time_determined[$scope.index].year=moment(current_date).format("YYYY");
+        $scope.time_determined[$scope.index].month=moment(current_date).format("M");
+        $scope.time_determined[$scope.index].day=moment(current_date).format("D");
+        $scope.time_determined[$scope.index].time=(moment(current_date).format("H")*6+Math.floor(moment(current_date).format("m")/10)).toString();
+
+        // if ($scope.index==0) {
+        //     $scope.time_determined[1].year=moment(current_date).format("YYYY");
+        //     $scope.time_determined[1].month=moment(current_date).format("M");
+        //     $scope.time_determined[1].day=moment(current_date).format("D");
+        //     $scope.time_determined[$scope.index].time=moment(current_date).format("H")*6+moment(current_date).format("m")/10;
+        // }
+    };
+    $scope.select_date= function (index) {
+        $scope.index=index;
+    };
+    $scope.commit_determine= function () {
+
+        $http({
+            url: 'api/determine_time',
+            method: 'post',
+            headers: {'Content-Type': 'application/json'},
+            data: JSON.stringify({
+                aid:$scope.aid,
+                time_determined:eval(angular.toJson($scope.time_determined))
+            })
+        }).success(function (data) {
+            if (data == 'success') {
+                alert("时间确定成功");
+                $state.go('home');
+            }else {
+                alert(data);
+            }
+        }).error(function () {
+            alert("获取信息失败，请稍后再试");
+        });
+    }
+
 });
 
 

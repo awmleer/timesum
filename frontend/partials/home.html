@@ -190,7 +190,7 @@
                     </td>
                 </tr>
             </table>
-            <p class="text-gray" style="margin-top: -0.5rem;margin-bottom: 0.5rem;" ui-sref="ac_detail({aid:ac.aid})">{{ ac.title }}</p>
+            <p class="text-gray" style="margin-top: -0.5rem;margin-bottom: 0.5rem;" ui-sref="ac_detail({aid:ac.aid})">{{ ac.title | limitTo: 12 }}{{ ac.title.length>20?'...':'' }}</p>
             <i class="fa fa-share-alt text-colorful hover-pointer icon-share" ui-sref="ac_invite({aid:ac.aid})"></i>
             <i class="fa fa-pencil text-colorful hover-pointer icon-edit" ui-sref="ac_edit({aid:ac.aid})"></i>
         </div>
@@ -205,7 +205,7 @@
         <div class="ac_history hover-pointer" ng-repeat="ac in ac_published_history"  ui-sref="ac_detail({aid:ac.aid})">
             <i class="fa" ng-class="{'fa-check-circle':ac.time_determined!=0,'fa-times-circle':ac.time_determined==0}"></i>
             <div style="display: inline-block;padding-bottom: 0.5rem">
-                <span style="display: block;font-size: 1.8rem">{{ ac.title }}</span>
+                <span style="display: block;font-size: 1.8rem">{{ ac.title | limitTo: 15 }}{{ ac.title.length>20?'...':'' }}</span>
                 <span ng-if="ac.time_determined!=0" style="display: block;font-size: 1rem" class="text-gray">
                     {{ ac.time_determined[0].month }}月{{ ac.time_determined[0].day }}日&nbsp;{{ ac.time_determined[0].time | timeblock }}-{{ ac.time_determined[0].time | timeblock }}
                 </span>
@@ -263,7 +263,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="3"><span class="text-gray" style="font-size: 1.3rem;margin-top: -0.6rem;display: block;">{{ ac.title }}</span></td>
+                    <td colspan="3"><span class="text-gray" style="font-size: 1.3rem;margin-top: -0.6rem;display: block;">{{ ac.title | limitTo: 15 }}{{ ac.title.length>20?'...':'' }}</span></td>
                 </tr>
             </table>
         </div>
@@ -282,7 +282,7 @@
         <div class="ac_history hover-pointer active-gray" ng-repeat="ac in ac_participated_history" ui-sref="ac_detail({aid:ac.aid})">
             <i class="fa" ng-class="{'fa-check-circle':ac.time_determined!=0,'fa-times-circle':ac.time_determined==0}"></i>
             <div style="display: inline-block;padding-bottom: 0.5rem">
-                <span style="display: block;font-size: 1.8rem">{{ ac.title }}</span>
+                <span style="display: block;font-size: 1.8rem">{{ ac.title | limitTo: 15 }}{{ ac.title.length>20?'...':'' }}</span>
                 <span ng-if="ac.time_determined!=0" style="display: block;font-size: 1rem" class="text-gray">
                     {{ ac.time_determined[0].month }}月{{ ac.time_determined[0].day }}日&nbsp;{{ ac.time_determined[0].time | timeblock }}-{{ ac.time_determined[0].time | timeblock }}
                 </span>

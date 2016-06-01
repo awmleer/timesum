@@ -414,7 +414,7 @@
 
 			var minutes = [];
 
-			for(var m = 0; m < 60; m += 5)
+			for(var m = 0; m < 60; m += 10)
 			{
 				var x = j * Math.sin(Math.PI * 2 * (m / 60));
 				var y = j * Math.cos(Math.PI * 2 * (m / 60));
@@ -427,7 +427,7 @@
 					});
 
 				var minuteLink = $('<a>', { href : 'javascript:void(0);', class : 'dtp-select-minute' }).data('minute', m).text(((m.toString().length == 2) ? m : '0' + m));
-					if(m == 5 * Math.round(this.currentDate.minute() / 5))
+					if(m == 10 * Math.round(this.currentDate.minute() / 10))
 					{
 						minuteLink.addClass('selected');
 						this.currentDate.minute(m);
