@@ -126,6 +126,15 @@ def islogin():
             return [True, int(uid)]
     return [False, 'fqsws']
 
+def date_to_day(year, month, day):
+    day1 = datetime.datetime(2015, 12, 31)
+    day2 = datetime.datetime(year, month, day)
+    return (day2 - day1).days
+
+# def day_to_date(day):
+#     day1 = datetime.datetime(2015, 12, 31)
+#     return (day1 + datetime.timedelta(days=day)).strftime('%Y%m%d')
+
 def week_day(year, month, day):
     weekday = datetime.datetime(int(year), int(month), int(day)).strftime("%w")
     if (weekday == '1'): return '周一'
@@ -384,6 +393,68 @@ def ac_detail():
         person.update({'name': users.objects(uid=person['uid']).first()['name']})
     for person in ac_info['comments']:
         person.update({'name': users.objects(uid=person['uid']).first()['name']})
+    if (ac_info['time_determined'] != []):
+        day_start = date_to_day(int(ac_info['time_determined'][0]['year']), int(ac_info['time_determined'][0]['month']), int(ac_info['time_determined'][0]['day']))
+        time_start = int(ac_info['time_determined'][0]['time'])
+        time_end = int(ac_info['time_determined'][1]['time'])
+        day_end = date_to_day(int(ac_info['time_determined'][1]['year']), int(ac_info['time_determined'][1]['month']), int(ac_info['time_determined'][1]['day']))
+        if (time_end == 0):
+            day_end -= 1
+            time_end = 144
+        if (day_start == day_end):
+            for person in ac_info['participators']:
+                if (person['time_inputed'] == False):
+                    person.update({'attendable': 0})
+                    continue
+                for time in ac_info['time_collection']:
+                    if (time['uid'] == person['uid']):
+                        flag = 2
+                        for days in time['data']:
+                            if (flag == 0): break
+                            day = date_to_day(int(days['date']['year']), int(days['date']['month']), int(days['date']['day']))
+                            if (day == day_start):
+                                for i in range(day_start, day_end):
+                                    if (days['timeblocks'][i] == '0'):
+                                        flag = 0
+                                        break
+                                    if (days['timeblocks'][i] == '1'):
+                                        flag = 1
+                        person.update({'attendable': flag})
+                        break
+        else:
+            for person in ac_info['participators']:
+                if (person['time_inputed'] == False):
+                    person.update({'attendable': 0})
+                    continue
+                for time in ac_info['time_collection']:
+                    if (time['uid'] == person['uid']):
+                        flag = 2
+                        for days in time['data']:
+                            if (flag == 0): break
+                            day = date_to_day(int(days['date']['year']), int(days['date']['month']), int(days['date']['day']))
+                            if (day == day_start):
+                                for i in range(day_start, 144):
+                                    if (days['timeblocks'][i] == '0'):
+                                        flag = 0
+                                        break
+                                    if (days['timeblocks'][i] == '1'):
+                                        flag = 1
+                            if (day == day_end):
+                                for i in range(0, day_end):
+                                    if (days['timeblocks'][i] == '0'):
+                                        flag = 0
+                                        break
+                                    if (days['timeblocks'][i] == '1'):
+                                        flag = 1
+                            if (day>day_start and day<day_end):
+                                for i in range(0, 144):
+                                    if (days['timeblocks'][i] == '0'):
+                                        flag = 0
+                                        break
+                                    if (days['timeblocks'][i] == '1'):
+                                        flag = 1
+                        person.update({'attendable': flag})
+                        break
     del ac_info['_id']
     del ac_info['time_collection']
     resp_json.update(ac_info)
