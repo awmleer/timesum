@@ -27,20 +27,35 @@ edit_ac_item = ['title', 'organizer', 'place', 'description', 'expected_number',
 class suggest():
     start=0
     end=0
-    list2=[]
     list1=[]
+    list2=[]
 #添加可行的推荐时间点
 def res(k,t):
-    global answer, s,sjc1, time_coll
+    global answer, s,sjc1, time_coll,aid
     re=suggest()
-    re.start=sjc1[k]
-    re.end=sjc1[k]+t*600
+    re.start=sjc1[k]+t*600
+    re.end=re.start+duration*600
     for i in range(num):
-        if s[i][t]==2:
+        if s[i][k][t]==2:
             re.list2.append(time_coll[i]['uid'])
-        elif s[i][t]==1:
+        elif s[i][k][t]==1:
             re.list1.append(time_coll[i]['uid'])
     answer.append(re)
+    return
+def del_repeat():
+    global answer
+    p=suggest()
+    for i in range(len(answer)):
+        for j in range(len(answer)):
+            if answer[i].start>answer[j].start:
+                p=answer[i]
+                answer[i]=answer[j]
+                answer[j]=p
+    i=0
+    while i<len(answer)-1:
+        if answer[i].start==answer[i+1].start:
+            del answer[i]
+        else: i+=1
     return
 #s存储时间状态，当前活动持续时间块长度为l。返回成块时间状态
 def foo(s,l):
@@ -59,60 +74,64 @@ def foo(s,l):
 def plan_1():
     global sum,num
     max=0
-    maxi=0
-    maxk=0
+    ans = [[0 for col in len(s[0][row])] for row in range(sum)]
     for k in range(sum):
-        ans = [0] * len(s[0][k])
         for i in range(len(s[0][k])):
             for j in range(num):
                 if s[j][k][i]!='0':
-                    ans[i]=ans[i]+1
-            if ans[i]>max:
-                max=ans[i]
-                maxi=i
-                maxk=k
-    res(maxk,maxi)
+                    ans[k][i]+=1
+            if ans[k][i]>max:
+                max=ans[k][i]
+    for k in range(sum):
+        for i in range(len(s[0][k])):
+            if ans[k][i]==max:
+                res(k,i)
     return
 #能来的人最多情况下，可能来的人最多
 def plan_2():
     global sum,num
     max=0
-    maxi=0
-    maxk=0
+    max2=0
+    ans = [[0 for col in len(s[0][row])] for row in range(sum)]
     for k in range(sum):
-        ans = [0] * len(s[0][k])
         for i in range(len(s[0][k])):
             for j in range(num):
                 if s[j][k][i] == '2':
-                    ans[i] = ans[i] + 1
-            if ans[i] > max:
-                max = ans[i]
-                maxk=k
-        max2 = 0
+                    ans[k][i] += 1
+            if ans[k][i] > max:
+                max = ans[k][i]
+    for k in range(sum):
         for i in range(len(s[0][k])):
-            if ans[i] == max:
+            if ans[k][i]==max:
                 pp = 0
                 for j in range(num):
                     if s[j][k][i] == '1': pp+=1
-                if pp > max2: maxi = i
-    res(maxk,maxi)
+                if pp > max2:
+                    max2=pp
+    for k in range(sum):
+        for i in range(len(s[0][k])):
+            if ans[k][i] == max:
+                pp = 0
+                for j in range(num):
+                    if s[j][k][i] == '1': pp += 1
+                if pp == max2:
+                    res(k,i)
     return
 #能来的人算1，可能来的人算0.5
 def plan_3():
     global num,sum
     max=0
-    maxi=0
-    maxk=0
+    ans = [[0 for col in len(s[0][row])] for row in range(sum)]
     for k in range(sum):
-        ans = [0] * len(s[0][k])
         for i in range(len(s[0][k])):
             for j in range(num):
-                ans[i]=ans[i]+float(s[j][k][i])/2
-            if ans[i]>max:
-                max=ans[i]
-                maxi=i
-                maxk=k
-    res(maxk,maxi)
+                ans[k][i]+=float(s[j][k][i])/2
+            if ans[k][i]>max:
+                max=ans[k][i]
+    for k in range(sum):
+        for i in range(len(s[0][k])):
+            if ans[k][i] == max:
+                res(k,i)
     return
 # --------------------我是分界线--------------------
 def islogin():
@@ -754,6 +773,7 @@ def time_recommend():
     plan_1()
     plan_2()
     plan_3()
+    del_repeat()
     resp_json = []
     for i in answer:
         resp_json.append({'start': i.start, 'end': i.end, 'list2': i.list2, 'list1': i.list1})
