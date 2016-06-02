@@ -120,7 +120,7 @@
         </div>
 
         <button class="button button-pill button-main" style="margin-top: 1.5rem;width: 90%;" ng-click="submit_time()">提交</button>
-        <a class="button button-pill button-main button-border" style="margin-top: 1rem;width: 90%;" ui-sref="ac_detail({aid:ac.aid})">返回</a>
+        <button class="button button-pill button-main button-border" style="margin-top: 1rem;width: 90%;" ng-click="go_back()">返回</button>
 
     </div>
 </div>
@@ -171,11 +171,6 @@
         if (document.body.clientWidth>=500){
             $("#left").css('width',document.getElementById('container').offsetWidth*0.7);
         }
-        var has_used_time_input=store.get('has_used_time_input');
-        if (has_used_time_input == undefined) {
-            $("#icon_help").popover().popover('show');
-            store.set('has_used_time_input','true');
-        }
     });
 
     function help() {
@@ -183,4 +178,18 @@
         $('.help_pop').popover();
         $(".help_pop").popover('toggle');
     }
+
+    function render_ok() {
+        var has_used_time_input=store.get('has_used_time_input');
+        if (has_used_time_input == undefined) {
+            $("#icon_help").popover().popover('show');
+            store.set('has_used_time_input','true');
+        }
+        $("body,html").animate({
+            scrollTop:$(document).height()/2
+        },1000);
+        console.log("ok");
+    }
+    setTimeout("render_ok()",1000);
+
 </script>

@@ -579,12 +579,17 @@ app.controller("ctrl_time_input",function($scope,$rootScope,$http,$stateParams,$
         
     };
 
-    
+    $scope.go_back= function () {
+        $("#icon_help").popover('destroy');
+        $(".help_pop").popover('destroy');
+        $state.go("ac_detail",{aid:$scope.ac.aid});
+    }
+
 });
 
 
 
-app.controller("ctrl_ac_detail",function($scope,$rootScope,$http,$stateParams) {
+app.controller("ctrl_ac_detail",function($scope,$rootScope,$http,$stateParams,$state) {
 
     //获取活动详情
     $scope.get_ac_detail= function () {

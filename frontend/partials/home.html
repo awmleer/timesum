@@ -99,7 +99,9 @@
     }
     .ac_participated .left{
         margin-left: 1rem;
-        display: inline-block;
+        /*display: inline-block;*/
+        float: left;
+        max-width:70%;
     }
     .ac_participated .right{
         float: right;
@@ -245,7 +247,12 @@
     </div>
     <div class="ac_participated hover-pointer active-gray" ng-repeat="ac in ac_participated" ng-class="{'green':ac.time_determined!=0,'orange':ac.time_determined==0 && ac.opening==true,'gray':ac.time_determined==0 && ac.opening==false}" ui-sref="ac_detail({aid:ac.aid})">
         <div class="left">
-            <table style="margin-top: 0.6rem">
+            <table style="margin-top: 0.6rem;">
+                <colgroup>
+                    <col width="1%">
+                    <col width="1%">
+                    <col>
+                </colgroup>
                 <tr>
                     <td colspan="3"><span style="display: block;margin-bottom: -0.8rem" class="text-colorful">活动时间</span></td>
                 </tr>
