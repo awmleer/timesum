@@ -788,7 +788,7 @@ def time_recommend():
     del_repeat()
     resp_json = []
     for i in answer:
-        resp_json.append({'start': i.start, 'end': i.end, 'list2': i.list2, 'list1': i.list1})
+        resp_json.append({'start': i.start, 'end': i.end, 'list2': i.list2, 'list1': i.list1,'list0':i.list0})
     resp_json = dumps(resp_json)
     resp = make_response(resp_json, 200)
     return resp_json
