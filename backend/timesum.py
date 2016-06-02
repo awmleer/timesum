@@ -27,8 +27,12 @@ edit_ac_item = ['title', 'organizer', 'place', 'description', 'expected_number',
 class suggest():
     start=0
     end=0
+    list0=[]
     list1=[]
     list2=[]
+    list0_name=[]
+    list1_name=[]
+    list2_name=[]
 #添加可行的推荐时间点
 def res(k,t):
     global answer, s,sjc1, time_coll,aid
@@ -743,33 +747,145 @@ def time_recommend():
         resp = make_response('', 200)
         return resp
     uid = flag[1]
-
     aid = int(request.args.get('aid'))
     acinfo = dict(activity.objects(aid=aid).first().to_mongo())
     if (acinfo['publisher'] != uid):
         resp = make_response('您没有权限', 200)
         return resp
+# 添加可行的推荐时间点
+    def res(k, t):
+        re = suggest()
+        re.list0 = []
+        re.list1 = []
+        re.list2 = []
+        re.list0_name = []
+        re.list1_name = []
+        re.list2_name = []
+        re.start = sjc1[k] + t * 600
+        re.end = re.start + duration * 600
+        for i in range(num):
+            if s[i][k][t] == '2':
+                re.list2.append(time_coll[i]['uid'])
+            elif s[i][k][t] == '1':
+                re.list1.append(time_coll[i]['uid'])
+            elif s[i][k][t] == '0':
+                re.list0.append(time_coll[i]['uid'])
+        answer.append(re)
+        return
+    def del_repeat():
+        for i in range(len(answer)):
+            for j in range(len(answer)):
+                if answer[i].start > answer[j].start:
+                    p = answer[i]
+                    answer[i] = answer[j]
+                    answer[j] = p
+        i = 0
+        while i < len(answer) - 1:
+            if answer[i].start == answer[i + 1].start:
+                del answer[i]
+            else:
+                i += 1
+        return
 
-    date_range=acinfo['date_range']
-    time_coll=acinfo['time_collection']
-    duration=acinfo['duration']
-    sum=0
-    num=len(time_coll)
-    s=[['' for col in range(len(date_range))]for row in range(num)]
-    sjc1=[]
-    sjc2=[]
-    sjc1.append(time.mktime(datetime.datetime(int(date_range[0]['year']),int(date_range[0]['month']),int(date_range[0]['day']),0,0,0).timetuple()))
+    # s存储时间状态，当前活动持续时间块长度为l。返回成块时间状态
+    def foo(s, l):
+        s2 = ''
+        for j in range(len(s) - l+1):
+            flag = 2
+            for t in range(j, j + l):
+                if s[t] == '0':
+                    flag = 0
+                    break
+                elif s[t] == '1':
+                    flag = 1
+            s2 = s2 + chr(flag + 48)
+        return s2
+    # 能来和不能来都算上，总人数最多
+    def plan_1():
+        max = 0
+        ans = [[0 for col in range(len(s[0][row]))] for row in range(sum)]
+        for k in range(sum):
+            for i in range(len(s[0][k])):
+                for j in range(num):
+                    if s[j][k][i] != '0':
+                        ans[k][i] += 1
+                if ans[k][i] > max:
+                    max = ans[k][i]
+        for k in range(sum):
+            for i in range(len(s[0][k])):
+                if ans[k][i] == max:
+                    res(k, i)
+        return
+    # 能来的人最多情况下，可能来的人最多
+    def plan_2():
+        max = 0
+        max2 = 0
+        ans = [[0 for col in range(len(s[0][row]))] for row in range(sum)]
+        for k in range(sum):
+            for i in range(len(s[0][k])):
+                for j in range(num):
+                    if s[j][k][i] == '2':
+                        ans[k][i] += 1
+                if ans[k][i] > max:
+                    max = ans[k][i]
+        for k in range(sum):
+            for i in range(len(s[0][k])):
+                if ans[k][i] == max:
+                    pp = 0
+                    for j in range(num):
+                        if s[j][k][i] == '1': pp += 1
+                    if pp > max2:
+                        max2 = pp
+        for k in range(sum):
+            for i in range(len(s[0][k])):
+                if ans[k][i] == max:
+                    pp = 0
+                    for j in range(num):
+                        if s[j][k][i] == '1': pp += 1
+                    if pp == max2:
+                        res(k, i)
+        return
+
+    # 能来的人算1，可能来的人算0.5
+    def plan_3():
+        max = 0
+        ans = [[0 for col in range(len(s[0][row]))] for row in range(sum)]
+        for k in range(sum):
+            for i in range(len(s[0][k])):
+                for j in range(num):
+                    ans[k][i] += float(s[j][k][i]) / 2
+                if ans[k][i] > max:
+                    max = ans[k][i]
+        for k in range(sum):
+            for i in range(len(s[0][k])):
+                if ans[k][i] == max:
+                    res(k, i)
+        return
+    acinfo = dict(activity.objects(aid=aid).first().to_mongo())
+    date_range = acinfo['date_range']
+    time_coll = acinfo['time_collection']
+    duration = acinfo['duration']
+    sum = 0
+    num = len(time_coll)
+    answer=[]
+    s = [['' for col in range(len(date_range))] for row in range(num)]
+    sjc1 = []
+    sjc2 = []
+    sjc1.append(time.mktime(datetime.datetime(int(date_range[0]['year']), int(date_range[0]['month']), int(date_range[0]['day']), 0, 0,0).timetuple()))
+    pp = [['' for col in range(len(date_range))] for row in range(num)]
     for i in range(len(date_range)):
-        if i!=0:
-            if time.mktime(datetime.datetime(int(date_range[i]['year']),int(date_range[i]['month']),int(date_range[i]['day']),0,0,0).timetuple())-time.mktime(datetime.datetime(int(date_range[i-1]['year']),int(date_range[i-1]['month']),int(date_range[i-1]['day']),0,0,0).timetuple())!=86400:
-                sjc2.append(time.mktime(datetime.datetime(int(date_range[i-1]['year']),int(date_range[i-1]['month']),int(date_range[i-1]['day']),0,0,0).timetuple())+86400)
-                sum+=1
-                sjc1.append(time.mktime(datetime.datetime(int(date_range[i]['year']),int(date_range[i]['month']),int(date_range[i]['day']),0,0,0).timetuple()))
+        if i != 0:
+            if time.mktime(datetime.datetime(int(date_range[i]['year']), int(date_range[i]['month']),int(date_range[i]['day']), 0, 0, 0).timetuple()) - time.mktime(datetime.datetime(int(date_range[i - 1]['year']), int(date_range[i - 1]['month']),int(date_range[i - 1]['day']), 0, 0, 0).timetuple()) != 86400:
+                sjc2.append(time.mktime(datetime.datetime(int(date_range[i - 1]['year']), int(date_range[i - 1]['month']),int(date_range[i - 1]['day']), 0, 0, 0).timetuple()) + 86400)
+                sum += 1
+                sjc1.append(time.mktime(datetime.datetime(int(date_range[i]['year']), int(date_range[i]['month']),int(date_range[i]['day']), 0, 0, 0).timetuple()))
         for j in range(num):
-            s[j][sum]=s[j][sum]+foo(time_coll[j]['data'][i]['timeblocks'],duration)
-    i=len(date_range)-1
-    sjc2.append(time.mktime(datetime.datetime(int(date_range[i]['year']),int(date_range[i]['month']),int(date_range[i]['day']),0,0,0).timetuple())+86400)
-    sum+=1
+            pp[j][sum]=pp[j][sum]+time_coll[j]['data'][i]['timeblocks']
+    for j in range(num):
+        s[j][sum] = foo(pp[j][sum], duration)
+    i = len(date_range) - 1
+    sjc2.append(time.mktime(datetime.datetime(int(date_range[i]['year']), int(date_range[i]['month']), int(date_range[i]['day']), 0, 0,0).timetuple()) + 86400)
+    sum += 1
     plan_1()
     plan_2()
     plan_3()
@@ -779,7 +895,7 @@ def time_recommend():
         resp_json.append({'start': i.start, 'end': i.end, 'list2': i.list2, 'list1': i.list1})
     resp_json = dumps(resp_json)
     resp = make_response(resp_json, 200)
-    return resp
+    return resp_json
 # --------------------我是分界线--------------------
 if __name__ == '__main__':
     app.debug = True
