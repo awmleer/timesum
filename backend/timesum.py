@@ -617,14 +617,12 @@ def determine_time():
         resp = make_response('', 200)
         return resp
     uid = flag[1]
-
     text = request.json
     text['aid'] = int(text['aid'])
     ac_info = activity.objects(aid=text['aid']).first()
     if (ac_info['publisher'] != uid):
         resp = make_response('您没有权限', 200)
         return resp
-
     temp = []
     for time_form in text['time_determined']:
         temp.append(time_format.from_json(dumps(time_form)))
