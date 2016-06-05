@@ -758,7 +758,6 @@ def time_recommend():
                 if ans[k][i] == max:
                     res(k, i)
         return
-    acinfo = dict(activity.objects(aid=aid).first().to_mongo())
     date_range = acinfo['date_range']
     time_coll = acinfo['time_collection']
     duration = acinfo['duration']
