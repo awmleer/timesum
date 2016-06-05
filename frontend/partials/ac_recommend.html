@@ -7,14 +7,13 @@
 
 <div ng-repeat="rec in recs" style="vertical-align: middle;border-bottom: 1px solid #DDDDDD;background-color: #FFFFFF;margin-left: 0.3rem;margin-right: 0.3rem;">
     <div style="display:inline-block;padding-left: 1.2rem;padding-top: 1rem;margin-bottom: 0.8rem">
-        <!--todo 时间戳-->
         <p class="font-number text-green" style="font-size: 3rem;margin: 0;padding: 0;">{{ rec.start | date: 'h:mm'}}-{{ rec.end | date:'h:mm' }}</p>
-        <span class="font-number" style="color: #333333">2016.05.28 <span style="font-size:1.3rem;margin-left: 1rem;color: #333333;">{{ rec.start |date:'EEE' }}</span></span>
+        <span class="font-number" style="color: #333333">{{rec.start | date:'yyyy.MM.dd' }} <span style="font-size:1.3rem;margin-left: 1rem;color: #333333;">{{ rec.start |date:'EEE' }}</span></span>
     </div>
 
-    <div style="display: inline-block;border-left: 1px solid #919191;text-align: right;float: right;margin:1rem 0;padding: 0 1rem;">
-        <span class="font-number text-green" style="font-size:3rem;">08/11</span>
-        <p style="margin-bottom:0;padding: 0;">参与人数</p>
+    <div style="display: inline-block;border-left: 1px solid #919191;text-align: right;float: right;margin:1rem 0;padding: 0 2rem 0 1rem;">
+        <span class="font-number text-green" style="font-size:3rem;">{{ rec.list2.length+rec.list1.length*0.5 | number: 0 }}/{{ rec.list0.length+rec.list1.length+rec.list2.length }}</span>
+        <p style="margin-bottom:0;padding: 0;">预计参与人数</p>
     </div>
     <div style="border-top:1px dashed #DDDDDD;margin: 0 1.5rem 0.5rem;padding-top: 0.2rem;">
         <span class="fa fa-check-circle" style="color:#1abc9c;font-size: 1.5rem;"></span><p style="display:inline-block; margin-left: 1rem;font-size: 1.5rem;margin-bottom: 0;color:#1abc9c">{{ rec.list2.length }}</p>
@@ -27,4 +26,9 @@
         <span class="tag tag-orange" style="display: inline-block;" ng-repeat="p in rec.list1">{{ p.name }}</span>
         <span class="tag tag-gray" style="display: inline-block;" ng-repeat="p in rec.list0">{{ p.name }}</span>
     </div>
+</div>
+
+<div style="padding: 1rem;">
+    <a ui-sref="ac_detail({aid:aid})"  class="button button-main button-pill button-border" style="width: 100%;margin-bottom: 1rem">返回活动详情</a>
+    <a ui-sref="ac_determine({aid:aid})"  class="button button-main button-pill" style="width: 100%;">确定活动时间</a>
 </div>

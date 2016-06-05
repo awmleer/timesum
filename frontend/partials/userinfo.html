@@ -44,9 +44,3 @@
 
 <a ui-sref="changepwd"  class="button button-main button-pill" style="width: 47%;">修改密码</a>
 <button ng-click="logout()" class="button button-pill button-caution" style="width: 47%;float: right;">退出登录</button>
-<div ng-hide="!PwdChgDivVisible">
-    旧密码：<input class="acinput" ng-model="pwdchg.oldpwd"/><br>
-    新密码：<input class="acinput" ng-model="pwdchg.newpwd"/><br>
-    确认新密码：<input class="acinput" ng-model="pwdchg.newpwdcfm"/><br>
-    <button ng-click="CommitPwdChg();">修改密码</button>
-</div>
