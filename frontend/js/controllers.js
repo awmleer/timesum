@@ -660,10 +660,20 @@ app.controller("ctrl_ac_recommend",function($scope,$rootScope,$http,$stateParams
         method: 'get',
         params: {aid:$scope.aid}
     }).success(function (data) {
-        console.log(data);
+        $scope.recs=data;
+        angular.forEach($scope.recs, function (rec, i , array) {
+            rec.list_showing=false;
+        });
+        // console.log($scope.recs);
     }).error(function () {
-        alert("获取信息失败，请稍后再试");
+        alert("获取活动失败，请稍后再试");
     });
+
+    $scope.toggle_list_showing= function () {
+        this.rec.list_showing=!this.rec.list_showing;
+    }
+    
+    
 });
 
 

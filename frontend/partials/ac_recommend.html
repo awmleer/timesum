@@ -1,75 +1,30 @@
 
-<div class="timetable">
+<div style="margin-top:1rem;background-color: #FFFFFF;margin-left: 0.3rem;margin-right: 0.3rem;">
+    <span class="fa fa-thumbs-o-up" style="margin-left: 1.4rem;margin-top: 1rem;font-size: 1.8rem;"></span>
+    <span style="font-size: 1.3rem;color: #919191;margin-left: 0.8rem">推荐时间</span>
+</div>
 
-    <div style="margin-top:1rem;background-color: #FFFFFF;margin-left: 0.3rem;margin-right: 0.3rem;">
-        <span class="fa fa-thumbs-o-up" style="margin-left: 1.4rem;margin-top: 1rem;font-size: 1.8rem;"></span>
-        <span style="font-size: 1.3rem;color: #919191;margin-left: 0.8rem">推荐时间</span>
+
+<div ng-repeat="rec in recs" style="vertical-align: middle;border-bottom: 1px solid #DDDDDD;background-color: #FFFFFF;margin-left: 0.3rem;margin-right: 0.3rem;">
+    <div style="display:inline-block;padding-left: 1.2rem;padding-top: 1rem;margin-bottom: 0.8rem">
+        <!--todo 时间戳-->
+        <p class="font-number text-green" style="font-size: 3rem;margin: 0;padding: 0;">{{ rec.start | date: 'h:mm'}}-{{ rec.end | date:'h:mm' }}</p>
+        <span class="font-number" style="color: #333333">2016.05.28 <span style="font-size:1.3rem;margin-left: 1rem;color: #333333;">{{ rec.start |date:'EEE' }}</span></span>
     </div>
 
-
-    <!--<div  style="vertical-align: middle;border-bottom: 1px solid #DDDDDD">-->
-        <!--<div style="display:inline-block;width:65%">-->
-            <!--<p class="font-number text-green" style="font-size: 3rem;margin-top: 1rem;margin-left: 1.2rem;margin-bottom: 0">08:00-14:00</p>-->
-            <!--<p class="font-number" style="margin-left: 1.2rem;color: #333333">2016.05.28 <span style="font-size:1.3rem;margin-left: 1rem;color: #333333;">周日</span></p>-->
-        <!--</div>-->
-        <!--<div style="display: inline-block;border-left: 1px solid #919191;width:27%;text-align: right;">-->
-            <!--<span class="font-number" style="">08/11</span>-->
-            <!--<p style="margin-bottom:0.2rem">参与人数</p>-->
-        <!--</div>-->
-        <!--<div style="border-top:1px dashed #DDDDDD;margin-left: 1.5rem;margin-right: 1.5rem;padding-top: 0.4rem;margin-bottom: 0;;">-->
-            <!--<span class="fa fa-check-circle" style="color:#1abc9c;font-size: 1.5rem;"></span><p style="display:inline-block; margin-left: 1rem;font-size: 1.5rem;margin-bottom: 0;color:#1abc9c">6</p>-->
-            <!--<span class="fa fa-question-circle" style="margin-left: 1.2rem;color:#f39c12;font-size: 1.5rem;"></span><p style="display:inline-block; margin-left: 1rem;font-size: 1.5rem;margin-bottom: 0;color: #f39c12;">6</p>-->
-            <!--<span class="fa fa-times-circle" style="margin-left: 1.2rem;color:#919191;font-size: 1.5rem;"></span><p style="display:inline-block; margin-left: 1rem;font-size: 1.5rem;margin-bottom: 0;color: #919191;">6</p>-->
-            <!--<p style="font-size: 1.2rem;text-align: right;">人员名单<span class="fa fa-chevron-down" style=";display:inline-block;font-size:1.2rem;color: #919191;padding-left: 1rem;"></span></p>-->
-
-        <!--</div>-->
-    <!--</div>-->
-
-
-    <div  style="vertical-align: middle;border-bottom: 1px solid #DDDDDD;background-color: #FFFFFF;margin-left: 0.3rem;margin-right: 0.3rem;">
-        <div style="display:inline-block;padding-left: 1.2rem;padding-top: 1rem;margin-bottom: 0.8rem">
-            <p class="font-number text-green" style="font-size: 3rem;margin: 0;padding: 0;">08:00-14:00</p>
-            <span class="font-number" style="color: #333333">2016.05.28 <span style="font-size:1.3rem;margin-left: 1rem;color: #333333;">周日</span></span>
-        </div>
-
-        <div style="display: inline-block;border-left: 1px solid #919191;text-align: right;float: right;margin:1rem 0;padding: 0 1rem;">
-            <span class="font-number text-green" style="font-size:3rem;">08/11</span>
-            <p style="margin-bottom:0;padding: 0;">参与人数</p>
-        </div>
-        <div style="border-top:1px dashed #DDDDDD;margin: 0 1.5rem 0.5rem;padding-top: 0.2rem;">
-            <span class="fa fa-check-circle" style="color:#1abc9c;font-size: 1.5rem;"></span><p style="display:inline-block; margin-left: 1rem;font-size: 1.5rem;margin-bottom: 0;color:#1abc9c">6</p>
-            <span class="fa fa-question-circle" style="margin-left: 1.2rem;color:#f39c12;font-size: 1.5rem;"></span><p style="display:inline-block; margin-left: 1rem;font-size: 1.5rem;margin-bottom: 0;color: #f39c12;">6</p>
-            <span class="fa fa-times-circle" style="margin-left: 1.2rem;color:#919191;font-size: 1.5rem;"></span><p style="display:inline-block; margin-left: 1rem;font-size: 1.5rem;margin-bottom: 0;color: #919191;">6</p>
-            <p style="font-size: 1.2rem;text-align: right;float: right;display: inline-block;">人员名单<span class="fa fa-chevron-down" style=";display:inline-block;font-size:1.2rem;color: #919191;padding-left: 1rem;"></span></p>
-        </div>
-        <div style="margin-bottom: 2rem;padding-left:0;margin-left: 1.2rem">
-            <span class="tag tag-green" style="display: inline-block;">郝主席</span>
-            <span class="tag tag-orange" style="display: inline-block;">HGB</span>
-            <span class="tag tag-gray" style="display: inline-block;">hahaha</span>
-        </div>
+    <div style="display: inline-block;border-left: 1px solid #919191;text-align: right;float: right;margin:1rem 0;padding: 0 1rem;">
+        <span class="font-number text-green" style="font-size:3rem;">08/11</span>
+        <p style="margin-bottom:0;padding: 0;">参与人数</p>
     </div>
-
-
-    <!--<div  style="vertical-align: middle;border-bottom: 1px solid #DDDDDD">-->
-        <!--<div style="display:inline-block;width:65%">-->
-            <!--<p class="font-number text-green" style="font-size: 3rem;margin-top: 1rem;margin-left: 1.2rem;margin-bottom: 0">08:00-14:00</p>-->
-            <!--<p class="font-number" style="margin-left: 1.2rem;color: #333333">2016.05.28 <span style="font-size:1.3rem;margin-left: 1rem;color: #333333;">周日</span></p>-->
-        <!--</div>-->
-
-        <!--<div style="display: inline-block;border-left: 1px solid #919191;width:27%;text-align: right;">-->
-            <!--<span class="font-number" style="">08/11</span>-->
-            <!--<p style="margin-bottom:0.2rem">参与人数</p>-->
-        <!--</div>-->
-        <!--<div style="border-top:1px dashed #DDDDDD;margin-left: 1.5rem;margin-right: 1.5rem;padding-top: 0.4rem;margin-bottom: 0;;">-->
-            <!--<span class="fa fa-check-circle" style="color:#1abc9c;font-size: 1.5rem;"></span><p style="display:inline-block; margin-left: 1rem;font-size: 1.5rem;margin-bottom: 0;color:#1abc9c">6</p>-->
-            <!--<span class="fa fa-question-circle" style="margin-left: 1.2rem;color:#f39c12;font-size: 1.5rem;"></span><p style="display:inline-block; margin-left: 1rem;font-size: 1.5rem;margin-bottom: 0;color: #f39c12;">6</p>-->
-            <!--<span class="fa fa-times-circle" style="margin-left: 1.2rem;color:#919191;font-size: 1.5rem;"></span><p style="display:inline-block; margin-left: 1rem;font-size: 1.5rem;margin-bottom: 0;color: #919191;">6</p>-->
-            <!--<p style="font-size: 1.2rem;text-align: right;">人员名单<span class="fa fa-chevron-up" style=";display:inline-block;font-size:1.2rem;color: #919191;padding-left: 1rem;"></span></p>-->
-            <!--<div class="tag tag-green" style="margin-bottom: 2rem;padding-left:0;margin-left: 0">-->
-                <!--<label class="tag tag-green">郝主席</label><br>-->
-                <!--<label class="tag tag-orange">HGB</label><br>-->
-                <!--<label class="tag tag-gray">hahaha</label>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
+    <div style="border-top:1px dashed #DDDDDD;margin: 0 1.5rem 0.5rem;padding-top: 0.2rem;">
+        <span class="fa fa-check-circle" style="color:#1abc9c;font-size: 1.5rem;"></span><p style="display:inline-block; margin-left: 1rem;font-size: 1.5rem;margin-bottom: 0;color:#1abc9c">{{ rec.list2.length }}</p>
+        <span class="fa fa-question-circle" style="margin-left: 1.2rem;color:#f39c12;font-size: 1.5rem;"></span><p style="display:inline-block; margin-left: 1rem;font-size: 1.5rem;margin-bottom: 0;color: #f39c12;">{{ rec.list1.length }}</p>
+        <span class="fa fa-times-circle" style="margin-left: 1.2rem;color:#919191;font-size: 1.5rem;"></span><p style="display:inline-block; margin-left: 1rem;font-size: 1.5rem;margin-bottom: 0;color: #919191;">{{ rec.list0.length }}</p>
+        <p ng-click="toggle_list_showing()" style="font-size: 1.2rem;text-align: right;float: right;display: inline-block;">人员名单<i class="fa" ng-class="{'fa-chevron-down':!rec.list_showing,'fa-chevron-up':rec.list_showing}" style=";display:inline-block;font-size:1.2rem;color: #919191;padding-left: 1rem;"></i></p>
+    </div>
+    <div style="margin-bottom: 2rem;padding-left:0;margin-left: 1.2rem" ng-show="rec.list_showing">
+        <span class="tag tag-green" style="display: inline-block;" ng-repeat="p in rec.list2">{{ p.name }}</span>
+        <span class="tag tag-orange" style="display: inline-block;" ng-repeat="p in rec.list1">{{ p.name }}</span>
+        <span class="tag tag-gray" style="display: inline-block;" ng-repeat="p in rec.list0">{{ p.name }}</span>
+    </div>
 </div>
