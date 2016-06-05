@@ -30,9 +30,6 @@ class suggest():
     list0=[]
     list1=[]
     list2=[]
-    list0_name=[]
-    list1_name=[]
-    list2_name=[]
 # --------------------我是分界线--------------------
 def islogin():
     uid_code = request.cookies.get('All_Hail_Fqs')
@@ -654,22 +651,16 @@ def time_recommend():
         re.list0 = []
         re.list1 = []
         re.list2 = []
-        re.list0_name = []
-        re.list1_name = []
-        re.list2_name = []
         re.start = sjc1[k] + t * 600
         re.end = re.start + duration * 600
         for i in range(num):
             userinfo = dict(users.objects(uid=time_coll[i]['uid']).first().to_mongo())
             if s[i][k][t] == '2':
-                re.list2.append(time_coll[i]['uid'])
-                re.list2_name.append(userinfo['name'])
+                re.list2.append({'uid':time_coll[i]['uid'],'name':userinfo['name']})
             elif s[i][k][t] == '1':
-                re.list1.append(time_coll[i]['uid'])
-                re.list1_name.append(userinfo['name'])
+                re.list1.append({'uid': time_coll[i]['uid'], 'name': userinfo['name']})
             elif s[i][k][t] == '0':
-                re.list0.append(time_coll[i]['uid'])
-                re.list0_name.append(userinfo['name'])
+                re.list0.append({'uid':time_coll[i]['uid'],'name':userinfo['name']})
         answer.append(re)
         return
     def merge():
@@ -801,7 +792,7 @@ def time_recommend():
     merge()
     resp_json = []
     for i in answer:
-        resp_json.append({'start': i.start, 'end': i.end, 'list2': i.list2, 'list1': i.list1,'list0':i.list0,'list0_name':i.list0_name,'list1_name':i.list1_name,'list2_name':i.list2_name})
+        resp_json.append({'start': i.start*1000, 'end': i.end*1000, 'list2': i.list2, 'list1': i.list1,'list0':i.list0})
     resp_json = dumps(resp_json)
     resp = make_response(resp_json, 200)
     return resp
