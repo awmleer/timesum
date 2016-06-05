@@ -660,13 +660,25 @@ def time_recommend():
         re.start = sjc1[k] + t * 600
         re.end = re.start + duration * 600
         for i in range(num):
+            userinfo = dict(users.objects(uid=time_coll[i]['uid']).first().to_mongo())
             if s[i][k][t] == '2':
                 re.list2.append(time_coll[i]['uid'])
+                re.list2_name.append(userinfo['name'])
             elif s[i][k][t] == '1':
                 re.list1.append(time_coll[i]['uid'])
+                re.list1_name.append(userinfo['name'])
             elif s[i][k][t] == '0':
                 re.list0.append(time_coll[i]['uid'])
+                re.list0_name.append(userinfo['name'])
         answer.append(re)
+        return
+    def merge():
+        i=0
+        while i<len(answer)-1:
+            if answer[i].end>=answer[i].start:
+                answer[i].end=answer[i+1].end
+                del answer[i+1]
+            else: i+=1
         return
     def del_repeat():
         for i in range(len(answer)):
@@ -786,12 +798,13 @@ def time_recommend():
     plan_2()
     plan_3()
     del_repeat()
+    merge()
     resp_json = []
     for i in answer:
-        resp_json.append({'start': i.start, 'end': i.end, 'list2': i.list2, 'list1': i.list1,'list0':i.list0})
+        resp_json.append({'start': i.start, 'end': i.end, 'list2': i.list2, 'list1': i.list1,'list0':i.list0,'list0_name':i.list0_name,'list1_name':i.list1_name,'list2_name':i.list2_name})
     resp_json = dumps(resp_json)
     resp = make_response(resp_json, 200)
-    return resp_json
+    return resp
 # --------------------我是分界线--------------------
 if __name__ == '__main__':
     app.debug = True
