@@ -664,14 +664,14 @@ def time_recommend():
     def merge():
         i=0
         while i<len(answer)-1:
-            if answer[i].end>=answer[i].start:
+            if answer[i].end>=answer[i+1].start and answer[i].list1==answer[i+1].list1 and answer[i].list2==answer[i+1].list2 and answer[i].list0==answer[i+1].list0:
                 answer[i].end=answer[i+1].end
                 del answer[i+1]
             else: i+=1
         return
     def del_repeat():
         for i in range(len(answer)):
-            for j in range(len(answer)):
+            for j in range(i+1,len(answer)):
                 if answer[i].start > answer[j].start:
                     p = answer[i]
                     answer[i] = answer[j]
