@@ -599,6 +599,11 @@ app.controller("ctrl_ac_detail",function($scope,$rootScope,$http,$stateParams,$s
             params: {aid: $stateParams.aid}
         }).success(function (data) {
             $scope.ac=data;
+            if (!$scope.ac.me.time_inputed) {
+                //显示未输入时间的提示，并且三秒后自动消失
+                setTimeout("$('#btn_input_time').popover().popover('show');",800);
+                setTimeout("$('#btn_input_time').popover('destroy');",3800);
+            }
         }).error(function () {
             alert("获取活动详情失败");
         });
