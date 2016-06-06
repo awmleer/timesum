@@ -425,15 +425,18 @@ def ac_join():
         resp = make_response('', 200)
         return resp
     uid = flag[1]
-
     aid = int(request.args.get('aid'))
     ac_info = activity.objects(aid=aid).first()
+    pp=0
     for person in ac_info['participators']:
         if (uid == person['uid']):
-            resp = make_response('(´・ω・`)您已经加入该活动了哦', 200)
-            return resp
-    ac_info['participators'].append(participators_in(uid=uid))
-    ac_info.save()
+            # resp = make_response('(´・ω・`)您已经加入该活动了哦', 200)
+            # return resp
+            pp=1
+            break
+    if pp==0:
+        ac_info['participators'].append(participators_in(uid=uid))
+        ac_info.save()
     resp = make_response('success', 200)
     return resp
 # --------------------我是分界线--------------------
