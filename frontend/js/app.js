@@ -113,7 +113,6 @@ app.config(function($stateProvider, $urlRouterProvider){
 
 app.run(['$rootScope', '$window', '$location','$state', '$log', function ($rootScope, $window,$location,$state, $log,$http) {
 
-
     //监听location的变化，实时更新path变量
     var locationChangeSuccessOff = $rootScope.$on('$locationChangeSuccess', locationChangeSuccess);
     function locationChangeSuccess(event) {
@@ -150,6 +149,10 @@ app.run(['$rootScope', '$window', '$location','$state', '$log', function ($rootS
         }else{
             $rootScope.header_text='　';
         }
+
+        //消除掉popover
+        $('[data-toggle="popover"]').popover("destroy");
+        $(".popover").remove();
     }
 
 
