@@ -3,6 +3,7 @@
 from wo_jiu_wen_ni_pa_bu_pa import *
 # --------------------我是分界线--------------------
 app = Flask(__name__)
+app.debug=True
 CORS(app)   #跨域访问
 # --------------------我是分界线--------------------
 salt = '5aWZak2n35Wk fqsws'
