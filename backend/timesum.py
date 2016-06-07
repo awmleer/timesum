@@ -478,6 +478,15 @@ def time_input():
     uid = flag[1]
 
     text = request.json
+
+    #整理时间块数据
+    for singledata in text['data']:
+        tbstr = ''
+        for tblocks in singledata['timeblocks']:
+            tbstr += str(tblocks['status'])
+        singledata['timeblocks'] = tbstr
+
+
     text['aid'] = int(text['aid'])
     ac_info = activity.objects(aid=text['aid']).first()
     flag = False
