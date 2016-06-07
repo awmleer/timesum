@@ -76,8 +76,11 @@
 
 
 
-            <div ng-if="!ac.opening" style="margin-top: 2rem">
+            <div ng-if="!ac.opening && ac" style="margin-top: 2rem">
                 <p style="font-size: 2rem" class="text-center">抱歉，活动已关闭</p>
+            </div>
+            <div ng-if="!ac" style="margin-top: 2rem">
+                <p style="font-size: 2rem" class="text-center">获取活动信息失败</p>
             </div>
 
         </div>

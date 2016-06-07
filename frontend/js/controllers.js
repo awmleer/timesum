@@ -89,6 +89,9 @@ app.controller("ctrl_userinfo",function($scope,$rootScope,$http) {
             params: {}
         }).success(function (data) {
             if (data == 'success') {
+                //清除local storage
+                store.remove('phone');
+                store.remove('password');
                 location.href="login.html";
             }else {
                 alert(data);
