@@ -485,7 +485,7 @@ def time_input():
         for tblocks in singledata['timeblocks']:
             tbstr += str(tblocks['status'])
         singledata['timeblocks'] = tbstr
-        del singledata['day_in_week']
+        del singledata['date']['day_in_week']
 
 
     text['aid'] = int(text['aid'])
