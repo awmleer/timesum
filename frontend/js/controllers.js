@@ -355,22 +355,21 @@ app.controller("ctrl_new_ac",function($scope,$rootScope,$http,$state) {
     };
 
     $scope.setDateTime= function (current_date) {
-        //TODO 判断日期是否已经存在了
-
         var obj_date={
             year:moment(current_date).format("YYYY"),
             month:moment(current_date).format("M"),
             day:moment(current_date).format("D")
         };
-
+        //判断日期是否已经存在
+        var already_has=_.find($scope.activity.date_range,obj_date);
+        if (already_has)return;//如果是，直接退出函数
+        //加入日期
         $scope.activity.date_range.push(obj_date);
     };
 
     $scope.delete_date= function () {
-        $scope.activity.date_range.remove(this.date);
+        _.remove($scope.activity.date_range,this.date);
     }
-
-
 
 });
 
