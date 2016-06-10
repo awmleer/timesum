@@ -22,9 +22,9 @@
         <p ng-click="toggle_list_showing()" style="font-size: 1.2rem;text-align: right;float: right;display: inline-block;">人员名单<i class="fa" ng-class="{'fa-chevron-down':!rec.list_showing,'fa-chevron-up':rec.list_showing}" style=";display:inline-block;font-size:1.2rem;color: #919191;padding-left: 1rem;"></i></p>
     </div>
     <div style="margin-bottom: 2rem;padding-left:0;margin-left: 1.2rem" ng-show="rec.list_showing">
-        <span class="tag tag-green" style="display: inline-block;" ng-repeat="p in rec.list2">{{ p.name }}</span>
-        <span class="tag tag-orange" style="display: inline-block;" ng-repeat="p in rec.list1">{{ p.name }}</span>
-        <span class="tag tag-gray" style="display: inline-block;" ng-repeat="p in rec.list0">{{ p.name }}</span>
+        <span class="tag tag-green" style="display: inline-block;margin: 0.2rem 0.3rem 0.2rem 0" ng-repeat="p in rec.list2">{{ p.name }}</span>
+        <span class="tag tag-orange" style="display: inline-block;margin: 0.2rem 0.3rem 0.2rem 0" ng-repeat="p in rec.list1">{{ p.name }}</span>
+        <span class="tag tag-gray" style="display: inline-block;margin: 0.2rem 0.3rem 0.2rem 0" ng-repeat="p in rec.list0">{{ p.name }}</span>
     </div>
 </div>
 

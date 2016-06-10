@@ -3,6 +3,7 @@
 from wo_jiu_wen_ni_pa_bu_pa import *
 # --------------------我是分界线--------------------
 app = Flask(__name__)
+app.debug=True
 CORS(app)   #跨域访问
 # --------------------我是分界线--------------------
 salt = '5aWZak2n35Wk fqsws'
@@ -74,6 +75,7 @@ def sendsms4(operate, code, person, mobile):
 # --------------------我是分界线--------------------
 @app.route('/api/login', methods=['POST'])
 def login():
+    print request.json
     text = request.json
     phone = str(text['phone'])
     password = str(text['password'])
@@ -102,6 +104,7 @@ def logout():
 # --------------------我是分界线--------------------
 @app.route('/api/signup', methods=['POST'])
 def signup():
+    print request.json
     text = request.json
     # text['phone'] = str(text['phone'])
     # text['password'] = str(text['password'])
@@ -204,6 +207,7 @@ def userinfo():
 # --------------------我是分界线--------------------
 @app.route('/api/changepwd', methods=['POST'])
 def changepwd():
+    print request.json
     flag = islogin()
     if (not flag[0]):
         resp = make_response('', 200)
@@ -466,6 +470,7 @@ def submit_comment():
 # --------------------我是分界线--------------------
 @app.route('/api/time_input', methods=['POST'])
 def time_input():
+    print request.json
     flag = islogin()
     if (not flag[0]):
         resp = make_response('', 200)
@@ -545,6 +550,7 @@ def timeblocks():
 # --------------------我是分界线--------------------
 @app.route('/api/new_ac', methods=['POST'])
 def new_ac():
+    print request.json
     flag = islogin()
     if (not flag[0]):
         resp = make_response('', 200)
@@ -569,6 +575,7 @@ def new_ac():
 # --------------------我是分界线--------------------
 @app.route('/api/edit_ac', methods=['POST'])
 def edit_ac():
+    print request.json
     flag = islogin()
     if (not flag[0]):
         resp = make_response('', 200)
@@ -615,6 +622,7 @@ def delete_ac():
 # --------------------我是分界线--------------------
 @app.route('/api/determine_time', methods=['POST'])
 def determine_time():
+    print request.json
     flag = islogin()
     if (not flag[0]):
         resp = make_response('', 200)

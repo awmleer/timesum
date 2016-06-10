@@ -89,6 +89,9 @@ app.controller("ctrl_userinfo",function($scope,$rootScope,$http) {
             params: {}
         }).success(function (data) {
             if (data == 'success') {
+                //清除local storage
+                store.remove('phone');
+                store.remove('password');
                 location.href="login.html";
             }else {
                 alert(data);
@@ -352,22 +355,21 @@ app.controller("ctrl_new_ac",function($scope,$rootScope,$http,$state) {
     };
 
     $scope.setDateTime= function (current_date) {
-        //TODO 判断日期是否已经存在了
-
         var obj_date={
             year:moment(current_date).format("YYYY"),
             month:moment(current_date).format("M"),
             day:moment(current_date).format("D")
         };
-
+        //判断日期是否已经存在
+        var already_has=_.find($scope.activity.date_range,obj_date);
+        if (already_has)return;//如果是，直接退出函数
+        //加入日期
         $scope.activity.date_range.push(obj_date);
     };
 
     $scope.delete_date= function () {
-        $scope.activity.date_range.remove(this.date);
+        _.remove($scope.activity.date_range,this.date);
     }
-
-
 
 });
 
@@ -543,30 +545,30 @@ app.controller("ctrl_time_input",function($scope,$rootScope,$http,$stateParams,$
     $scope.submit_time= function () {
         var obj={
             aid:$scope.ac.aid,
-            data:[]
+            data:$scope.time_data
         };
-        for (var i = 0; i < $scope.time_data.length; i++) {
-            obj.data[i]={
-                date:{
-                    year:$scope.time_data[i].date.year,
-                    month:$scope.time_data[i].date.month,
-                    day:$scope.time_data[i].date.day
-                },
-                timeblocks:''
-            };
-            for (var j = 0; j < 144; j++) {
-                obj.data[i].timeblocks+=$scope.time_data[i].timeblocks[j].status.toString()+'t';
-            }
-            obj.data[i].timeblocks=obj.data[i].timeblocks.replace(/t/g,'');
-            if (obj.data[i].timeblocks.length != 144) {
-                alert("数据长度出现问题");
-            }
-        }
+        // for (var i = 0; i < $scope.time_data.length; i++) {
+        //     obj.data[i]={
+        //         date:{
+        //             year:$scope.time_data[i].date.year,
+        //             month:$scope.time_data[i].date.month,
+        //             day:$scope.time_data[i].date.day
+        //         },
+        //         timeblocks:''
+        //     };
+        //     for (var j = 0; j < 144; j++) {
+        //         obj.data[i].timeblocks+=$scope.time_data[i].timeblocks[j].status.toString()+'t';
+        //     }
+        //     obj.data[i].timeblocks=obj.data[i].timeblocks.replace(/t/g,'');
+        //     if (obj.data[i].timeblocks.length != 144) {
+        //         alert("数据长度出现问题");
+        //     }
+        // }
         $http({
             url: 'api/time_input',
             method: 'post',
             headers: {'Content-Type': 'application/json'},
-            data: JSON.stringify(obj)
+            data: angular.toJson(obj)
         }).success(function (data) {
             if (data == 'success') {
                 $state.go('time_input_done',{aid:$scope.ac.aid});

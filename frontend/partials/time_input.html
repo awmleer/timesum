@@ -71,9 +71,7 @@
 </style>
 
 
-<!--TODO date_range过多时的左侧滚动效果实现-->
-
-<div id="left" style="width: 70%;position: fixed;height: 100%;box-shadow: 0.5rem 0 0.7rem gray;z-index: 10;">
+<div id="left" style="width: 70%;position: fixed;min-height: 100%;padding-bottom:3rem;box-shadow: 0.5rem 0 0.7rem gray;z-index: 10;">
     <div style="background-color: #16a085;height: 7rem;width: 1rem;float: left;margin-top: 2rem"></div>
     <div style="margin: 2rem 1.7rem 0 1.7rem">
         <!--活动信息-->
@@ -188,7 +186,22 @@
         $("body,html").animate({
             scrollTop:$(document).height()/2
         },1000);
-        console.log("ok");
+
+        //如果左侧内容过多
+        var height_threshold=$("#left").height()-$(window).height()+10;
+        if (height_threshold > 0) {
+            //监听页面滚动的事件
+            window.onscroll = function () {
+                var top = document.documentElement.scrollTop || document.body.scrollTop;
+                console.log(top);
+                if (top <= height_threshold) {
+                    $("#left").css('top',-top);
+                }else if (top > height_threshold) {
+                    $("#left").css('top',-height_threshold);
+                }
+            }
+        }
+
     }
     setTimeout("render_ok()",1000);
 
