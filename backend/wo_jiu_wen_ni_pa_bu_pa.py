@@ -1,9 +1,9 @@
 # coding:utf-8
 
-from flask import Flask, request, make_response
+from flask import *
 import random
 import urllib
-import urllib2
+import urllib.request
 import hashlib
 import base64
 import pymongo

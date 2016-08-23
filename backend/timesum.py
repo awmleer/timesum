@@ -1,6 +1,6 @@
 # coding:utf-8
 
-from wo_jiu_wen_ni_pa_bu_pa import *
+from .wo_jiu_wen_ni_pa_bu_pa import *
 # --------------------我是分界线--------------------
 app = Flask(__name__)
 app.debug=True
@@ -75,7 +75,7 @@ def sendsms4(operate, code, person, mobile):
 # --------------------我是分界线--------------------
 @app.route('/api/login', methods=['POST'])
 def login():
-    print request.json
+    print (request.json)
     text = request.json
     phone = str(text['phone'])
     password = str(text['password'])
@@ -104,7 +104,7 @@ def logout():
 # --------------------我是分界线--------------------
 @app.route('/api/signup', methods=['POST'])
 def signup():
-    print request.json
+    print (request.json)
     text = request.json
     # text['phone'] = str(text['phone'])
     # text['password'] = str(text['password'])
@@ -183,7 +183,7 @@ def short_message_code():
         return resp
     operate = u'注册用户'
     person = u'新用户' + phone
-    print sendsms4(operate.encode('utf-8'), code, person.encode('utf-8'), int(phone))
+    print (sendsms4(operate.encode('utf-8'), code, person.encode('utf-8'), int(phone)))
     info['last_verify'] = int(time.time() * 1000)
     info['verify_code'] = code
     info.save()
@@ -205,9 +205,20 @@ def userinfo():
     resp = make_response(user_info_json, 200)
     return resp
 # --------------------我是分界线--------------------
+@app.route('/api/test', methods=['POST'])
+def test():
+    text = request.form
+    print (text['user'])
+    resp = make_response('success', 200)
+    return resp
+# --------------------我是分界线--------------------
+@app.route('/index.html')
+def index():
+    return render_template('index.html')
+# --------------------我是分界线--------------------
 @app.route('/api/changepwd', methods=['POST'])
 def changepwd():
-    print request.json
+    print (request.json)
     flag = islogin()
     if (not flag[0]):
         resp = make_response('', 200)
@@ -470,7 +481,7 @@ def submit_comment():
 # --------------------我是分界线--------------------
 @app.route('/api/time_input', methods=['POST'])
 def time_input():
-    print request.json
+    print (request.json)
     flag = islogin()
     if (not flag[0]):
         resp = make_response('', 200)
@@ -550,7 +561,7 @@ def timeblocks():
 # --------------------我是分界线--------------------
 @app.route('/api/new_ac', methods=['POST'])
 def new_ac():
-    print request.json
+    print (request.json)
     flag = islogin()
     if (not flag[0]):
         resp = make_response('', 200)
@@ -575,7 +586,7 @@ def new_ac():
 # --------------------我是分界线--------------------
 @app.route('/api/edit_ac', methods=['POST'])
 def edit_ac():
-    print request.json
+    print (request.json)
     flag = islogin()
     if (not flag[0]):
         resp = make_response('', 200)
@@ -622,7 +633,7 @@ def delete_ac():
 # --------------------我是分界线--------------------
 @app.route('/api/determine_time', methods=['POST'])
 def determine_time():
-    print request.json
+    print (request.json)
     flag = islogin()
     if (not flag[0]):
         resp = make_response('', 200)
