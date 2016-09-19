@@ -52,9 +52,10 @@
                 <button onclick="login()" id="submit_button" type="button" class="button button-pill button-main" style="display: inline-block;float: right;">登录</button>
             </div>
             <div class="col-xs-7 col-xs-offset-4">
-                <p style="text-align: right;width: 100%;margin-top: 0.3em"><a class="small" style="color: gray;">忘记密码</a></p>
+                <p style="text-align: right;width: 100%;margin-top: 0.3em"><a class="small" style="color: gray;" onclick="alert('抱歉此功能尚未开放，重置密码请联系管理员18867101063');">忘记密码</a></p>
             </div>
         </div>
+
 
     </form>
 
@@ -126,9 +127,4 @@
             }else {
                 alert(data);
             }
-        }).fail(function () {
-            alert("请求失败");
-        });
-    }
-</script>
-</html>
+        }).fa
