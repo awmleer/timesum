@@ -1,20 +1,24 @@
 <style>
-    #header > div,p{
+    .header-icon{
         padding-top: 0.5rem;
         padding-bottom: 0.2rem;
+        width: 14%;
+        margin:0;
     }
 </style>
 <div id="header" style="box-shadow: 0 0.7rem 0.7rem lightgray;background-color: #ffffff;margin-bottom: 1rem;height: 4rem;">
 
-    <div style="margin:0;width: 14%;float: left;">
-        <div style="border-right:1px solid #DBDBDB;height: 3rem;width: 3rem;margin-top:0;text-align: center;display: table-cell;vertical-align: middle;" class="active-gray hover-pointer">
+    <div class="header-icon" style="float: left;">
+        <div style="border-right:1px solid #DBDBDB;height: 3rem;width: 4rem;padding: 0 0.5rem;margin-top:0;text-align: center;display: table-cell;vertical-align: middle;" class="active-gray hover-pointer">
             <img style="width: 70%;" src="img/logo/logo_black.svg" ng-show="header_text=='活动列表'">
             <i class="fa fa-chevron-left fa-fw fa-2x" ng-show="header_text!='活动列表'" onclick="history.go(-1)"></i>
         </div>
     </div>
-    <p style="font-size: 1.8rem;margin: 0;width: 70%;height: auto;display: inline-block;vertical-align: middle" class="text-center">{{ header_text }}</p>
-    <div style="margin:0;width: 14%;float: right;" ui-sref="userinfo">
+    <div class="header-icon" style="float: right;" ui-sref="userinfo">
         <img style="border-left:1px solid #DBDBDB;height: 3rem;margin-top:0;padding: 0 0.8rem;float: right;" src="img/logo/user-temp.png" class="active-gray hover-pointer">
+    </div>
+    <div style="font-size: 1.8rem;margin: 0 auto;width: 70%;display: block;text-align: center;vertical-align: middle;height: 4rem;">
+        <span style="display: inline-block;position: relative;top: 50%;transform: translateY(-50%);">{{ header_text }}</span>
     </div>
 
 </div>
