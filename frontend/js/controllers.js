@@ -1,4 +1,4 @@
-app.controller("ctrl_header",function($scope,$rootScope,$http,$state,$location) {
+app.controller("ctrl_header",function($scope,$rootScope,$http,$state,$location,$window) {
 
     $rootScope.get_userinfo=function () {
         //获取用户基本信息
@@ -47,7 +47,7 @@ app.controller("ctrl_header",function($scope,$rootScope,$http,$state,$location) 
         $rootScope.get_userinfo();
     }
 
-
+    // $scope.window=$window;
 
 
 
