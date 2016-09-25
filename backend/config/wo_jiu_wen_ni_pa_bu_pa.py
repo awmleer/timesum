@@ -4,6 +4,7 @@ from flask import *
 import random
 import urllib
 import urllib.request
+import requests
 import hashlib
 import base64
 import pymongo
@@ -15,7 +16,6 @@ from mongoengine import *
 import bson
 from bson import Binary, Code
 from bson.json_util import dumps, loads
-from flask.ext.cors import CORS      #跨域访问
 # --------------------我是分界线--------------------
 connect('timesum', host='121.42.209.162', username='fqs1', password='123456')    #登录及用户认证
 # --------------------我是分界线--------------------
