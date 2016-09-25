@@ -51,12 +51,15 @@
                 <label class="input-label" for="password">密码</label>
                 <input style="padding-left:4em;" id="password" class="form-control input-text" type="password">
             </div>
+            <div class="col-xs-10 col-xs-offset-1" style="margin-bottom: 1em;">
+                <div class="l-captcha" data-site-key="768a7e214f0215a35bb17a754ee66252" data-callback="validation" data-width="100%"></div>
+            </div>
             <div class="col-xs-6 col-xs-offset-1" style="margin-bottom: 2em;">
                 <label class="input-label" for="code">验证码</label>
                 <input style="padding-left:5em;" id="code" class="form-control input-text" type="text">
             </div>
             <div class="col-xs-4">
-                <button onclick="get_code()" id="button_code" type="button" class="button button-border button-main button-pill" style="font-size: 0.8em;padding-left: 0.3em;padding-right: 0.3em;width: 100%;text-align: center;height: 3rem;">发送验证码</button>
+                <button onclick="get_code()" id="button_code" type="button" class="button button-border button-main button-pill" style="font-size: 0.8em;padding-left: 0.3em;padding-right: 0.3em;width: 100%;text-align: center;height: 34px;">发送验证码</button>
             </div>
 
         </div>
@@ -77,12 +80,18 @@
     </div>
 
 </div>
+<script src="//captcha.luosimao.com/static/dist/api.js"></script>
 </body>
 <script>
     $(document).ready(function () {
         $("#logo_group").css("margin-top",0.05*document.body.clientHeight).css("margin-bottom",0.05*document.body.clientHeight);
     });
 
+    var token=null;
+    function validation(resp){
+        console.log(resp);
+        token=resp;
+    }
 
     //注意：以下两个函数在ac_join.html中也被使用了
     function count_down() {
@@ -108,11 +117,18 @@
             alert("您输入的手机号码格式错误");
             return;
         }
+
+        if (!token) {
+            alert("请先进行人机验证");
+            return;
+        }
+
         $.ajax({
             url: "api/short_message_code",
             type: "get",
             data: {
-                phone: phone
+                phone: phone,
+                token:token
             }
         }).done(function (data) {
             if (data == 'success') {
@@ -121,7 +137,13 @@
                 time_count=120;
                 count_down();
             }else {
-                alert(data);//直接弹出服务器传回的错误信息
+                if (data == 'wrong_token') {
+                    alert("人机验证过期了，请重新进行人机验证");
+                    LUOCAPTCHA.reset();
+                    token=null;
+                }else{
+                    alert(data);//直接弹出服务器传回的错误信息
+                }
             }
         }).fail(function () {
             alert("请求失败");
