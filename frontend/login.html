@@ -96,6 +96,12 @@
             $("#phone").focus();
             return;
         }
+        //        手机号码的验证
+        if (!(/^1[0-9]\d{9}$/.test(phone))) {
+            alert("您输入的手机号码格式错误");
+            return;
+        }
+
         if (password == "") {
             alert("请输入密码");
             $("#password").focus();
