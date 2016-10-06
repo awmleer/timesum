@@ -1,6 +1,6 @@
 # coding:utf-8
 
-from backend.config.wo_jiu_wen_ni_pa_bu_pa import *
+from config.wo_jiu_wen_ni_pa_bu_pa import *
 # --------------------我是分界线--------------------
 app = Flask(__name__)
 # --------------------我是分界线--------------------
