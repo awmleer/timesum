@@ -165,7 +165,7 @@ def is_signed():
 @app.route('/api/short_message_code')
 def short_message_code():
     phone = request.args.get('phone')
-    verify_code = request.args.get('response')
+    verify_code = request.args.get('token')
     responsee = requests.post("https://captcha.luosimao.com/api/site_verify", data={"api_key": "57e4254c30b395edb9bc96da679e5a77", "response": verify_code})
     response_dict = json.loads(responsee.content.decode())
     if (response_dict['res'] == 'failed'):
