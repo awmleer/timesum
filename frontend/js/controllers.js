@@ -592,7 +592,7 @@ app.controller("ctrl_time_input",function($scope,$rootScope,$http,$stateParams,$
 
 
 app.controller("ctrl_ac_detail",function($scope,$rootScope,$http,$stateParams,$state) {
-
+    $rootScope.loading=true;
     //获取活动详情
     $scope.get_ac_detail= function () {
         $http({

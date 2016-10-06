@@ -3,6 +3,21 @@
   src: url(../font/number.otf);
 }
 
+
+
+#loader{
+  opacity: 0;
+  pointer-events: none;
+  transition:opacity 1s linear;
+}
+#loader.loading{
+  pointer-events: auto;
+  opacity: 1;
+}
+
+
+
+
 .font-number{
   font-family: number,'Microsoft Yahei','微软雅黑',sans-serif;
 }
