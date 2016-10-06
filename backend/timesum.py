@@ -22,9 +22,6 @@ edit_ac_item = ['title', 'organizer', 'place', 'description', 'expected_number',
 
 # anyday=datetime.datetime(2012,2,15).strftime("%w")
 # print anyday
-respaa = requests.post("https://captcha.luosimao.com/api/site_verify", data={"api_key": "57e4254c30b395edb9bc96da679e5a77", "response": "IFa249lqFuM0mdvhlIsysOhV4gtuOrTHlz8BtCOHPPqjpDQx_IToZStXXcNz1GmaAG6qBYIGobitXkD1NClbpy8UNNtiopcxGuaDecAf7U446IzGwrI2Q2s0OwY3cRL-8ZaQtSgMYEPm9Lg5jFlZr8bSJh6rlkIT4uR9o50Tn8w-rEP4IZGEcGC3RhRRKwh4qyapPfMbQNNN_7wEDFITOeY_X8N2iOO0fbhLJ_3B_u43Vl64m5k-ng"})
-haha = respaa.content.decode()
-print (haha)
 # --------------------我是分界线--------------------
 class suggest():
     start=0
@@ -168,6 +165,12 @@ def is_signed():
 @app.route('/api/short_message_code')
 def short_message_code():
     phone = request.args.get('phone')
+    verify_code = request.args.get('response')
+    responsee = requests.post("https://captcha.luosimao.com/api/site_verify", data={"api_key": "57e4254c30b395edb9bc96da679e5a77", "response": verify_code})
+    response_dict = json.loads(respaa.content.decode())
+    if (response_dict['res'] == 'failed'):
+        resp = make_response('wrong_token', 200)
+        return resp
     if (users.objects(phone=phone).first() != None):
         resp = make_response('(´・ω・`)该手机号已经注册过啦', 200)
         return resp
