@@ -1,6 +1,7 @@
 app.controller("ctrl_header",function($scope,$rootScope,$http,$state,$location,$window) {
 
-    $rootScope.get_userinfo=function () {
+    $rootScope.get_userinfo=function (show_loading) {
+        if (show_loading) $rootScope.loading=true;
         //获取用户基本信息
         $http({
             url: 'api/userinfo',
@@ -8,6 +9,7 @@ app.controller("ctrl_header",function($scope,$rootScope,$http,$state,$location,$
             params: {}
         }).success(function (data) {
             $rootScope.userinfo=data;
+            if (show_loading) $rootScope.loading=false;
         }).error(function (data,status) {
             if (status == 401) {//如果是unauthorized
                 //webstorge获取暂存的用户名和密码，并且尝试自动登录
@@ -38,6 +40,7 @@ app.controller("ctrl_header",function($scope,$rootScope,$http,$state,$location,$
             }else{
                 alert("获取用户个人信息失败，请稍后再试");
             }
+            if (show_loading) $rootScope.loading=false;
         });
     };
 
@@ -57,7 +60,7 @@ app.controller("ctrl_header",function($scope,$rootScope,$http,$state,$location,$
 
 app.controller("ctrl_userinfo",function($scope,$rootScope,$http) {
     $scope.NameChgDivVisible = false;
-    $rootScope.get_userinfo();
+    $rootScope.get_userinfo(true);
     $scope.NameChgVisibleToogle = function () {
         $scope.NameChgDivVisible = !$scope.NameChgDivVisible;
     }
@@ -71,7 +74,7 @@ app.controller("ctrl_userinfo",function($scope,$rootScope,$http) {
                 alert("操作成功！");
                 $scope.NameChgDivVisible = false;
                 $scope.name_changed='';
-                $scope.get_userinfo();
+                $scope.get_userinfo(true);
             }else {
                 alert(data);
             }
@@ -160,6 +163,8 @@ app.controller("ctrl_changepwd",function($scope,$rootScope,$http,$state) {
 
 
 app.controller("ctrl_home",function($scope,$rootScope,$http,$state) {
+    $rootScope.loading=true;
+
     //历史活动相关
     $scope.ac_published_history_showing=false;
     $scope.ac_participated_history_showing=false;
@@ -180,124 +185,11 @@ app.controller("ctrl_home",function($scope,$rootScope,$http,$state) {
         $scope.ac_participated=data.ac_participated;
         $scope.ac_published_history=data.ac_published_history;
         $scope.ac_participated_history=data.ac_participated_history;
+        $rootScope.loading=false;
     }).error(function () {
         alert("获取活动列表失败");
+        $rootScope.loading=false;
     });
-
-    //临时模拟的数据
-    // $scope.ac_published=[
-    //     {
-    //         aid:21513,
-    //         title:'sparker开发团队会议',
-    //         opening:false,
-    //         participators:[1256884,1846848,1865493],
-    //         expected_number:5,
-    //         published_time:1463295585807,
-    //         time_determined:0
-    //     },
-    //     {
-    //         aid:21514,
-    //         title:'小组讨论',
-    //         opening:true,
-    //         participators:[1256884,1846848],
-    //         expected_number:8,
-    //         published_time:1463295585807,
-    //         time_determined:[
-    //             {year:2016,month:12,day:7,day_in_week:'周五',time:90},
-    //             {year:2016,month:12,day:7,day_in_week:'周五',time:96}
-    //         ]
-    //     },
-    //     {
-    //         aid:555,
-    //         title:'SQTP答辩',
-    //         opening:true,
-    //         participators:[1256884,1846848,1865493,4855556,84465],
-    //         expected_number:4,
-    //         published_time:1463295585807,
-    //         time_determined:0
-    //     }
-    // ];
-    //
-    // $scope.ac_participated=[
-    //     {
-    //         aid:666,
-    //         title:'sparker开发团队会议',
-    //         opening:false,
-    //         participators:[1256884,1846848,1865493],
-    //         expected_number:5,
-    //         published_time:1463295585807,
-    //         time_determined:0
-    //     },
-    //     {
-    //         aid:777,
-    //         title:'小组讨论',
-    //         opening:true,
-    //         participators:[1256884,1846848],
-    //         expected_number:8,
-    //         published_time:1463295585807,
-    //         time_determined:[
-    //             {year:2016,month:12,day:7,day_in_week:'周五',time:90},
-    //             {year:2016,month:12,day:7,day_in_week:'周五',time:90}
-    //         ]
-    //     },
-    //     {
-    //         aid:888,
-    //         title:'SQTP答辩',
-    //         opening:true,
-    //         participators:[1256884,1846848,1865493,4855556,84465],
-    //         expected_number:4,
-    //         published_time:1463295585807,
-    //         time_determined:0
-    //     }
-    // ];
-    //
-    // $scope.ac_published_history=[
-    //     {
-    //         aid:999,
-    //         title:'sparker开发团队会议',
-    //         time_determined:[
-    //             {year:2016,month:12,day:7,day_in_week:'周五',time:90},
-    //             {year:2016,month:12,day:7,day_in_week:'周五',time:90}
-    //         ]
-    //     },
-    //     {
-    //         aid:100,
-    //         title:'小组讨论',
-    //         time_determined:0
-    //     },
-    //     {
-    //         aid:1999,
-    //         title:'SQTP答辩',
-    //         time_determined:[
-    //             {year:2016,month:12,day:7,day_in_week:'周五',time:90},
-    //             {year:2016,month:12,day:7,day_in_week:'周五',time:90}
-    //         ]
-    //     }
-    // ];
-    //
-    // $scope.ac_participated_history=[
-    //     {
-    //         aid:786,
-    //         title:'sparker开发团队会议',
-    //         time_determined:0
-    //     },
-    //     {
-    //         aid:7877,
-    //         title:'UI设计讨论',
-    //         time_determined:[
-    //             {year:2016,month:12,day:7,day_in_week:'周五',time:90},
-    //             {year:2016,month:12,day:7,day_in_week:'周五',time:90}
-    //         ]
-    //     },
-    //     {
-    //         aid:8888,
-    //         title:'SQTP答辩',
-    //         time_determined:[
-    //             {year:2016,month:12,day:7,day_in_week:'周五',time:90},
-    //             {year:2016,month:12,day:7,day_in_week:'周五',time:90}
-    //         ]
-    //     }
-    // ];
 });
 
 
@@ -315,7 +207,7 @@ app.controller("ctrl_new_ac",function($scope,$rootScope,$http,$state) {
     };
 
     $scope.submit_ac= function () {
-        console.log($scope.activity.date_range);
+        // console.log($scope.activity.date_range);
         if ($scope.activity.duration==0) {
             alert("请设置活动的预计时长");
             return;
@@ -324,12 +216,14 @@ app.controller("ctrl_new_ac",function($scope,$rootScope,$http,$state) {
             alert("请设置活动的可能进行日期");
             return;
         }
+        $rootScope.loading=true;
         $http({
             url: 'api/new_ac',
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             data: angular.toJson($scope.activity)
         }).success(function (data) {
+            $rootScope.loading=false;
             if (data.result == 'success') {
                 //提醒用户跳转到时间录入界面
                 if (window.confirm('添加成功，是否现在录入时间？')) {
@@ -342,6 +236,7 @@ app.controller("ctrl_new_ac",function($scope,$rootScope,$http,$state) {
             }
         }).error(function () {
             alert("操作失败");
+            $rootScope.loading=false;
         });
 
     };
@@ -377,6 +272,7 @@ app.controller("ctrl_new_ac",function($scope,$rootScope,$http,$state) {
 
 app.controller("ctrl_ac_edit",function($scope,$rootScope,$http,$stateParams,$state) {
 
+    $rootScope.loading=true;
     $http({
         url: 'api/ac_preview',
         method: 'get',
@@ -392,6 +288,7 @@ app.controller("ctrl_ac_edit",function($scope,$rootScope,$http,$stateParams,$sta
             place:data.place,
             duration:data.duration
         };
+        $rootScope.loading=false;
         // angular.forEach(data.date_range, function (date,i, array) {
         //     $scope.date_range.push({
         //         year:date.year,
@@ -401,6 +298,7 @@ app.controller("ctrl_ac_edit",function($scope,$rootScope,$http,$stateParams,$sta
         // });
     }).error(function () {
         alert("获取活动信息失败");
+        $rootScope.loading=false;
     });
     
     $scope.edit_ac= function () {
@@ -408,6 +306,7 @@ app.controller("ctrl_ac_edit",function($scope,$rootScope,$http,$stateParams,$sta
             alert("请设置活动的预计时长");
             return;
         }
+        $rootScope.loading=true;
         $http({
             url: 'api/edit_ac',
             method: 'post',
@@ -419,8 +318,10 @@ app.controller("ctrl_ac_edit",function($scope,$rootScope,$http,$stateParams,$sta
             }else{
                 alert(data);
             }
+            $rootScope.loading=false;
         }).error(function () {
             alert("操作失败");
+            $rootScope.loading=false;
         });
     };
 
@@ -592,7 +493,7 @@ app.controller("ctrl_time_input",function($scope,$rootScope,$http,$stateParams,$
 
 
 app.controller("ctrl_ac_detail",function($scope,$rootScope,$http,$stateParams,$state) {
-    $rootScope.loading=true;
+    console.log('detail test');
     //获取活动详情
     $scope.get_ac_detail= function () {
         $http({
@@ -600,6 +501,7 @@ app.controller("ctrl_ac_detail",function($scope,$rootScope,$http,$stateParams,$s
             method: 'get',
             params: {aid: $stateParams.aid}
         }).success(function (data) {
+            $rootScope.loading=false;
             $scope.ac=data;
             if (!$scope.ac.me.time_inputed) {
                 //显示未输入时间的提示，并且三秒后自动消失
@@ -608,8 +510,10 @@ app.controller("ctrl_ac_detail",function($scope,$rootScope,$http,$stateParams,$s
             }
         }).error(function () {
             alert("获取活动详情失败");
+            $rootScope.loading=false;
         });
-    }
+    };
+    $rootScope.loading=true;
     $scope.get_ac_detail();
 
 
@@ -638,6 +542,7 @@ app.controller("ctrl_ac_detail",function($scope,$rootScope,$http,$stateParams,$s
             alert("留言内容不能为空");
             return;
         }
+        $rootScope.loading=true;
         $http({
             url: 'api/submit_comment',
             method: 'get',
@@ -648,9 +553,11 @@ app.controller("ctrl_ac_detail",function($scope,$rootScope,$http,$stateParams,$s
                 $scope.my_comment='';
             }else {
                 alert(data);
+                $rootScope.loading=false;
             }
         }).error(function () {
             alert("操作失败");
+            $rootScope.loading=false;
         });
 
     }
@@ -662,6 +569,7 @@ app.controller("ctrl_ac_detail",function($scope,$rootScope,$http,$stateParams,$s
 
 app.controller("ctrl_ac_recommend",function($scope,$rootScope,$http,$stateParams) {
     $scope.aid=$stateParams.aid;
+    $rootScope.loading=true;
     $http({
         url: 'api/time_recommend',
         method: 'get',
@@ -671,9 +579,11 @@ app.controller("ctrl_ac_recommend",function($scope,$rootScope,$http,$stateParams
         angular.forEach($scope.recs, function (rec, i , array) {
             rec.list_showing=false;
         });
+        $rootScope.loading=false;
         // console.log($scope.recs);
     }).error(function () {
         alert("获取活动失败，请稍后再试");
+        $rootScope.loading=false;
     });
 
     $scope.toggle_list_showing= function () {
@@ -688,8 +598,7 @@ app.controller("ctrl_ac_recommend",function($scope,$rootScope,$http,$stateParams
 app.controller("ctrl_ac_time_table",function($scope,$rootScope,$http,$stateParams) {
     $scope.aid=$stateParams.aid;
 
-
-    //临时模拟数据
+    $rootScope.loading=true;
     $http({
         url: 'api/time_collection',
         method: 'get',
@@ -732,66 +641,12 @@ app.controller("ctrl_ac_time_table",function($scope,$rootScope,$http,$stateParam
                     }
                 }
             });
-        })
+        });
+        $rootScope.loading=false;
     }).error(function () {
         alert("获取信息失败，请稍后再试");
+        $rootScope.loading=false;
     });
-    // $scope.ac={
-    //     aid:43,
-    //     "time_collection" : [
-    //         {
-    //             "uid" : 8,
-    //             name:'小明',
-    //             "data" : [
-    //                 {
-    //                     "date" : {
-    //                         "year" : "2017",
-    //                         "month" : "5",
-    //                         "day" : "10",
-    //                         day_in_week:'周一'
-    //                     },
-    //                     "timeblocks" : "000000000011112222222200000000000000000001111111100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
-    //                 },
-    //                 {
-    //                     "date" : {
-    //                         "year" : "2016",
-    //                         "month" : "5",
-    //                         "day" : "29",
-    //                         day_in_week:'周一'
-    //                     },
-    //                     "timeblocks" : "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
-    //                 }
-    //             ]
-    //         },
-    //         {
-    //             "uid" : 5,
-    //             name:'小华',
-    //             "data" : [
-    //                 {
-    //                     "date" : {
-    //                         "year" : "2017",
-    //                         "month" : "5",
-    //                         "day" : "10",
-    //                         day_in_week:'周一'
-    //                     },
-    //                     "timeblocks" : "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
-    //                 },
-    //                 {
-    //                     "date" : {
-    //                         "year" : "2016",
-    //                         "month" : "5",
-    //                         "day" : "29",
-    //                         day_in_week:'周一'
-    //                     },
-    //                     "timeblocks" : "000000000000002200220022000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
-    //                 }
-    //             ]
-    //         }
-    //     ]
-    // };
-
-
-    
 
     // for (var i in $scope.ac.time_collection) {
     //
@@ -840,7 +695,7 @@ app.controller("ctrl_ac_determine",function($scope,$rootScope,$http,$stateParams
         $scope.index=index;
     };
     $scope.commit_determine= function () {
-
+        $rootScope.loading=true;
         $http({
             url: 'api/determine_time',
             method: 'post',
@@ -856,10 +711,12 @@ app.controller("ctrl_ac_determine",function($scope,$rootScope,$http,$stateParams
             }else {
                 alert(data);
             }
+            $rootScope.loading=false;
         }).error(function () {
             alert("获取信息失败，请稍后再试");
+            $rootScope.loading=false;
         });
-    }
+    };
 
 });
 
@@ -873,7 +730,7 @@ app.controller("ctrl_time_input_done",function($scope,$rootScope,$http,$statePar
 
 app.controller("ctrl_ac_invite",function($scope,$rootScope,$location,$http,$stateParams) {
     $scope.aid=$stateParams.aid;
-    console.log($scope.aid);
+    // console.log($scope.aid);
 });
 
 
@@ -967,6 +824,7 @@ app.controller("ctrl_ac_join",function($scope,$rootScope,$location,$http,$stateP
             params: {aid:$scope.ac.aid}
         }).success(function (data) {
             if (data == 'success') {
+                $rootScope.loading=false;
                 //提醒用户跳转到时间录入界面
                 if (window.confirm('加入成功，是否现在录入时间？')) {
                     $state.go('ac_time_input',{aid:$scope.ac.aid});
@@ -975,15 +833,18 @@ app.controller("ctrl_ac_join",function($scope,$rootScope,$location,$http,$stateP
                 }
             }else {
                 alert(data);
+                $rootScope.loading=false;
             }
         }).error(function () {
             alert("操作失败");
+            $rootScope.loading=false;
         });
     };
 
     //登录并加入活动
     $scope.login_join= function () {
         //先调用登录的接口
+        $rootScope.loading=true;
         $.ajax({
             url: "api/login",
             type: "post",
@@ -1003,21 +864,26 @@ app.controller("ctrl_ac_join",function($scope,$rootScope,$location,$http,$stateP
                 $scope.join();
             }else if (data == 'wrong password') {
                 alert("您输入的密码错误");
+                $rootScope.loading=false;
                 $("#password").val('').focus();
             }else if (data == 'wrong phone') {
                 alert("您输入的手机号尚未注册");
+                $rootScope.loading=false;
                 $("#phone").val('').focus();
                 $("#password").val('');
             }else {
                 alert(data);
+                $rootScope.loading=false;
             }
         }).fail(function () {
             alert("请求失败");
+            $rootScope.loading=false;
         });
     };
 
     //注册并加入活动
     $scope.signup_join= function () {
+        $rootScope.loading=true;
         //先调用注册的接口
         $.ajax({
             url: "api/signup",
@@ -1040,6 +906,7 @@ app.controller("ctrl_ac_join",function($scope,$rootScope,$location,$http,$stateP
                 $scope.join();
             } else {
                 alert(data);
+                $rootScope.loading=false;
             }
         }).fail(function () {
             alert("请求失败");
