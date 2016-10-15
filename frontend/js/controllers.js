@@ -1,5 +1,13 @@
 app.controller("ctrl_header",function($scope,$rootScope,$http,$state,$location,$window) {
 
+    $scope.go_back=function () {
+        if (/\/ac\/\d+\/detail/.test($location.path()) ) {//如果是详情页面
+            $state.go('home');
+        }else {
+            history.go(-1);
+        }
+    };
+
     $rootScope.get_userinfo=function (show_loading) {
         if (show_loading) $rootScope.loading=true;
         //获取用户基本信息

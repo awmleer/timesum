@@ -11,7 +11,7 @@
     <div class="header-icon" style="float: left;">
         <div style="border-right:1px solid #DBDBDB;height: 3rem;width: 4rem;padding: 0 0.5rem;margin-top:0;text-align: center;display: table-cell;vertical-align: middle;" class="active-gray hover-pointer">
             <img style="width: 70%;" src="img/logo/logo_black.svg" ng-show="header_text=='活动列表'">
-            <i class="fa fa-chevron-left fa-fw fa-2x" ng-show="header_text!='活动列表'" onclick="history.go(-1)"></i>
+            <i class="fa fa-chevron-left fa-fw fa-2x" ng-show="header_text!='活动列表'" ng-click="go_back()"></i>
         </div>
     </div>
     <div class="header-icon" style="float: right;" ui-sref="userinfo">
